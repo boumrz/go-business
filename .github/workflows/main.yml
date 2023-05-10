@@ -25,7 +25,7 @@ jobs:
         run: npm run build
         
       - name: Log
-        run: echo ${{ secrets.ACCESS_DEPLOY }}
+        run: echo ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.1
