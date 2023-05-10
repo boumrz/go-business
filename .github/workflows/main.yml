@@ -23,13 +23,10 @@ jobs:
 
       - name: Build
         run: npm run build
-        
-      - name: Log
-        run: echo ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_DEPLOY }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: gh-pages
           FOLDER: dist
