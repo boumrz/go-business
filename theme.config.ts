@@ -51,15 +51,5 @@ export const theme = createTheme({
         },
       },
     },
-    MuiSelect: {
-      styleOverrides: {
-        root: {
-          color: "#1D1B20",
-        },
-        icon: {
-          color: "rgba(0, 0, 0, 0.54)",
-        },
-      },
-    },
   },
 });
