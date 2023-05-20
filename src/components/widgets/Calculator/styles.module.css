@@ -1,0 +1,61 @@
+.wrapper {
+  display: grid;
+  place-content: center;
+  gap: 112px;
+}
+
+.fieldset {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &.multiple {
+    align-items: flex-start;
+  }
+}
+
+.wrapperItem {
+  display: grid;
+  gap: 4px;
+  width: 300px;
+}
+
+.header {
+  display: grid;
+  gap: 12px;
+  place-content: center;
+  place-items: center;
+}
+
+.calculator {
+  width: 824px;
+  border-radius: 16px;
+  box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);
+  padding: 36px;
+
+  .form {
+    display: grid;
+    gap: 32px;
+  }
+}
+
+.title {
+  color: black;
+}
+
+h1.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+h2.title {
+  font: 400 36px / 44px "SB Sans Text", "Verdana", "Roboto", sans-serif;
+}
+
+h3.title {
+  font: 500 20px / 28px "SB Sans Text", "Verdana", "Roboto", sans-serif;
+}
+
+h5.title {
+  font-size: 16px;
+}

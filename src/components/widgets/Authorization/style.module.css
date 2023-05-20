@@ -1,0 +1,37 @@
+.wrapper {
+  display: grid;
+  place-items: center;
+  width: 448px;
+  max-height: 600px;
+  gap: 40px;
+
+  .form {
+    display: grid;
+    width: 100%;
+    gap: 40px;
+  }
+
+  .registration {
+    gap: 64px;
+  }
+}
+
+.personal {
+  display: grid;
+  gap: 16px;
+}
+
+.fieldset {
+  display: grid;
+  gap: 32px;
+}
+
+h3.text {
+  font: 500 20px / 28px "SB Sans Text", "Verdana", "Roboto", sans-serif;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 56px;
+}
