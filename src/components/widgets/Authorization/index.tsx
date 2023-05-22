@@ -70,12 +70,12 @@ export const Authorization = () => {
     console.log("formData", formData);
   };
 
-  const onSubmitRegistration = (formData: any) => {
-    console.log("onSubmitRegistration", formData);
-  };
-
   const handleNextStep = () => {
     setActiveStep(activeStep + 1);
+  };
+
+  const onSubmitRegistration = (formData: any) => {
+    console.log("onSubmitRegistration", formData);
   };
 
   return (
