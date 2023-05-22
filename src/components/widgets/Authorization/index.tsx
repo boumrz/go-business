@@ -45,7 +45,7 @@ export const Authorization = () => {
   const [isRegistration, setIsRegistration] = useState<boolean>(false);
   const formData1 = useForm({
     mode: "onSubmit",
-    // resolver: yupResolver(schema),
+    resolver: yupResolver(schema),
   });
   const formData2 = useForm({
     mode: "onSubmit",

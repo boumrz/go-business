@@ -3,7 +3,6 @@ import {
   Select,
   MenuItem,
   InputLabel,
-  Slider,
   RadioGroup,
   TextField,
   FormControl,
@@ -12,12 +11,6 @@ import {
   Box,
 } from "@mui/material";
 import { MapComponent } from "@/components";
-
-import s from "./styles.module.css";
-
-function valuetext(value: number) {
-  return `${value}°C`;
-}
 
 export const calculatorFormMap = ({
   name,

@@ -14,7 +14,7 @@ export const MapComponent = () => {
     setIsOpen(true);
   };
 
-  const drawSvg = (coordStr) => {
+  const drawSvg = (coordStr: any) => {
     const svg = svgRef.current;
 
     const polygon = document.createElementNS(
@@ -26,7 +26,7 @@ export const MapComponent = () => {
     svg.appendChild(polygon);
   };
 
-  const myHover = (element) => {
+  const myHover = (element: any) => {
     element.preventDefault();
     var hoveredElement = element;
     var coordStr = hoveredElement.target.getAttribute("coords");
@@ -62,7 +62,7 @@ export const MapComponent = () => {
             <img
               className={s.img}
               src="src/assets/images/map.svg"
-              usemap="#image-map"
+              useMap="#image-map"
             />
             <map name="image-map">
               <area
@@ -86,7 +86,7 @@ export const MapComponent = () => {
             </map>
             <svg
               ref={svgRef}
-              class={s.imageMapperSvg}
+              className={s.imageMapperSvg}
               style={{ width: "100%" }}
             ></svg>
           </div>

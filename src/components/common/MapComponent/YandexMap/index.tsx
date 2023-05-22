@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { YMaps, Map, ZoomControl } from "@pbe/react-yandex-maps";
 import { useMapsContext } from "@/contexts";
 
@@ -44,7 +44,7 @@ export const YandexMap = ({ onMapClick }: any) => {
           "geocode",
         ]}
       >
-        <ZoomControl options={{ float: "right" }} />
+        <ZoomControl />
       </Map>
     </YMaps>
   );

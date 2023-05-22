@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useMainContext } from "@/contexts";
 import { Authorization } from "@/components";
 import s from "./styles.module.css";

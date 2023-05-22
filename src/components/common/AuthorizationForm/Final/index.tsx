@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Box, TextField, Select, MenuItem } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 
 export const Final = () => {
   const { control } = useFormContext();
