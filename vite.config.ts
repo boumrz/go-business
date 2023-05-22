@@ -7,6 +7,15 @@ const __dirname = path.resolve();
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      input: {
+        main: "./index.html",
+      },
+    },
+    outDir: "dist",
+    assetsDir: "assets",
+  },
   // base: '/go-business/',
   plugins: [
     react(),
