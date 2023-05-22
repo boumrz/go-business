@@ -17,7 +17,6 @@
 .wrapperItem {
   display: grid;
   gap: 4px;
-  width: 300px;
 }
 
 .header {
@@ -28,7 +27,6 @@
 }
 
 .calculator {
-  width: 824px;
   border-radius: 16px;
   box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);
   padding: 36px;
@@ -41,6 +39,11 @@
 
 .title {
   color: black;
+}
+
+.secondary {
+  font: 400 14px / 20px "SB Sans Text", "Verdana", "Roboto", sans-serif;
+  color: rgba(33, 37, 41, 0.4);
 }
 
 h1.title {

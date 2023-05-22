@@ -2,10 +2,6 @@
   color: rgba(33, 37, 41, 0.4);
 }
 
-.muiComponent {
-  width: 400px !important;
-}
-
 .fieldset {
   display: grid;
   gap: 12px;

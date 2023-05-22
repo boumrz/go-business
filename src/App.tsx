@@ -1,7 +1,7 @@
 import { RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "@mui/material/styles";
-import { MainProvider } from "@/contexts";
+import { MainProvider, MapsProvider } from "@/contexts";
 import { router } from "./router";
 import { store } from "./store/store";
 import { theme } from "../theme.config.ts";
@@ -12,7 +12,9 @@ export const App = () => {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <MainProvider>
-          <RouterProvider router={router} />
+          <MapsProvider>
+            <RouterProvider router={router} />
+          </MapsProvider>
         </MainProvider>
       </ThemeProvider>
     </Provider>

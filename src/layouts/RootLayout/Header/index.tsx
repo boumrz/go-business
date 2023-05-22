@@ -13,19 +13,6 @@ export const Header = () => {
     handleIsOpenAuthModal();
   };
 
-  const handleClickOutside = (event: any) => {
-    if (modalRef.current && !modalRef.current.contains(event.target)) {
-      handleIsCloseAuthModal();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
   return (
     <>
       <div className={s.wrapper}>
@@ -37,6 +24,9 @@ export const Header = () => {
         <div className={s.modalOverlay}>
           <div className={s.modal} ref={modalRef}>
             <Authorization />
+            <button onClick={handleIsCloseAuthModal} className={s.cross}>
+              X
+            </button>
           </div>
         </div>
       )}

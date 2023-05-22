@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, Box, Grid } from "@mui/material";
 import { calculatorFormMap, calculatorConfig } from "@/components";
-import cn from "clsx";
 import s from "./styles.module.css";
 
 export const Calculator = () => {
@@ -26,46 +25,97 @@ export const Calculator = () => {
           Расчёт объема возможных затрат
         </Typography>
       </section>
-      <section className={s.calculator}>
+      <Box
+        sx={{
+          width: { xs: "320px", sm: "400px", md: "800px", lg: "900px" },
+          boxShadow: {
+            xs: "none",
+            sm: "0px 0px 8px 0px rgba(34, 60, 80, 0.2)",
+          },
+        }}
+        className={s.calculator}
+      >
         <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
           <Typography className={s.title} variant="h3">
             Параметры бизнеса
           </Typography>
+
           {calculatorConfig.map(
-            ({ label1, label2, label, name, title, type, description }) => {
+            ({
+              label,
+              label1,
+              label2,
+              label3,
+              name,
+              name1,
+              name2,
+              name3,
+              title,
+              placeholder1,
+              placeholder2,
+              placeholder3,
+              placeholder,
+              type,
+              description,
+            }) => {
               return (
-                <div
-                  className={cn(s.fieldset, {
-                    [s.multiple]: name === "object",
-                  })}
+                <Grid
+                  container
+                  sx={{
+                    gap: { xs: "32px" },
+                    justifyContent: { sm: "space-between" },
+                  }}
                 >
-                  <div className={s.wrapperItem}>
-                    <Typography variant="subtitle1">{title}</Typography>
+                  <Grid md={3} lg={3} xl={3} item>
+                    <Typography
+                      sx={{ width: { xs: "320px" } }}
+                      variant="subtitle1"
+                    >
+                      {title}
+                    </Typography>
                     {description && (
-                      <Typography className={s.secondary} variant="body1">
-                        {description}
-                      </Typography>
+                      <Box sx={{ width: { xs: "320px" } }}>
+                        <Typography className={s.secondary} variant="body1">
+                          {description}
+                        </Typography>
+                      </Box>
                     )}
-                  </div>
-                  {
-                    calculatorFormMap({
-                      label1,
-                      label2,
-                      label,
-                      name,
-                      title,
-                      type,
-                      description,
-                      control,
-                    })[name]
-                  }
-                </div>
+                  </Grid>
+                  <Grid
+                    md={7}
+                    lg={7}
+                    xl={7}
+                    sx={{ width: { xs: "320px" } }}
+                    item
+                  >
+                    {
+                      calculatorFormMap({
+                        label1,
+                        label2,
+                        label3,
+                        label,
+                        placeholder1,
+                        placeholder2,
+                        placeholder3,
+                        name,
+                        name1,
+                        name2,
+                        name3,
+                        title,
+                        type,
+                        placeholder,
+                        description,
+                        control,
+                      })[name ?? ""]
+                    }
+                  </Grid>
+                </Grid>
               );
             }
           )}
-          <Button type="submit">Расчитать</Button>
+          <Button type="submit">Рассчитать</Button>
         </form>
-      </section>
+      </Box>
     </div>
   );
 };

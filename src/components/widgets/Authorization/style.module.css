@@ -2,13 +2,13 @@
   display: grid;
   place-items: center;
   width: 448px;
-  max-height: 600px;
+  max-height: 680px;
   gap: 40px;
 
   .form {
     display: grid;
     width: 100%;
-    gap: 40px;
+    gap: 24px;
   }
 
   .registration {

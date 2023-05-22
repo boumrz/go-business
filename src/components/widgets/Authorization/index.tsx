@@ -1,7 +1,20 @@
 import { useState } from "react";
-import { useForm, useFormState } from "react-hook-form";
+import {
+  useForm,
+  useFormState,
+  FormProvider,
+  Controller,
+} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { TextField, Typography, Button } from "@mui/material";
+import {
+  TextField,
+  Typography,
+  Button,
+  Stepper,
+  Step,
+  StepLabel,
+} from "@mui/material";
+import { PersonalData, Final } from "@/components";
 import * as yup from "yup";
 import cn from "clsx";
 import s from "./style.module.css";
@@ -10,16 +23,36 @@ const schema = yup
   .object()
   .shape({
     name: yup.string().required(),
+    surname: yup.string().required(),
+    email: yup.string().required(),
+    password: yup.string().required(),
+    confirmPassword: yup.string().required(),
+    code: yup.string().required(),
+    companyName: yup.string().required(),
+    inn: yup.string().required(),
+    site: yup.string().required(),
+    industry: yup.string().required(),
+    country: yup.string().required(),
+    city: yup.string().required(),
+    job: yup.string().required(),
   })
   .required();
 
 const ariaLabel = { "aria-label": "description" };
 
 export const Authorization = () => {
+  const [activeStep, setActiveStep] = useState(1);
   const [isRegistration, setIsRegistration] = useState<boolean>(false);
-  const { register, handleSubmit, control } = useForm({
-    resolver: yupResolver(schema),
+  const formData1 = useForm({
+    mode: "onSubmit",
+    // resolver: yupResolver(schema),
   });
+  const formData2 = useForm({
+    mode: "onSubmit",
+    // resolver: yupResolver(schema),
+  });
+  const { handleSubmit: handleSubmitForm1, control: controlForm1 } = formData1;
+  const { handleSubmit, control } = formData2;
 
   const { errors } = useFormState({ control });
 
@@ -33,9 +66,17 @@ export const Authorization = () => {
     setIsRegistration(false);
   };
 
-  function onSubmit(formData: any) {
+  const onSubmit = (formData: any) => {
     console.log("formData", formData);
-  }
+  };
+
+  const onSubmitRegistration = (formData: any) => {
+    console.log("onSubmitRegistration", formData);
+  };
+
+  const handleNextStep = () => {
+    setActiveStep(activeStep + 1);
+  };
 
   return (
     <div className={s.wrapper}>
@@ -44,169 +85,101 @@ export const Authorization = () => {
           <Typography className={s.text} variant="h3">
             Вход
           </Typography>
-          <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
-            <TextField
-              type="email"
-              label="Адрес эл. почты"
-              placeholder="ivanov@mail.ru"
-              inputProps={ariaLabel}
-              {...register("email")}
-            />
+          <FormProvider {...formData1}>
+            <form className={s.form} onSubmit={handleSubmitForm1(onSubmit)}>
+              <Controller
+                control={controlForm1}
+                name="login"
+                render={({ field }) => (
+                  <TextField
+                    type="email"
+                    label="Адрес эл. почты"
+                    placeholder="ivanov@mail.ru"
+                    inputProps={ariaLabel}
+                    {...field}
+                  />
+                )}
+              />
 
-            {errors.email?.type === "required" && (
-              <span>Это поле обязательно для заполнения</span>
-            )}
-            {errors.email?.type === "pattern" && (
-              <span>Некорректный email адрес</span>
-            )}
+              {errors.email?.type === "required" && (
+                <span>Это поле обязательно для заполнения</span>
+              )}
+              {errors.email?.type === "pattern" && (
+                <span>Некорректный email адрес</span>
+              )}
 
-            <TextField
-              type="passowrd"
-              label="Пароль"
-              inputProps={ariaLabel}
-              {...register("password")}
-            />
-            {errors.password?.type === "required" && (
-              <span>Это поле обязательно для заполнения</span>
-            )}
-            {errors.password?.type === "minLength" && (
-              <span>Минимальное количество символов - 6</span>
-            )}
+              <Controller
+                control={controlForm1}
+                name="pass"
+                render={({ field }) => (
+                  <TextField
+                    type="password"
+                    label="Пароль"
+                    inputProps={ariaLabel}
+                    {...field}
+                  />
+                )}
+              />
 
-            <div className={s.buttons}>
-              <Button variant="text" type="button" onClick={handleLogUp}>
-                Зарегистрироваться
-              </Button>
-              <Button variant="contained" type="submit">
-                Далее
-              </Button>
-            </div>
-          </form>
+              {errors.pass?.type === "required" && (
+                <span>Это поле обязательно для заполнения</span>
+              )}
+              {/* {errors.password?.type === "minLength" && (
+                <span>Минимальное количество символов - 6</span>
+              )} */}
+
+              <div className={s.buttons}>
+                <Button variant="text" type="button" onClick={handleLogUp}>
+                  Зарегистрироваться
+                </Button>
+                <Button variant="contained" type="submit">
+                  Далее
+                </Button>
+              </div>
+            </form>
+          </FormProvider>
         </>
       ) : (
         <>
           <Typography className={s.text} variant="h3">
             Регистрация
           </Typography>
-          <form
-            className={cn(s.form, s.registration)}
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <div className={s.fieldset}>
-              <div className={s.personal}>
-                <Typography variant="subtitle1">Личные данные</Typography>
-                <TextField
-                  fullWidth
-                  type="text"
-                  label="Имя"
-                  placeholder="Иван"
-                  inputProps={ariaLabel}
-                  {...register("name")}
-                />
-              </div>
-              <TextField
-                type="text"
-                label="Фамилия"
-                placeholder="Иванов"
-                inputProps={ariaLabel}
-                {...register("surname")}
-              />
-              <TextField
-                type="text"
-                label="Отчество"
-                placeholder="Иванович"
-                inputProps={ariaLabel}
-                {...register("middlename")}
-              />
-              <TextField
-                type="text"
-                label="Должность"
-                placeholder="Исполнительный директор"
-                inputProps={ariaLabel}
-                {...register("jobPosition")}
-              />
-            </div>
+          <Stepper activeStep={activeStep}>
+            <Step>
+              <StepLabel>Личные данные</StepLabel>
+            </Step>
+            <Step>
+              <StepLabel>Подробная информация</StepLabel>
+            </Step>
+          </Stepper>
+          <FormProvider {...formData2}>
+            <form
+              className={cn(s.form, s.registration)}
+              onSubmit={handleSubmit(onSubmitRegistration)}
+            >
+              {activeStep === 1 && <PersonalData />}
+              {activeStep === 2 && <Final />}
 
-            <div className={s.fieldset}>
-              <div className={s.personal}>
-                <Typography variant="subtitle1">Данные о компании</Typography>
-                <TextField
-                  type="text"
-                  label="Наименование организации"
-                  placeholder="Иванов и компания"
-                  inputProps={ariaLabel}
-                  {...register("orgName")}
-                />
+              <div className={s.buttons}>
+                <Button variant="text" type="button" onClick={handleLogIn}>
+                  Войти
+                </Button>
+                {activeStep !== 2 ? (
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    onClick={handleNextStep}
+                  >
+                    Далее
+                  </Button>
+                ) : (
+                  <Button variant="contained" type="submit">
+                    Завершить
+                  </Button>
+                )}
               </div>
-              <TextField
-                type="text"
-                label="ИНН *"
-                placeholder="111111111"
-                inputProps={ariaLabel}
-                {...register("inn")}
-              />
-              <TextField
-                type="email"
-                label="Адрес сайта"
-                placeholder="ivanov@mail.ru"
-                inputProps={ariaLabel}
-                {...register("email")}
-              />
-              <TextField
-                type="text"
-                label="Отрасль деятельности"
-                placeholder="введите ключевое слово"
-                inputProps={ariaLabel}
-                {...register("industry")}
-              />
-              <TextField
-                type="text"
-                label="Страна"
-                placeholder="введите ключевое слово"
-                inputProps={ariaLabel}
-                {...register("country")}
-              />
-              <TextField
-                type="text"
-                label="Город"
-                placeholder="введите ключевое слово"
-                inputProps={ariaLabel}
-                {...register("city")}
-              />
-            </div>
-
-            <div className={s.fieldset}>
-              <div className={s.personal}>
-                <Typography variant="subtitle1">Пароль</Typography>
-                <Typography variant="body1">
-                  Пароль должен содержать не менее восьми знаков, включать
-                  буквы, цифры и специальные символы
-                </Typography>
-                <TextField
-                  fullWidth
-                  type="password"
-                  label="Пароль"
-                  inputProps={ariaLabel}
-                  {...register("password")}
-                />
-              </div>
-              <TextField
-                type="password"
-                label="Подтверждение пароля"
-                inputProps={ariaLabel}
-                {...register("passwordConfirm")}
-              />
-            </div>
-
-            <div className={s.buttons}>
-              <Button variant="text" type="submit" onClick={handleLogIn}>
-                Войти
-              </Button>
-              <Button variant="contained" type="submit">
-                Далее
-              </Button>
-            </div>
-          </form>
+            </form>
+          </FormProvider>
         </>
       )}
     </div>

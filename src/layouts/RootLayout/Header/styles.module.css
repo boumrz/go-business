@@ -1,10 +1,17 @@
 .wrapper {
   position: sticky;
+  background: white;
   top: 0;
   z-index: 10;
   display: flex;
   justify-content: flex-end;
   padding: 10px 40px;
+}
+
+.cross {
+  position: absolute;
+  right: 12px;
+  top: 24px;
 }
 
 .modalOverlay {
@@ -21,6 +28,7 @@
 }
 
 .modal {
+  position: relative;
   background-color: #fff;
   padding: 52px 36px 0 36px;
   border-radius: 8px;
