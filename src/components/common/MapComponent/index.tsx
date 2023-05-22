@@ -59,11 +59,7 @@ export const MapComponent = () => {
       {isOpen && (
         <div className={s.modal}>
           <div className={s.modalContent} ref={modalRef}>
-            <img
-              className={s.img}
-              src="src/assets/images/map.svg"
-              useMap="#image-map"
-            />
+            <img className={s.img} src="./map.svg" useMap="#image-map" />
             <map name="image-map">
               <area
                 target=""
