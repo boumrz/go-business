@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Button, Chip, Box, Tooltip } from "@mui/material";
+import { Button, Chip } from "@mui/material";
 import { useMapsContext } from "@/contexts";
 import { MoscowMap } from "@/components";
 import s from "./styles.module.css";
