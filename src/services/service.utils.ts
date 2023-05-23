@@ -52,7 +52,9 @@ export const baseQueryWithReauth: BaseQueryFn<
           );
 
           if (refresh.data) {
+            // @ts-ignore
             STORAGE.setToken(refresh.data.accessToken);
+            // @ts-ignore
             STORAGE.setRefreshToken(refresh.data.refreshToken);
             result = await baseQuery(args, api, extraOptions);
           }
