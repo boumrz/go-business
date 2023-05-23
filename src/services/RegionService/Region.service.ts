@@ -1,6 +1,6 @@
 import { Api } from "../api";
 
-export const testService = Api.injectEndpoints({
+export const RegionService = Api.injectEndpoints({
   endpoints: (builder) => ({
     getTestList: builder.query<void, void>({
       query: () => ({
@@ -11,4 +11,4 @@ export const testService = Api.injectEndpoints({
   }),
 });
 
-export const { useGetTestListQuery } = testService;
+export const { useGetTestListQuery } = RegionService;

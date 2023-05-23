@@ -1,2 +1,10 @@
 export * from "./api";
-export * from "./TestService/Test.service";
+export * from "./AccountingService/Accounting.service";
+export * from "./AuthorizationService/Authorization.service";
+// export * from "./DistrictService/District.service";
+// export * from "./EquipmentService/Equipment.service";
+// export * from "./IndustryService/Industry.service";
+// export * from "./PatentService/Patent.service";
+// export * from "./RegionService/Region.service";
+// export * from "./SubIndustryService/SubIndustry.service";
+export * from "./Storage.service";

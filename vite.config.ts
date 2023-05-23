@@ -7,6 +7,9 @@ const __dirname = path.resolve();
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  define: {
+    "process.env": {},
+  },
   build: {
     rollupOptions: {
       input: {
@@ -44,6 +47,10 @@ export default defineConfig({
       {
         find: "@/contexts",
         replacement: path.resolve(__dirname, "src/contexts"),
+      },
+      {
+        find: "@/utils",
+        replacement: path.resolve(__dirname, "src/utils"),
       },
     ],
   },
