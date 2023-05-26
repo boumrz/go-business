@@ -27,7 +27,6 @@ export const calculatorFormMap = ({
   industries,
   subindustryTransform,
   legalForm,
-  watch,
 }: any): Record<string, JSX.Element | null> => {
   return {
     industry: (

@@ -3,6 +3,7 @@ import cn from "clsx";
 import { Chip, Modal, Box, Typography } from "@mui/material";
 import { useMapsContext } from "@/contexts";
 import { MoscowMap } from "@/components";
+// @ts-ignore
 import { MarkerMapIcon } from "@/assets/icons";
 import s from "./styles.module.css";
 

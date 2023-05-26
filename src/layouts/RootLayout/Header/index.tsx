@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Box, AppBar, Toolbar, Modal, Typography } from "@mui/material";
 import { useMainContext, useAuthContext } from "@/contexts";
+// @ts-ignore
 import { LogoIcon } from "@/assets/icons";
 import { Authorization } from "@/components";
 import s from "./styles.module.css";

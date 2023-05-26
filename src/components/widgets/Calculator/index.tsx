@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useForm, FormProvider, Controller } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { Typography, Box, CircularProgress } from "@mui/material";
 import {
   useGetEquipmentListQuery,
@@ -8,6 +8,7 @@ import {
   useGetAccountingListQuery,
   useGetIndustryListQuery,
 } from "@/services";
+// @ts-ignore
 import { LayerIcon } from "@/assets/icons";
 import { CalculatorForm } from "./CalculatorForm";
 import s from "./styles.module.css";
@@ -20,7 +21,9 @@ export const Calculator = () => {
   });
   const { watch } = formData;
   const data = watch();
+  // @ts-ignore
   const legalForm = data?.legalForm;
+  // @ts-ignore
   const industry = data?.industry;
   console.log("data", data);
   console.log("subindustryTransform", subindustryTransform);

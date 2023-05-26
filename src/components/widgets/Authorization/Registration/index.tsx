@@ -1,5 +1,5 @@
 import { FormProvider, useForm } from "react-hook-form";
-import { Typography, Stepper, Step, StepLabel, Button } from "@mui/material";
+import { Typography, Stepper, Step, StepLabel } from "@mui/material";
 import { PersonalData, Final } from "@/components";
 import { usePostRegisterUserMutation } from "@/services";
 import cn from "clsx";

@@ -1,4 +1,5 @@
 import { Typography, Box, Button, Grid } from "@mui/material";
+// @ts-ignore
 import { LayerIcon } from "@/assets/icons";
 import s from "./styles.module.css";
 
