@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Отчет</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        font: 500 18px / 36px "Raleway", "SB Sans Text", "Verdana", "Roboto",
+          sans-serif;
+      }
+
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: 4px solid #d31b2c;
+        margin-bottom: 80px;
+        margin-left: 140px;
+        margin-right: 140px;
+      }
+
+      .header {
+        width: 100%;
+        padding-left: 80px;
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: flex-start;
+        height: 136px;
+      }
+
+      .logo {
+        width: 45px;
+        height: 55px;
+      }
+
+      .check {
+        width: 20px;
+        height: 20px;
+      }
+
+      .header-text {
+        font-size: 20px;
+        text-transform: uppercase;
+      }
+
+      .title {
+        text-align: center;
+        font-size: 36px;
+      }
+
+      .text {
+        font-size: 18px;
+        max-width: 770px;
+      }
+
+      .background-image {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        top: 20px;
+        background-image: url("./2.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      .image-wrapper {
+        position: relative;
+        width: 400px;
+        height: 400px;
+      }
+
+      .report-title {
+        font-size: 24px;
+        width: 100%;
+        height: 76px;
+        margin-bottom: 52px;
+        background-color: #eef3fa;
+        display: flex;
+        align-items: center;
+        padding-left: 120px;
+      }
+
+      .information {
+        margin-left: 120px;
+        margin-right: 120px;
+        margin-bottom: 42px;
+        border-bottom: 4px solid #d31b2c;
+        padding-bottom: 42px;
+      }
+
+      .results {
+        margin-left: 120px;
+        margin-right: 120px;
+        border-bottom: 4px solid #d31b2c;
+        padding-bottom: 42px;
+        margin-bottom: 42px;
+      }
+
+      .details {
+        margin-left: 120px;
+        margin-right: 120px;
+        margin-bottom: 42px;
+      }
+
+      .results-title {
+        font-size: 18px;
+        color: #d31b2c;
+      }
+
+      .information-title {
+        font-size: 18px;
+      }
+
+      .parameters-wrapper {
+        display: grid;
+        grid-template-rows: 1fr;
+        gap: 32px;
+      }
+
+      .title-wrapper {
+        margin-bottom: 42px;
+      }
+
+      .parameter {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+      }
+
+      .parameter-label {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        font-size: 18px;
+        color: #5f6368;
+      }
+
+      .footer {
+        height: 144px;
+        height: 100%;
+        background-color: rgba(207, 208, 210, 0.2);
+        padding-left: 120px;
+        padding-right: 100px;
+        padding-top: 24px;
+        padding-bottom: 24px;
+        font: 400 16px / 24px "Raleway", "SB Sans Text", "Verdana", "Roboto",
+          sans-serif;
+        color: #8e9397;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <img src="./logo.svg" alt="Логотип" class="logo" />
+      <div class="header-text">
+        Экономика<br />
+        Москвы
+      </div>
+    </header>
+    <div class="report-title">РАСЧЁТ ОБЪЁМА ИНВЕСТИЦИЙ</div>
+
+    <div class="information">
+      <div class="title-wrapper">
+        <span class="information-title">ИНФОРМАЦИЯ О ВАШЕЙ КОМПАНИИ</span>
+      </div>
+      <div class="parameters-wrapper">
+        <div class="parameter">
+          <span class="parameter-label"
+            ><img src="./check.svg" alt="Галочка" class="check" /> Отрасль</span
+          >
+          <span class="parameter-value">{{industry}}</span>
+        </div>
+        <div class="parameter">
+          <span class="parameter-label"
+            ><img src="./check.svg" alt="Галочка" class="check" /> Тип
+            организации</span
+          >
+          <span class="parameter-value">{{organizationType}}</span>
+        </div>
+        <div class="parameter">
+          <span class="parameter-label"
+            ><img src="./check.svg" alt="Галочка" class="check" /> Количество
+            сотрудников</span
+          >
+          <span class="parameter-value">{{count}}</span>
+        </div>
+        <div class="parameter">
+          <span class="parameter-label"
+            ><img src="./check.svg" alt="Галочка" class="check" /> Район
+            расположения производства</span
+          >
+          <span class="parameter-value">{{area}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="results">
+      <div class="title-wrapper">
+        <span class="results-title">ИТОГОВЫЕ ЗНАЧЕНИЯ ВОЗМОЖНЫХ ЗАТРАТ</span>
+      </div>
+      <div class="parameters-wrapper">
+        <div class="parameter">
+          <span class="parameter-label"
+            ><img src="./check.svg" alt="Галочка" class="check" /> Объём
+            возможных затрат</span
+          >
+          <span class="parameter-value">{{industry}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="details">
+      <div class="title-wrapper">
+        <span class="information-title">ДЕТАЛИ РАСХОДОВ</span>
+      </div>
+      <div class="parameters-wrapper">
+        <div class="parameter">
+          <span class="parameter-label"
+            ><img src="./check.svg" alt="Галочка" class="check" />
+            Персонал</span
+          >
+          <span class="parameter-value">{{personal}}</span>
+        </div>
+        <div class="parameter">
+          <span class="parameter-label"
+            ><img src="./check.svg" alt="Галочка" class="check" /> Аренда
+            объектов недвижимости</span
+          >
+          <span class="parameter-value">{{rent}}</span>
+        </div>
+        <div class="parameter">
+          <span class="parameter-label"
+            ><img src="./check.svg" alt="Галочка" class="check" /> Налоги</span
+          >
+          <span class="parameter-value">{{taxes}}</span>
+        </div>
+        <div class="parameter">
+          <span class="parameter-label"
+            ><img src="./check.svg" alt="Галочка" class="check" /> Услуги</span
+          >
+          <span class="parameter-value">{{services}}</span>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      *Указанные значения возможных издержек на создание промышленного
+      производства в городе Москве носят рекомендательный характер и не являются
+      официальной позицией Правительства Москвы. За более подробным расчетом
+      необходимо обратиться в Департамент инвестиционной и промышленной политики
+      города Москвы.
+    </footer>
+  </body>
+</html>
