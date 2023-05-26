@@ -1,0 +1,54 @@
+h3.text {
+  font: 500 20px / 28px "SB Sans Text", "Verdana", "Roboto", sans-serif;
+}
+
+.form {
+  display: grid;
+  width: 100%;
+  gap: 24px;
+}
+
+.registration {
+  gap: 64px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 56px;
+}
+
+.personal {
+  display: grid;
+  gap: 16px;
+}
+
+.fieldset {
+  display: grid;
+  gap: 32px;
+}
+
+.prevButton {
+  border: none;
+  outline: none;
+  color: #6750a4;
+  font-size: 16px;
+  background-color: transparent;
+  cursor: pointer;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+.button {
+  outline: none;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  background: #d31b2c;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+      0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  }
+}

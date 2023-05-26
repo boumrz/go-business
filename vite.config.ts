@@ -19,7 +19,6 @@ export default defineConfig({
     outDir: "dist",
     assetsDir: "assets",
   },
-  // base: '/go-business/',
   plugins: [
     react(),
     svgr({
@@ -31,6 +30,14 @@ export default defineConfig({
       {
         find: "@/assets",
         replacement: path.resolve(__dirname, "src/assets"),
+      },
+      {
+        find: "@/icons",
+        replacement: path.resolve(__dirname, "src/assets/icons"),
+      },
+      {
+        find: "@/images",
+        replacement: path.resolve(__dirname, "src/assets/images"),
       },
       {
         find: "@/pages",
@@ -51,6 +58,10 @@ export default defineConfig({
       {
         find: "@/utils",
         replacement: path.resolve(__dirname, "src/utils"),
+      },
+      {
+        find: "@/constants",
+        replacement: path.resolve(__dirname, "src/constants"),
       },
     ],
   },

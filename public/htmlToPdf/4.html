@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Отчет</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        font: 500 18px / 36px "Raleway", "SB Sans Text", "Verdana", "Roboto",
+          sans-serif;
+      }
+
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: 4px solid #d31b2c;
+        margin-bottom: 80px;
+        margin-left: 140px;
+        margin-right: 140px;
+      }
+
+      .header {
+        width: 100%;
+        padding-left: 80px;
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: flex-start;
+        height: 136px;
+      }
+
+      .logo {
+        width: 45px;
+        height: 55px;
+      }
+
+      .check {
+        width: 20px;
+        height: 20px;
+      }
+
+      .check-title {
+        width: 50px;
+        height: 50px;
+      }
+
+      .header-text {
+        font-size: 20px;
+        text-transform: uppercase;
+      }
+
+      .title {
+        text-align: center;
+        font-size: 36px;
+      }
+
+      .text {
+        font-size: 18px;
+        max-width: 770px;
+      }
+
+      .background-image {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        top: 20px;
+        background-image: url("./2.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      .image-wrapper {
+        position: relative;
+        width: 400px;
+        height: 400px;
+      }
+
+      .report-title {
+        font-size: 24px;
+        width: 100%;
+        height: 76px;
+        margin-bottom: 52px;
+        background-color: #eef3fa;
+        display: flex;
+        align-items: center;
+        padding-left: 120px;
+      }
+
+      .information {
+        margin-left: 120px;
+        margin-right: 120px;
+        padding-bottom: 42px;
+      }
+
+      .details {
+        margin-left: 220px;
+        margin-right: 120px;
+        margin-bottom: 42px;
+      }
+
+      .information-title {
+        display: flex;
+        align-items: center;
+        gap: 48px;
+        font-size: 18px;
+      }
+
+      .parameters-wrapper {
+        display: grid;
+        grid-template-rows: 1fr;
+        gap: 32px;
+      }
+
+      .title-wrapper {
+        margin-bottom: 42px;
+      }
+
+      .parameter {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+      }
+
+      .parameter-label {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        font-size: 18px;
+        color: #5f6368;
+      }
+
+      .footer {
+        height: 144px;
+        height: 100%;
+        background-color: rgba(207, 208, 210, 0.2);
+        padding-left: 120px;
+        padding-right: 100px;
+        padding-top: 24px;
+        padding-bottom: 24px;
+        font: 400 16px / 24px "Raleway", "SB Sans Text", "Verdana", "Roboto",
+          sans-serif;
+        color: #8e9397;
+      }
+
+      .description {
+        margin-left: 100px;
+        font-size: 18px;
+        padding-bottom: 80px;
+        border-bottom: 4px solid #d31b2c;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <img src="./logo.svg" alt="Логотип" class="logo" />
+      <div class="header-text">
+        Экономика<br />
+        Москвы
+      </div>
+    </header>
+    <div class="report-title">ДЕТАЛИ РАСХОДОВ</div>
+
+    <div class="information">
+      <div class="title-wrapper">
+        <span class="information-title"
+          ><img src="./check.svg" alt="Галочка" class="check-title" /> ПЕРСОНАЛ
+          ОРГАНИЗАЦИИ
+        </span>
+      </div>
+      <p class="description">
+        Москва является лидирующим регионом Российской Федерации с наибольшим
+        количеством экономически активного населения. Уровень безработицы в
+        столице – один из самых низких по стране и составляет менее 1%.
+        Специалисты многих направлений заняты в самых разных областях
+        деятельности: автомобилестроение, пищевая промышленность,
+        приборостроение, станкоинструментальная промышленность, легкая
+        промышленность и другие. Правительство Москвы способствует развитию
+        новых специальностей и компетенций. Благодаря проекту «Московская
+        техническая школа» Вы можете подать заявку на обучение своих сотрудников
+        необходимым профессиональным навыкам.
+      </p>
+    </div>
+    <div class="details">
+      <div class="parameters-wrapper">
+        <div class="parameter">
+          <span class="parameter-label"
+            ><img src="./check.svg" alt="Галочка" class="check" /> Итого на
+            возможных расходов на содержание персонала организации</span
+          >
+          <span class="parameter-value">{{results}}</span>
+        </div>
+        <div class="parameter">
+          <span class="parameter-label"
+            ><img src="./check.svg" alt="Галочка" class="check" /> Планируемая
+            численность персонала</span
+          >
+          <span class="parameter-value">{{count}}</span>
+        </div>
+        <div class="parameter">
+          <span class="parameter-label"
+            ><img src="./check.svg" alt="Галочка" class="check" />Страховые
+            взносы (Пенсионное страхование)
+          </span>
+          <span class="parameter-value">{{pension_insurance}}</span>
+        </div>
+        <div class="parameter">
+          <span class="parameter-label"
+            ><img src="./check.svg" alt="Галочка" class="check" />Страховые
+            взносы (Медицинское страхование)
+          </span>
+          <span class="parameter-value">{{health_insurance}}</span>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      *Указанные значения возможных издержек на создание промышленного
+      производства в городе Москве носят рекомендательный характер и не являются
+      официальной позицией Правительства Москвы. За более подробным расчетом
+      необходимо обратиться в Департамент инвестиционной и промышленной политики
+      города Москвы.
+    </footer>
+  </body>
+</html>

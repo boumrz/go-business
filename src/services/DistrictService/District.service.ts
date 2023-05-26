@@ -1,14 +1,24 @@
 import { Api } from "../api";
+import { DistrictDto } from "./District.dto";
 
-export const DistrictService = Api.injectEndpoints({
+export const DistrictService = Api.enhanceEndpoints({
+  addTagTypes: ["DISTRICT"],
+}).injectEndpoints({
   endpoints: (builder) => ({
-    getTestList: builder.query<void, void>({
+    getDistrictList: builder.query<Array<DistrictDto>, void>({
       query: () => ({
-        url: "/users",
+        url: "/api/v1/district/list",
         method: "GET",
       }),
+      providesTags: ["DISTRICT"],
+      transformResponse: (elements: Array<DistrictDto>) => {
+        return elements.map((item: DistrictDto) => ({
+          ...item,
+          label: item.district,
+        }));
+      },
     }),
   }),
 });
 
-export const { useGetTestListQuery } = DistrictService;
+export const { useGetDistrictListQuery } = DistrictService;

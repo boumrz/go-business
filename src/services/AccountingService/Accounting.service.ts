@@ -1,14 +1,18 @@
 import { Api } from "../api";
+import { AccountingDto } from "./Accounting.dto";
 
-export const AccountingService = Api.injectEndpoints({
+export const AccountingService = Api.enhanceEndpoints({
+  addTagTypes: ["ACCOUNTING"],
+}).injectEndpoints({
   endpoints: (builder) => ({
-    getTestList: builder.query<void, void>({
+    getAccountingList: builder.query<Array<AccountingDto>, void>({
       query: () => ({
-        url: "/users",
+        url: "/api/v1/accounting/list",
         method: "GET",
       }),
+      providesTags: ["ACCOUNTING"],
     }),
   }),
 });
 
-export const { useGetTestListQuery } = AccountingService;
+export const { useGetAccountingListQuery } = AccountingService;

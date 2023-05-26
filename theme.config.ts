@@ -18,7 +18,7 @@ export const theme = createTheme({
           padding: "8px 16px",
           boxShadow: "none",
           "&:hover": {
-            boxShadow: "none",
+            backgroundColor: "#D31B2C",
           },
         },
       },

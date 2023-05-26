@@ -1,14 +1,17 @@
 import { Api } from "../api";
 
-export const RegionService = Api.injectEndpoints({
+export const RegionService = Api.enhanceEndpoints({
+  addTagTypes: ["REGION"],
+}).injectEndpoints({
   endpoints: (builder) => ({
-    getTestList: builder.query<void, void>({
+    getRegionList: builder.query<any, void | null>({
       query: () => ({
-        url: "/users",
+        url: "/api/v1/region/list",
         method: "GET",
       }),
+      providesTags: ["REGION"],
     }),
   }),
 });
 
-export const { useGetTestListQuery } = RegionService;
+export const { useGetRegionListQuery } = RegionService;

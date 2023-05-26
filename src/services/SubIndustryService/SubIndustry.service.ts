@@ -1,12 +1,15 @@
 import { Api } from "../api";
 
-export const SubIndustryService = Api.injectEndpoints({
+export const SubIndustryService = Api.enhanceEndpoints({
+  addTagTypes: ["SUB_INDUSTRY"],
+}).injectEndpoints({
   endpoints: (builder) => ({
-    getTestList: builder.query<void, void>({
+    getTestList: builder.query<any, void>({
       query: () => ({
-        url: "/users",
+        url: "api/v1/subindustry/list",
         method: "GET",
       }),
+      providesTags: ["SUB_INDUSTRY"],
     }),
   }),
 });

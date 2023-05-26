@@ -1,14 +1,24 @@
 import { Api } from "../api";
+import { EquipmentDto } from "./Equipment.dto";
 
-export const EquipmentService = Api.injectEndpoints({
+export const EquipmentService = Api.enhanceEndpoints({
+  addTagTypes: ["EQUIPMENT"],
+}).injectEndpoints({
   endpoints: (builder) => ({
-    getTestList: builder.query<void, void>({
+    getEquipmentList: builder.query<Array<EquipmentDto>, void>({
       query: () => ({
-        url: "/users",
+        url: "api/v1/equipment/list",
         method: "GET",
       }),
+      providesTags: ["EQUIPMENT"],
+      transformResponse: (elements: Array<EquipmentDto>) => {
+        return elements.map((item) => ({
+          ...item,
+          label: item.equipmentType,
+        }));
+      },
     }),
   }),
 });
 
-export const { useGetTestListQuery } = EquipmentService;
+export const { useGetEquipmentListQuery } = EquipmentService;

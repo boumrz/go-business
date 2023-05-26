@@ -3,15 +3,21 @@ import { useMapsContext } from "@/contexts";
 import s from "./styles.module.css";
 
 export const MoscowMap = () => {
-  const { labels, handleChangeLabels } = useMapsContext();
+  const {
+    labels,
+    districtsByAreas,
+    handleChangeLabels,
+    handleChangeDistrictsByAreas,
+  } = useMapsContext();
   const [regions, setRegions] = useState<Array<any>>([]);
   const svgRef = useRef<any>();
 
   const drawSvg = (
-    coordStr: any = "",
-    toolTip: any = "",
-    color: any = "black",
-    isDelete: any = false
+    coordStr: string = "",
+    toolTip: string = "",
+    color: string = "black",
+    areaName: string = "",
+    isDelete: boolean = false
   ) => {
     const svg = svgRef.current;
 
@@ -23,6 +29,12 @@ export const MoscowMap = () => {
           svg.removeChild(item);
           setRegions(regions.filter((item) => item !== toolTip));
           handleChangeLabels(labels.filter(({ item }) => item !== toolTip));
+          handleChangeDistrictsByAreas({
+            ...districtsByAreas,
+            [areaName]: districtsByAreas[areaName].filter(
+              (el: any) => el.item !== toolTip
+            ),
+          });
         }
       });
       return;
@@ -39,20 +51,26 @@ export const MoscowMap = () => {
     setRegions([...regions, toolTip]);
   };
 
-  const myHover = (element: any) => {
+  const handleClickArea = (element: any) => {
     element.preventDefault();
     const toolTip = element.target.getAttribute("href");
     const color = element.target.getAttribute("alt");
     var hoveredElement = element;
     var coordStr = hoveredElement.target.getAttribute("coords");
     var areaType = hoveredElement.target.getAttribute("shape");
+    var areaName = hoveredElement.target.getAttribute("title");
 
-    console.log("regions", regions);
     if (regions.includes(toolTip)) {
-      drawSvg(coordStr, toolTip, color, true);
+      drawSvg(coordStr, toolTip, color, areaName, true);
       return;
     }
     if (!labels.includes(toolTip)) {
+      handleChangeDistrictsByAreas({
+        ...districtsByAreas,
+        [areaName]: districtsByAreas[areaName]
+          ? [...districtsByAreas[areaName], { item: toolTip, color }]
+          : [{ item: toolTip, color }],
+      });
       handleChangeLabels([
         ...labels,
         {
@@ -65,7 +83,7 @@ export const MoscowMap = () => {
     switch (areaType) {
       case "polygon":
       case "poly":
-        drawSvg(coordStr, toolTip, color);
+        drawSvg(coordStr, toolTip, color, areaName);
         break;
     }
   };
@@ -80,20 +98,11 @@ export const MoscowMap = () => {
         event.preventDefault();
         const toolTip = event.target.getAttribute("href");
         const color = event.target.getAttribute("alt");
+        tooltipEl.classList.add(s.tooltip);
         tooltipEl.innerText = toolTip;
-        tooltipEl.style.position = "fixed";
-        tooltipEl.style.zIndex = "1000";
-        tooltipEl.style.borderRadius = "8px";
         tooltipEl.style.top = `${event.clientY + 10}px`;
         tooltipEl.style.left = `${event.clientX + 10}px`;
         tooltipEl.style.backgroundColor = color;
-        tooltipEl.style.color = "black";
-        tooltipEl.style.paddingTop = "8px";
-        tooltipEl.style.paddingBottom = "8px";
-        tooltipEl.style.paddingLeft = "16px";
-        tooltipEl.style.paddingRight = "16px";
-        tooltipEl.style.fontFamily = "Arial";
-        tooltipEl.style.fontSize = "14px";
         document.body.appendChild(tooltipEl);
         flag = true;
       }
@@ -116,8 +125,8 @@ export const MoscowMap = () => {
           alt="#FF99FA"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Зеленоградский АО"
           href="матушкино"
           coords="221,16,220,21,214,22,212,25,220,30,223,30,224,33,227,45,232,45,232,31,238,34,243,31,232,22,229,16"
           shape="poly"
@@ -125,8 +134,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FF99FA"
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Зеленоградский АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="савёлки"
@@ -138,8 +147,8 @@ export const MoscowMap = () => {
           alt="#FF99FA"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Зеленоградский АО"
+          onClick={handleClickArea}
           href="старое крюково"
           coords="221,31,209,50,229,61,237,51,230,45,226,45,224,33"
           shape="poly"
@@ -149,19 +158,19 @@ export const MoscowMap = () => {
           alt="#FF99FA"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Зеленоградский АО"
           href="крюково"
-          onClick={myHover}
+          onClick={handleClickArea}
           coords="229,62,227,70,235,76,235,82,227,82,224,77,197,70,197,54,195,42,197,33,209,50"
           shape="poly"
         />
         <area
           target=""
           alt="#FF99FA"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Зеленоградский АО"
           href="силино"
           coords="187,19,209,50,220,31,212,25,214,21,220,21,221,16,217,14,206,22,201,18"
           shape="poly"
@@ -172,10 +181,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#E3FF6D"
-          title=""
+          title="Троицкий АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="роговское"
           coords="106,671,115,674,117,680,128,675,170,698,175,705,184,708,196,722,204,728,222,733,214,740,199,746,199,774,204,775,200,784,200,804,185,812,167,813,167,821,141,824,128,825,120,818,114,812,118,804,118,787,99,791,87,760,82,753,77,733,84,722,88,710,92,708,106,708,102,702,128,695,120,689,111,688,105,683"
           shape="poly"
@@ -183,8 +192,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#E3FF6D"
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Троицкий АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="вороновское"
@@ -194,10 +203,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#E3FF6D"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Троицкий АО"
           href="киевский"
           coords="14,535,47,535,44,539,49,541,56,535,62,539,56,545,64,547,58,573,65,586,67,597,74,597,74,603,84,606,88,600,94,602,94,614,91,621,103,621,100,630,120,640,109,650,106,668,96,658,93,661,85,653,84,646,71,630,64,627,40,603,43,599,37,591,45,585,30,574,33,570,26,565,21,552,9,563,65,650,73,655,70,664,62,668,59,663,64,658,65,649,65,649,9,563,14,549,9,563"
           shape="poly"
@@ -205,10 +214,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#E3FF6D"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Троицкий АО"
           href="клёновский"
           coords="255,625,267,617,267,626,270,633,275,625,284,623,282,631,293,629,299,625,301,629,314,616,317,617,313,629,323,629,323,637,331,637,328,648,328,652,323,654,334,655,339,661,348,666,343,669,337,671,325,664,322,669,327,674,331,678,332,683,337,683,340,686,331,727,305,737,292,740,292,746,281,746,281,754,269,751,272,742,267,736,266,727,257,721,255,715,251,712,249,696,249,684,237,686,238,675,246,671,246,658,251,652,260,649,258,633"
           shape="poly"
@@ -216,10 +225,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#E3FF6D"
-          title=""
+          title="Троицкий АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="щаповское"
           coords="311,535,313,544,305,549,314,552,301,554,301,561,298,563,292,569,287,587,278,587,279,614,278,613,270,619,266,616,267,616,270,634,275,623,284,623,282,629,293,631,293,630,299,626,301,630,314,616,317,618,313,630,323,628,323,636,331,636,327,646,324,655,333,655,347,666,347,663,346,656,335,646,345,640,346,634,358,630,347,620,354,613,360,607,364,608,363,616,366,618,372,613,369,598,372,596,375,589,369,584,372,579,369,573,355,572,353,565,353,561,347,556,326,556,332,550,333,546,321,544,327,538"
           shape="poly"
@@ -229,8 +238,8 @@ export const MoscowMap = () => {
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           alt="#E3FF6D"
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Троицкий АО"
           href="краснопахорское"
           coords="194,551,202,546,197,544,197,540,218,540,217,535,220,532,229,538,234,535,223,527,230,526,234,523,254,523,257,519,260,531,257,534,261,537,261,543,269,540,281,538,278,528,289,515,307,517,304,523,298,523,295,525,304,528,298,532,298,537,304,538,308,531,311,535,313,544,304,549,313,552,301,555,301,560,292,569,287,587,278,587,279,613,270,619,267,617,255,625,248,623,237,623,237,614,245,611,234,605,232,601,238,590,240,581,235,575,234,570,229,570,228,578,223,579,219,566,208,563"
           shape="poly"
@@ -240,8 +249,8 @@ export const MoscowMap = () => {
           alt="#E3FF6D"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Троицкий АО"
+          onClick={handleClickArea}
           href="троицк"
           coords="267,491,275,498,278,494,272,489,280,484,289,484,290,484,289,487,289,492,293,495,292,504,287,514,287,517,287,517,278,529,281,537,261,543,261,537,257,535,260,530,257,517,263,514,266,506,263,503"
           shape="poly"
@@ -251,8 +260,8 @@ export const MoscowMap = () => {
           alt="#E3FF6D"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Троицкий АО"
+          onClick={handleClickArea}
           href="первомайское"
           coords="184,444,212,432,212,440,220,443,229,437,230,438,232,441,230,451,252,446,260,449,267,454,274,458,272,451,286,452,286,457,297,455,303,449,307,449,303,458,300,460,304,469,293,474,290,484,280,484,272,489,278,494,275,498,267,491,263,504,266,506,263,514,257,518,254,523,234,523,223,527,234,534,229,537,220,532,217,535,218,540,197,541,197,544,201,547,194,549,164,526,166,521,175,523,191,521,191,510,184,507,184,497,189,497,192,483,183,484,181,467,184,464,184,460,180,458,180,451,184,448"
           shape="poly"
@@ -262,8 +271,8 @@ export const MoscowMap = () => {
           alt="#E3FF6D"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Троицкий АО"
+          onClick={handleClickArea}
           href="михайлово-ярцевское"
           coords="167,623,178,615,191,618,204,616,214,618,220,607,232,600,238,589,240,580,235,575,234,572,229,570,227,577,223,580,220,567,206,563,197,555,189,550,183,550,180,553,177,553,175,547,169,555,166,555,161,563,155,561,154,574,151,584,144,586,148,590,154,593,152,607,166,615"
           shape="poly"
@@ -271,10 +280,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#E3FF6D"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Троицкий АО"
           href="новофедоровское"
           coords="177,543,171,555,166,555,161,563,157,560,154,566,154,575,151,583,144,586,129,583,121,590,124,593,115,607,109,610,106,606,103,620,91,620,94,615,94,603,88,600,83,606,74,603,74,598,68,598,65,587,58,573,65,547,54,546,61,540,55,534,49,540,45,540,48,534,45,534,14,534,15,523,22,521,23,484,77,487,77,477,88,483,86,497,108,501,104,535,114,532,118,538,120,543,129,547,129,535,135,535,137,529,151,530,151,538,158,540,166,549"
           shape="poly"
@@ -285,10 +294,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#6EEBB6"
-          title=""
+          title="Новомосковский АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="десеновское"
           coords="307,448,306,451,303,458,300,461,304,469,293,474,290,486,289,491,293,494,292,503,287,514,307,517,304,523,293,526,304,529,298,532,298,537,303,537,307,534,327,537,330,526,338,530,341,526,349,523,350,517,357,514,352,509,363,495,358,489,341,487,340,478,329,469,332,454,321,449"
           shape="poly"
@@ -298,8 +307,8 @@ export const MoscowMap = () => {
           alt="#6EEBB6"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Новомосковский АО"
+          onClick={handleClickArea}
           href="кокошкино"
           coords="234,383,214,401,220,403,215,408,218,414,200,414,197,409,192,403,192,394,197,391,201,391,203,397,214,394,217,391,220,389,218,385,223,381"
           shape="poly"
@@ -309,8 +318,8 @@ export const MoscowMap = () => {
           alt="#6EEBB6"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Новомосковский АО"
+          onClick={handleClickArea}
           href="марушкинское"
           coords="261,448,267,441,277,443,281,434,277,435,266,435,261,440,255,440,252,429,261,423,260,418,250,423,243,420,243,411,249,401,249,392,237,383,235,392,235,401,224,397,230,408,220,401,215,409,218,414,200,414,192,403,187,403,183,397,174,401,174,408,169,405,167,411,175,426,183,435,184,444,212,431,214,441,221,443,229,438,234,440,230,451,250,446"
           shape="poly"
@@ -320,8 +329,8 @@ export const MoscowMap = () => {
           alt="#6EEBB6"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Новомосковский АО"
+          onClick={handleClickArea}
           href="внуковское "
           coords="280,388,287,380,292,381,293,383,306,378,304,374,293,369,303,351,303,345,289,343,287,346,292,348,290,354,286,354,286,358,278,358,267,357,258,358,250,362,246,368,246,372,240,381,249,391,257,388,258,392,266,386,269,392"
           shape="poly"
@@ -331,8 +340,8 @@ export const MoscowMap = () => {
           alt="#6EEBB6"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Новомосковский АО"
+          onClick={handleClickArea}
           href="мосрентген"
           coords="361,369,380,394,376,403,369,400,367,388,357,382,357,372"
           shape="poly"
@@ -340,10 +349,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#6EEBB6"
-          title=""
+          title="Новомосковский АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="московский"
           coords="350,352,361,367,355,372,357,383,360,384,352,393,340,393,340,396,333,406,333,412,323,423,309,415,306,416,297,410,295,415,289,412,283,407,280,400,287,395,280,389,287,380,293,383,306,378,304,376,317,383,324,378,337,380,341,369,341,360,340,353"
           shape="poly"
@@ -351,10 +360,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#6EEBB6"
-          title=""
+          title="Новомосковский АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="филимоновское"
           coords="252,429,261,423,260,419,283,407,295,415,297,410,306,416,309,415,321,423,315,430,321,433,335,447,332,455,321,449,303,449,297,455,286,458,286,452,272,452,272,456,264,453,261,447,267,441,277,441,281,435,266,435,260,439,254,438"
           shape="poly"
@@ -364,8 +373,8 @@ export const MoscowMap = () => {
           alt="#6EEBB6"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Новомосковский АО"
+          onClick={handleClickArea}
           href="сосенское"
           coords="380,395,389,409,400,413,409,417,415,426,407,427,404,429,407,433,416,442,413,449,403,445,395,453,392,456,383,461,373,464,370,461,367,458,358,455,347,453,343,458,340,452,333,455,335,445,321,433,315,430,323,422,333,412,333,404,340,396,340,393,352,393,360,384,366,389,369,399,376,402"
           shape="poly"
@@ -375,8 +384,8 @@ export const MoscowMap = () => {
           alt="#6EEBB6"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Новомосковский АО"
+          onClick={handleClickArea}
           href="воскресенское"
           coords="332,454,340,451,343,459,347,453,360,454,367,457,373,463,373,473,384,471,395,474,400,479,390,480,376,479,367,485,363,494,358,488,341,486,340,476,329,468"
           shape="poly"
@@ -384,21 +393,21 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#6EEBB6"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Новомосковский АО"
           href="рязанское "
           coords="352,508,363,494,366,485,375,479,390,480,398,485,400,494,403,496,407,499,406,506,410,511,416,508,421,508,423,508,423,511,421,517,413,522,416,534,407,537,410,549,407,554,393,552,384,548,378,545,384,539,383,534,364,528,363,520,358,514,357,514"
           shape="poly"
         />
         <area
           target=""
-          onClick={myHover}
+          onClick={handleClickArea}
           alt="#6EEBB6"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Новомосковский АО"
           href="щербинка"
           coords="398,489,392,481,390,481,401,479,410,486,406,493,415,493,423,484,427,482,426,501,432,504,432,511,430,514,423,508,415,508,410,512,406,501,404,496,400,496"
           shape="poly"
@@ -409,10 +418,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFB287"
-          title=""
+          title="Западный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="Можайский"
           coords="318,286,326,285,338,288,357,288,361,305,347,311,344,305,340,309,333,314,330,315,318,322,309,322,307,326,310,328,307,334,292,328,298,320,301,315,307,311,307,309,310,314,315,311,310,305,318,305,323,314,326,306"
           shape="poly"
@@ -422,8 +431,8 @@ export const MoscowMap = () => {
           alt="#FFB287"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Западный АО"
+          onClick={handleClickArea}
           href="Кунцево"
           coords="313,245,344,272,347,271,353,277,357,282,357,288,338,288,326,285,318,285,315,271,313,254,191,277,183,289,166,291,160,282,160,283,154,297,144,299,128,303,121,297,132,289,129,282,124,288,117,289,106,282,104,277,97,280,89,274,92,257,86,271,81,282,65,280,71,266,89,257,101,252,106,256,97,259,103,263,109,251,117,262,126,262,134,266,137,276,143,277,149,283,155,286,161,277,169,263,181,266,186,271,191,276,315,254,317,231,327,211,320,208,318,217,324,215,317,229,306,225,312,218,306,215,298,220,290,220,280,217,274,220,275,223,283,221,284,228,286,234,295,238,284,244,286,249,295,251,304,249,310,237,317,231"
           shape="poly"
@@ -431,10 +440,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFB287"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Западный АО"
           href="Крылатское"
           coords="315,246,326,248,335,246,340,243,350,244,358,242,363,243,367,252,364,260,350,268,344,272,327,257"
           shape="poly"
@@ -442,10 +451,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFB287"
-          title=""
+          title="Западный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="Филёвский парк"
           coords="352,268,347,271,357,282,375,274,380,282,390,279,398,269,395,259,383,251,375,251,373,254,373,266,367,274,360,276"
           shape="poly"
@@ -455,8 +464,8 @@ export const MoscowMap = () => {
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           alt="#FFB287"
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Западный АО"
           href="Дорогомилово"
           coords="398,269,404,272,416,265,424,262,426,270,421,279,412,285,406,279,386,291,380,283,390,280"
           shape="poly"
@@ -466,8 +475,8 @@ export const MoscowMap = () => {
           alt="#FFB287"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Западный АО"
           href="Фили-Давыдково"
           coords="386,291,378,282,375,272,357,282,357,289,361,305,369,302,373,294,383,297,386,291"
           shape="poly"
@@ -477,8 +486,8 @@ export const MoscowMap = () => {
           alt="#FFB287"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Западный АО"
           href="Очаково- Матвеевское"
           coords="350,350,341,332,338,321,333,314,344,306,347,311,369,303,373,294,383,297,380,306,370,312,369,320,373,326,364,337"
           shape="poly"
@@ -486,10 +495,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFB287"
-          title=""
+          title="Западный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="Трапарёво- Никулино"
           coords="363,370,390,348,384,341,378,342,378,336,372,333,373,330,372,327,350,350"
           shape="poly"
@@ -497,8 +506,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFB287"
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Западный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Проспект Вернадского"
@@ -508,10 +517,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFB287"
-          title=""
+          title="Западный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="Раменки"
           coords="406,279,412,285,407,293,412,301,420,302,410,313,403,322,392,331,389,325,381,324,380,331,373,325,369,321,370,311,380,305,383,296,386,290"
           shape="poly"
@@ -521,8 +530,8 @@ export const MoscowMap = () => {
           alt="#FFB287"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Западный АО"
+          onClick={handleClickArea}
           href="Новопеределкино"
           coords="301,345,307,348,301,345,306,346,315,345,315,351,318,360,324,377,317,383,310,378,304,374,295,368,303,355"
           shape="poly"
@@ -532,8 +541,8 @@ export const MoscowMap = () => {
           alt="#FFB287"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Западный АО"
+          onClick={handleClickArea}
           href="Солнцево"
           coords="340,331,350,351,340,351,338,354,341,357,341,369,337,379,326,380,315,351,320,351,320,346,326,346,327,351,341,348,335,340,335,336"
           shape="poly"
@@ -541,10 +550,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFB287"
-          title=""
+          title="Западный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="Внуково"
           coords="243,417,250,423,286,406,280,400,287,395,277,389,269,391,266,385,257,394,255,388,249,392,237,380,214,401,230,409,224,397,235,401,237,381,250,392,249,401,244,408"
           shape="poly"
@@ -555,10 +564,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FF9AB8"
-          title=""
+          title="Центральный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="Пресненский"
           coords="395,258,398,256,403,255,409,247,421,244,427,242,438,250,444,258,444,261,430,259,426,264,423,262,413,267,404,272,398,270"
           shape="poly"
@@ -568,8 +577,8 @@ export const MoscowMap = () => {
           alt="#FF9AB8"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Центральный АО"
           href="Хамовники"
           coords="426,271,435,271,446,267,447,271,443,278,435,290,427,299,423,302,418,302,412,301,407,293,412,285,421,279"
           shape="poly"
@@ -577,10 +586,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FF9AB8"
-          title=""
+          title="Центральный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="Арбат"
           coords="426,264,430,260,444,260,446,263,446,268,435,271,426,269,426,264"
           shape="poly"
@@ -588,8 +597,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FF9AB8"
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Центральный АО"
           href="Якиманка"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
@@ -599,10 +608,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FF9AB8"
-          title=""
+          title="Центральный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="Тверской"
           coords="433,228,439,228,441,234,446,237,449,238,452,251,450,255,458,261,455,268,447,268,444,266,446,263,441,255,438,251,427,243,432,240"
           shape="poly"
@@ -612,8 +621,8 @@ export const MoscowMap = () => {
           alt="#FF9AB8"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Центральный АО"
+          onClick={handleClickArea}
           href="Мещанский"
           coords="446,236,449,233,449,226,458,228,458,223,464,225,466,229,462,238,458,246,455,257,450,255,450,243,449,238"
           shape="poly"
@@ -623,8 +632,8 @@ export const MoscowMap = () => {
           alt="#FF9AB8"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Центральный АО"
+          onClick={handleClickArea}
           href="Красносельский"
           coords="466,229,464,235,458,246,455,258,463,249,473,249,476,244,481,240,483,240,487,237"
           shape="poly"
@@ -632,8 +641,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FF9AB8"
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Центральный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Басманный"
@@ -643,8 +652,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FF9AB8"
-          title=""
-          onClick={myHover}
+          title="Центральный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Таганский"
@@ -656,8 +665,8 @@ export const MoscowMap = () => {
           alt="#FF9AB8"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Центральный АО"
           href="Замоскворечье"
           coords="449,293,452,293,459,292,463,293,467,285,464,275,456,267,453,276"
           shape="poly"
@@ -670,8 +679,8 @@ export const MoscowMap = () => {
           alt="#C1BAFF"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Юго-Западный АО"
           href="Гагаринский"
           coords="427,301,423,302,418,302,403,322,412,330,415,327,432,307,430,304"
           shape="poly"
@@ -679,10 +688,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#C1BAFF"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Юго-Западный АО"
           href="Академический"
           coords="432,307,415,327,418,330,427,338,432,333,439,321"
           shape="poly"
@@ -690,8 +699,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#C1BAFF"
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Юго-Западный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Катловка"
@@ -701,10 +710,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#C1BAFF"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Юго-Западный АО"
           href="Зюзино"
           coords="430,344,447,347,443,353,443,367,433,367,429,362,421,359"
           shape="poly"
@@ -712,8 +721,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#C1BAFF"
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Юго-Западный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Черёмушки"
@@ -723,10 +732,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#C1BAFF"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Юго-Западный АО"
           href="Коньково"
           coords="400,351,407,353,421,359,420,364,413,364,415,368,410,376,406,378,401,381,395,378,398,373,387,365,393,358,396,358"
           shape="poly"
@@ -734,10 +743,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#C1BAFF"
-          title=""
+          title="Юго-Западный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="Обручевский"
           coords="400,336,406,342,409,341,410,336,415,341,407,353,400,351,396,358,393,358,387,365,381,361,378,359,390,348"
           shape="poly"
@@ -745,10 +754,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#C1BAFF"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Юго-Западный АО"
           href="Тёплый стан"
           coords="363,371,376,359,386,365,396,373,395,378,389,390,381,396,364,371"
           shape="poly"
@@ -758,8 +767,8 @@ export const MoscowMap = () => {
           alt="#C1BAFF"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Юго-Западный АО"
           href="Ясенево"
           coords="421,361,430,364,430,371,432,376,429,385,427,398,429,402,427,422,412,418,404,414,403,414,390,408,381,398,389,390,395,378,401,381,406,378,410,376,415,368,413,362"
           shape="poly"
@@ -769,8 +778,8 @@ export const MoscowMap = () => {
           alt="#C1BAFF"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Юго-Западный АО"
           href="Ломоносовский"
           coords="392,332,401,322,412,329,415,327,418,332,409,336,409,341,404,341,398,335"
           shape="poly"
@@ -780,8 +789,8 @@ export const MoscowMap = () => {
           alt="#C1BAFF"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
-          onClick={myHover}
+          title="Юго-Западный АО"
+          onClick={handleClickArea}
           href="Северное Бутово"
           coords="410,417,424,422,435,427,439,435,446,439,438,442,435,445,435,449,430,452,420,447,416,442,404,429,413,424,410,417"
           shape="poly"
@@ -789,10 +798,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#C1BAFF"
-          title=""
+          title="Юго-Западный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="Южное Бутово"
           coords="373,464,374,473,377,473,384,470,387,473,390,473,396,475,399,478,410,485,405,493,404,495,415,493,415,493,423,484,427,482,426,501,439,508,447,508,444,490,430,479,433,465,435,450,427,452,420,447,416,442,413,449,404,445,392,456"
           shape="poly"
@@ -802,11 +811,11 @@ export const MoscowMap = () => {
         {/* Начало Южный АО */}
         <area
           target=""
-          onClick={myHover}
+          onClick={handleClickArea}
           alt="#8DC6FF"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Южный АО"
           href="Донской"
           coords="430,304,438,295,447,293,447,298,443,301,446,309,452,307,455,309,455,321,447,322,443,321,435,312"
           shape="poly"
@@ -816,8 +825,8 @@ export const MoscowMap = () => {
           alt="#8DC6FF"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Южный АО"
           href="Даниловский"
           coords="449,294,459,292,463,293,467,287,473,289,476,309,475,325,461,327,456,325,455,319,455,309,452,307,446,308,443,301,446,299"
           shape="poly"
@@ -825,8 +834,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DC6FF"
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Южный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Нагорный"
@@ -835,11 +844,11 @@ export const MoscowMap = () => {
         />
         <area
           target=""
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           alt="#8DC6FF"
-          title=""
+          title="Южный АО"
           href="Нагатино"
           coords="456,325,467,327,475,325,473,342,470,348,470,357,463,351,459,356,455,351,452,351,455,337,452,322,455,322,459,327"
           shape="poly"
@@ -849,28 +858,28 @@ export const MoscowMap = () => {
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           alt="#8DC6FF"
-          title=""
-          onClick={myHover}
+          title="Южный АО"
+          onClick={handleClickArea}
           href="Нагатинский затон"
           coords="476,311,486,316,496,319,501,325,499,331,490,336,481,342,478,354,473,359,470,356,470,348,473,342"
           shape="poly"
         />
         <area
           target=""
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           alt="#8DC6FF"
-          title=""
+          title="Южный АО"
           href="Москворечье"
           coords="453,367,452,351,458,351,459,356,463,351,470,356,473,359,478,354,490,365,501,368,510,368,510,376,490,379,490,371,463,368"
           shape="poly"
         />
         <area
           target=""
-          onClick={myHover}
+          onClick={handleClickArea}
           alt="#8DC6FF"
-          title=""
+          title="Южный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Царицино"
@@ -880,8 +889,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DC6FF"
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Южный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Сев.Чертаново"
@@ -891,10 +900,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DC6FF"
-          title=""
+          title="Южный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="Цент.Чертаново"
           coords="430,382,436,382,446,385,455,385,458,391,463,396,459,400,444,396,443,402,433,399,429,402,426,396,427,387"
           shape="poly"
@@ -902,10 +911,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DC6FF"
-          title=""
+          title="Южный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="Южное Чертаново"
           coords="427,422,430,402,435,399,443,402,444,396,459,399,455,407,449,413,447,430,441,431,439,436,435,427"
           shape="poly"
@@ -913,10 +922,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DC6FF"
-          title=""
+          title="Южный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
+          onClick={handleClickArea}
           href="З.Бирюлёво"
           coords="459,431,475,433,466,402,463,394,459,399,455,407,449,413,447,430"
           shape="poly"
@@ -926,8 +935,8 @@ export const MoscowMap = () => {
           alt="#8DC6FF"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          onClick={myHover}
-          title=""
+          onClick={handleClickArea}
+          title="Южный АО"
           href="В.Бирюлево"
           coords="479,385,483,387,483,394,490,401,496,407,504,408,509,416,493,427,481,433,475,433,469,413,463,394,473,391"
           shape="poly"
@@ -935,8 +944,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DC6FF"
-          title=""
-          onClick={myHover}
+          title="Южный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="С.Орехово-борисово  "
@@ -946,19 +955,19 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DC6FF"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Южный АО"
           href="Ю.Орехово-борисово  "
           coords="510,391,512,394,524,393,535,388,541,390,536,393,524,405,513,413,510,418,504,408,496,407,492,401"
           shape="poly"
         />
         <area
           target=""
-          onClick={myHover}
+          onClick={handleClickArea}
           alt="#8DC6FF"
-          title=""
+          title="Южный АО"
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Зябликово"
@@ -968,8 +977,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DC6FF"
-          title=""
-          onClick={myHover}
+          title="Южный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Братьево"
@@ -982,10 +991,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#ABFFCD"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Северо-Западный АО"
           href="Куркино"
           coords="325,116,326,126,332,127,335,136,335,139,337,141,336,146,344,148,345,151,336,157,329,152,323,148,317,143,317,135,319,133,314,132,312,126,315,120,321,114"
           shape="poly"
@@ -993,10 +1002,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#ABFFCD"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Северо-Западный АО"
           href="Северное Тушино"
           coords="344,151,351,147,361,155,365,171,344,174,336,173,327,171,330,164,335,157"
           shape="poly"
@@ -1004,10 +1013,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#ABFFCD"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Северо-Западный АО"
           href="Митино"
           coords="329,170,327,178,330,186,329,193,320,192,313,195,312,199,305,202,302,195,301,188,300,183,306,180,295,177,299,173,300,166,311,158,321,157,321,165,318,170"
           shape="poly"
@@ -1015,10 +1024,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#ABFFCD"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Северо-Западный АО"
           href="Строгино"
           coords="329,193,336,196,339,202,342,209,350,211,356,213,356,221,356,228,349,233,344,232,342,228,337,229,333,238,337,242,336,248,331,247,323,246,315,245,315,235,320,224,325,216,318,218,319,208,325,213"
           shape="poly"
@@ -1026,10 +1035,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#ABFFCD"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Северо-Западный АО"
           href="Южное Тушино"
           coords="329,172,344,174,365,171,370,183,364,188,350,186,346,188,343,185,338,188,337,191,330,189,330,184,327,178"
           shape="poly"
@@ -1037,10 +1046,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#ABFFCD"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Северо-Западный АО"
           href="Покровское Стрешнево"
           coords="370,183,375,192,374,193,371,193,374,195,380,195,382,197,379,203,379,205,373,205,369,208,363,210,358,207,356,213,350,211,342,209,339,201,336,196,330,193,330,190,337,192,338,189,343,184,346,188,351,186,364,188"
           shape="poly"
@@ -1048,10 +1057,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#ABFFCD"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Северо-Западный АО"
           href="Щукино"
           coords="356,214,358,207,364,210,370,208,374,205,377,205,381,215,387,228,385,230,381,232,373,230,363,229,360,226,356,227"
           shape="poly"
@@ -1059,10 +1068,10 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#ABFFCD"
-          onClick={myHover}
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
-          title=""
+          title="Северо-Западный АО"
           href="Хорошёво-Мневники"
           coords="337,243,343,243,348,245,355,242,361,242,364,248,367,253,363,259,361,263,355,264,351,267,352,271,357,274,361,276,368,273,371,268,373,260,373,254,374,251,379,249,385,251,393,258,398,255,394,251,390,245,389,238,387,228,381,232,373,230,364,229,360,226,356,227,349,233,343,232,342,229,337,229,333,239"
           shape="poly"
@@ -1073,8 +1082,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Молжановсий"
@@ -1084,8 +1093,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Левобережный"
@@ -1095,8 +1104,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Ховрино"
@@ -1106,8 +1115,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Головинский"
@@ -1117,8 +1126,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Войковский"
@@ -1128,8 +1137,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Сокол"
@@ -1139,8 +1148,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Хорошевский"
@@ -1150,8 +1159,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Дегугино"
@@ -1161,8 +1170,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Дмитровский"
@@ -1172,8 +1181,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Беговой"
@@ -1183,8 +1192,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Аэропорт"
@@ -1194,8 +1203,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Коптево"
@@ -1205,8 +1214,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Тимирязевский"
@@ -1216,8 +1225,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Савёловский"
@@ -1227,8 +1236,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Бескудниковский"
@@ -1238,8 +1247,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FFD670"
-          title=""
-          onClick={myHover}
+          title="Северный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Дегунино восточное"
@@ -1252,8 +1261,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Северный"
@@ -1263,8 +1272,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Бибирево"
@@ -1274,8 +1283,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Лионозово"
@@ -1285,8 +1294,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Алтуфьевский"
@@ -1296,8 +1305,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Отрадное"
@@ -1307,8 +1316,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Марфино"
@@ -1318,8 +1327,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Бутырский"
@@ -1329,8 +1338,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Марьина Роща"
@@ -1340,8 +1349,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Северное Медведково"
@@ -1351,8 +1360,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Южное Медведково"
@@ -1362,8 +1371,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Алексеевский"
@@ -1373,8 +1382,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Останкинский"
@@ -1384,8 +1393,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Свиблово"
@@ -1395,8 +1404,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Лосиноостровскмй"
@@ -1406,8 +1415,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Ростокино"
@@ -1417,8 +1426,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Бабушкинский"
@@ -1428,8 +1437,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#FDFF85"
-          title=""
-          onClick={myHover}
+          title="Северо-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Ярославский"
@@ -1442,8 +1451,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Сокольники"
@@ -1453,8 +1462,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Метрогородок"
@@ -1464,8 +1473,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Богородское"
@@ -1475,8 +1484,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Преображенское"
@@ -1486,8 +1495,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Гольяново"
@@ -1497,8 +1506,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Восточный"
@@ -1508,8 +1517,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Северное Измайлово"
@@ -1519,8 +1528,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Восточное Измайлово"
@@ -1530,8 +1539,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Ивановское"
@@ -1541,8 +1550,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Измайлово"
@@ -1552,8 +1561,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Соколиная Гора"
@@ -1563,8 +1572,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Перово"
@@ -1574,8 +1583,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Новогиреево"
@@ -1585,8 +1594,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Вешняки"
@@ -1596,8 +1605,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Новокосино"
@@ -1607,8 +1616,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#B5FF90"
-          title=""
-          onClick={myHover}
+          title="Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Косино-Ухтомский"
@@ -1621,8 +1630,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DFFFF"
-          title=""
-          onClick={myHover}
+          title="Юго-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Лефортово"
@@ -1632,8 +1641,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DFFFF"
-          title=""
-          onClick={myHover}
+          title="Юго-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Нижегородский"
@@ -1643,8 +1652,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DFFFF"
-          title=""
-          onClick={myHover}
+          title="Юго-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Южно-Портовый"
@@ -1654,8 +1663,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DFFFF"
-          title=""
-          onClick={myHover}
+          title="Юго-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Печатники"
@@ -1665,8 +1674,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DFFFF"
-          title=""
-          onClick={myHover}
+          title="Юго-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Марьино"
@@ -1676,8 +1685,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DFFFF"
-          title=""
-          onClick={myHover}
+          title="Юго-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Капотня"
@@ -1687,8 +1696,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DFFFF"
-          title=""
-          onClick={myHover}
+          title="Юго-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Люблино"
@@ -1698,8 +1707,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DFFFF"
-          title=""
-          onClick={myHover}
+          title="Юго-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Текстильщики"
@@ -1709,8 +1718,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DFFFF"
-          title=""
-          onClick={myHover}
+          title="Юго-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Рязанский"
@@ -1720,8 +1729,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DFFFF"
-          title=""
-          onClick={myHover}
+          title="Юго-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Кузьминки"
@@ -1731,8 +1740,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DFFFF"
-          title=""
-          onClick={myHover}
+          title="Юго-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Выхино-Жулебино"
@@ -1742,8 +1751,8 @@ export const MoscowMap = () => {
         <area
           target=""
           alt="#8DFFFF"
-          title=""
-          onClick={myHover}
+          title="Юго-Восточный АО"
+          onClick={handleClickArea}
           onMouseOver={(e) => renderTooltip(e, true)}
           onMouseOut={(e) => renderTooltip(e, false)}
           href="Некрасовский"

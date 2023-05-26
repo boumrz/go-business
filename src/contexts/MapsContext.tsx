@@ -2,7 +2,9 @@ import { createContext, ReactNode, useMemo, useState, useContext } from "react";
 
 interface MapsContextValue {
   labels: Array<any>;
-  handleChangeLabels: (labelsMap: Array<any>) => void;
+  districtsByAreas: any;
+  handleChangeLabels: (labelsMap: any) => void;
+  handleChangeDistrictsByAreas: (districtsByAreas: Array<any>) => void;
 }
 
 interface MapsProviderProps {
@@ -13,14 +15,24 @@ export const MapsContext = createContext({} as MapsContextValue);
 
 export const MapsProvider = ({ children }: MapsProviderProps) => {
   const [labels, setLabels] = useState<Array<any>>([]);
+  const [districtsByAreas, setDistrictsByAreas] = useState<any>({});
 
-  const handleChangeLabels = (labelsMap: Array<any>) => {
+  const handleChangeLabels = (labelsMap: any) => {
     setLabels(labelsMap);
   };
 
+  const handleChangeDistrictsByAreas = (districtsByAreas: Array<any>) => {
+    setDistrictsByAreas(districtsByAreas);
+  };
+
   const mapsContextValue = useMemo(
-    () => ({ labels, handleChangeLabels }),
-    [labels]
+    () => ({
+      labels,
+      districtsByAreas,
+      handleChangeLabels,
+      handleChangeDistrictsByAreas,
+    }),
+    [labels, districtsByAreas]
   );
 
   return (

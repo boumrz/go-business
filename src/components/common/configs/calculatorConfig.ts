@@ -1,12 +1,27 @@
 export const calculatorConfig = [
   {
+    name: "legalForm",
+    type: "select",
+    label: "Организационно-правовая форма",
+    title: "Организационно-правовая форма",
+  },
+  {
+    name: "taxType",
+    type: "select",
+    label: "Тип налогооблажения",
+  },
+  {
     name: "industry",
     type: "select",
     title: "Отрасль",
     label: "Область производства",
     placeholder: "Выберите из списка",
-    description:
-      "Создания нового или развитии существующего промышленного производства",
+  },
+  {
+    name: "subindustry",
+    type: "select",
+    label: "Подотрасль",
+    placeholder: "Выберите из списка",
   },
   {
     name: "counter",
@@ -21,16 +36,6 @@ export const calculatorConfig = [
     label: "Заработная плата, руб",
     placeholder: "100",
     title: "Средняя заработная плата",
-  },
-  {
-    name: "legalForm",
-    type: "radio",
-    title: "Организационно-правовая форма",
-  },
-  {
-    name: "taxType",
-    type: "radio",
-    title: "Тип налогооблажения",
   },
   {
     name: "maps",

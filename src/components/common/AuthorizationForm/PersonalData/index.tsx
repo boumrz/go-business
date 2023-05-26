@@ -8,7 +8,7 @@ export const PersonalData = () => {
     <Box sx={{ display: { xs: "flex" }, flexDirection: { xs: "column" } }}>
       <Controller
         control={control}
-        name="surname"
+        name="lastName"
         render={({ field }) => (
           <TextField
             type="text"
@@ -20,7 +20,7 @@ export const PersonalData = () => {
       />
       <Controller
         control={control}
-        name="name"
+        name="firstName"
         render={({ field }) => (
           <TextField type="text" label="Имя *" placeholder="Иван" {...field} />
         )}

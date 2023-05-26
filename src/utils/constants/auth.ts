@@ -4,7 +4,8 @@ export const STORAGE_KEYS = {
   USER: "user",
 };
 
-export const BASE_URL =
-  (process.env.APP_URL ? process.env.APP_URL : window.location.origin) +
-  "/" +
-  process.env.CONTEXT;
+// export const BASE_URL = process.env.APP_URL
+//   ? process.env.APP_URL
+//   : window.location.origin;
+
+export const BASE_URL = "http://213.189.201.59:8080";

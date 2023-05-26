@@ -3,12 +3,11 @@ import { Box, TextField } from "@mui/material";
 
 export const Final = () => {
   const { control } = useFormContext();
-
   return (
     <Box sx={{ display: { xs: "flex" }, flexDirection: { xs: "column" } }}>
       <Controller
         control={control}
-        name="companyName"
+        name="organizationName"
         render={({ field }) => (
           <TextField
             type="text"
@@ -20,7 +19,7 @@ export const Final = () => {
       />
       <Controller
         control={control}
-        name="inn"
+        name="taxpayerNumber"
         render={({ field }) => (
           <TextField
             type="text"

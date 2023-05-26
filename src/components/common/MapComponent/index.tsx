@@ -1,56 +1,108 @@
-import { useState, useRef } from "react";
-import { Button, Chip } from "@mui/material";
+import { useState } from "react";
+import cn from "clsx";
+import { Chip, Modal, Box, Typography } from "@mui/material";
 import { useMapsContext } from "@/contexts";
 import { MoscowMap } from "@/components";
+import { MarkerMapIcon } from "@/assets/icons";
 import s from "./styles.module.css";
 
 export const MapComponent = () => {
-  const { labels } = useMapsContext();
-  const modalRef = useRef<any>();
+  const { districtsByAreas } = useMapsContext();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleButtonClick = (event: any) => {
+  const handleOpen = (event: any) => {
     event.stopPropagation();
     setIsOpen(true);
   };
 
+  const handleClose = (event: any) => {
+    event.stopPropagation();
+    setIsOpen(false);
+  };
+
   return (
     <div className={s.wrapper}>
-      <Button onClick={handleButtonClick} type="button">
-        Открыть карту
-      </Button>
-
-      {isOpen && (
-        <div className={s.modal}>
-          <div className={s.modalContent} ref={modalRef}>
-            <div className={s.modalWrapper}>
-              <MoscowMap />
-              <div className={s.meta}>
-                {labels.slice(0, 15).map(({ item, color }) => (
-                  <Chip
-                    style={{
-                      backgroundColor: color,
-                      color: "black",
-                    }}
-                    label={item}
-                  />
-                ))}
-                {labels.length > 15 && (
-                  <span className={s.counter}>
+      <button className={s.button} onClick={handleOpen} type="button">
+        <MarkerMapIcon /> Открыть карту
+      </button>
+      <div className={cn(s.meta, s.empty)}>
+        {Object.entries(districtsByAreas).map(([key, values]) => (
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {(values as Array<any>).length > 0 && (
+              <>
+                <Typography variant="body2">{key}</Typography>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {(values as Array<any>).map(({ item, color }) => (
                     <Chip
                       style={{
-                        backgroundColor: "#C2C0C0",
-                        color: "white",
+                        backgroundColor: color,
+                        color: "black",
                       }}
-                      label={`+ ${labels.length - 15}`}
+                      label={item}
                     />
-                  </span>
-                )}
-              </div>
-            </div>
+                  ))}
+                </Box>
+              </>
+            )}
+          </Box>
+        ))}
+      </div>
+
+      <Modal
+        open={isOpen}
+        keepMounted
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          className={s.modal}
+          sx={{ bgcolor: "background.paper", boxShadow: 24 }}
+        >
+          <MoscowMap />
+          <div className={s.meta}>
+            {Object.entries(districtsByAreas)
+              .slice(0, 4)
+              .map(([key, values]) => (
+                <Box
+                  sx={{ display: "flex", flexDirection: "column", gap: "8px" }}
+                >
+                  {(values as Array<any>).length > 0 && (
+                    <>
+                      <Typography variant="body2">{key}</Typography>
+                      <Box
+                        sx={{ display: "flex", flexWrap: "wrap", gap: "8px" }}
+                      >
+                        {(values as Array<any>).map(({ item, color }) => (
+                          <Chip
+                            style={{
+                              backgroundColor: color,
+                              color: "black",
+                            }}
+                            label={item}
+                          />
+                        ))}
+                      </Box>
+                    </>
+                  )}
+                </Box>
+              ))}
+            {Object.entries(districtsByAreas).length > 4 && (
+              <span className={s.counter}>
+                <Chip
+                  style={{
+                    backgroundColor: "#C2C0C0",
+                    color: "white",
+                  }}
+                  label={`+ ${
+                    Object.entries(districtsByAreas).length - 4
+                  } округов`}
+                />
+              </span>
+            )}
           </div>
-        </div>
-      )}
+        </Box>
+      </Modal>
     </div>
   );
 };

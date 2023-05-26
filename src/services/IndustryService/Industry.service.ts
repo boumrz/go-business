@@ -1,14 +1,27 @@
 import { Api } from "../api";
+import { IndustryDto, IndustryRequest } from "./Industry.dto";
 
-export const IndustryService = Api.injectEndpoints({
+export const IndustryService = Api.enhanceEndpoints({
+  addTagTypes: ["INDUSTRY"],
+}).injectEndpoints({
   endpoints: (builder) => ({
-    getTestList: builder.query<void, void>({
-      query: () => ({
-        url: "/users",
+    getIndustryList: builder.query<Array<IndustryDto>, void | IndustryRequest>({
+      query: (params) => ({
+        url: "api/v1/industry/list",
         method: "GET",
+        params: {
+          name: params?.name,
+        },
       }),
+      providesTags: ["INDUSTRY"],
+      transformResponse: (elements: Array<IndustryDto>) => {
+        return elements.map((item) => ({
+          ...item,
+          label: item.name,
+        }));
+      },
     }),
   }),
 });
 
-export const { useGetTestListQuery } = IndustryService;
+export const { useGetIndustryListQuery } = IndustryService;

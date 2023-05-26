@@ -1,30 +1,117 @@
-import { useForm } from "react-hook-form";
-import { Typography, Button, Box, Grid } from "@mui/material";
-import { calculatorFormMap, calculatorConfig } from "@/components";
+import { useEffect, useState } from "react";
+import { useForm, FormProvider, Controller } from "react-hook-form";
+import { Typography, Box, CircularProgress } from "@mui/material";
+import {
+  useGetEquipmentListQuery,
+  useGetRegionListQuery,
+  useGetDistrictListQuery,
+  useGetAccountingListQuery,
+  useGetIndustryListQuery,
+} from "@/services";
+import { LayerIcon } from "@/assets/icons";
+import { CalculatorForm } from "./CalculatorForm";
 import s from "./styles.module.css";
 
 export const Calculator = () => {
-  const { handleSubmit, control } = useForm({
-    defaultValues: {
-      industry: "Option 1",
-      select2: "option2",
-    },
+  const [subindustryTransform, setSubindustryTransform] = useState([]);
+  const formData = useForm({
+    mode: "onSubmit",
+    defaultValues: {},
   });
+  const { watch } = formData;
+  const data = watch();
+  const legalForm = data?.legalForm;
+  const industry = data?.industry;
+  console.log("data", data);
+  console.log("subindustryTransform", subindustryTransform);
+
+  useEffect(() => {
+    if (industry) {
+      setSubindustryTransform(
+        industry.subindustry.map((item: any) => ({
+          ...item,
+          label: item.name,
+        }))
+      );
+    }
+  }, [industry]);
+
+  const { data: equipments, isFetching: isFetchingEquipment } =
+    useGetEquipmentListQuery();
+  const { data: accounting, isFetching: isFetchingAccounting } =
+    useGetAccountingListQuery();
+  const { data: regions, isFetching: isFetchingRegion } =
+    useGetRegionListQuery();
+  const { data: districts, isFetching: isFetchingDistrict } =
+    useGetDistrictListQuery();
+  const { data: industries } = useGetIndustryListQuery({
+    name: industry?.name,
+  });
+
+  console.log("accounting", accounting);
+  console.log("regions", regions);
+  console.log("districts", districts);
+  console.log("industries", industries);
+
+  if (
+    isFetchingAccounting ||
+    isFetchingDistrict ||
+    isFetchingEquipment ||
+    isFetchingRegion
+  ) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   const onSubmit = (data: any) => {
     console.log("data", data);
   };
 
   return (
-    <div className={s.wrapper}>
-      <section className={s.header}>
-        <Typography className={s.title} variant="h2">
-          Онлайн калькулятор
-        </Typography>
-        <Typography className={s.title} variant="body1">
-          Расчёт объема возможных затрат
-        </Typography>
-      </section>
+    <Box className={s.wrapper}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: { xs: "center", lg: "flex-start" },
+        }}
+        className={s.header}
+      >
+        <Box
+          sx={{
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            maxWidth: { xs: "450px", lg: "546px" },
+            gap: "16px",
+          }}
+        >
+          <LayerIcon className={s.layerIcon} />
+          <Typography
+            sx={{
+              fontSize: { xs: "24px !important", sm: "36px !important" },
+            }}
+            className={s.title}
+            variant="h2"
+          >
+            Инвестиционный калькулятор города Москвы
+          </Typography>
+          <Typography className={s.title} variant="body1">
+            Объем инвестиций в один клик
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            width: { md: "470px", lg: "605px" },
+            height: { md: "428px", lg: "428px" },
+          }}
+        >
+          <div className={s.imgWrapper} />
+        </Box>
+      </Box>
       <Box
         sx={{
           width: { xs: "320px", sm: "400px", md: "800px", lg: "900px" },
@@ -32,90 +119,21 @@ export const Calculator = () => {
             xs: "none",
             sm: "0px 0px 8px 0px rgba(34, 60, 80, 0.2)",
           },
+          margin: "auto",
         }}
         className={s.calculator}
       >
-        <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
-          <Typography className={s.title} variant="h3">
-            Параметры бизнеса
-          </Typography>
-
-          {calculatorConfig.map(
-            ({
-              label,
-              label1,
-              label2,
-              label3,
-              name,
-              name1,
-              name2,
-              name3,
-              title,
-              placeholder1,
-              placeholder2,
-              placeholder3,
-              placeholder,
-              type,
-              description,
-            }) => {
-              return (
-                <Grid
-                  container
-                  sx={{
-                    gap: { xs: "32px" },
-                    justifyContent: { sm: "space-between" },
-                  }}
-                >
-                  <Grid md={3} lg={3} xl={3} item>
-                    <Typography
-                      sx={{ width: { xs: "320px" } }}
-                      variant="subtitle1"
-                    >
-                      {title}
-                    </Typography>
-                    {description && (
-                      <Box sx={{ width: { xs: "320px" } }}>
-                        <Typography className={s.secondary} variant="body1">
-                          {description}
-                        </Typography>
-                      </Box>
-                    )}
-                  </Grid>
-                  <Grid
-                    md={7}
-                    lg={7}
-                    xl={7}
-                    sx={{ width: { xs: "320px" } }}
-                    item
-                  >
-                    {
-                      calculatorFormMap({
-                        label1,
-                        label2,
-                        label3,
-                        label,
-                        placeholder1,
-                        placeholder2,
-                        placeholder3,
-                        name,
-                        name1,
-                        name2,
-                        name3,
-                        title,
-                        type,
-                        placeholder,
-                        description,
-                        control,
-                      })[name ?? ""]
-                    }
-                  </Grid>
-                </Grid>
-              );
-            }
-          )}
-          <Button type="submit">Рассчитать</Button>
-        </form>
+        <FormProvider {...formData}>
+          <CalculatorForm
+            equipments={equipments}
+            districts={districts}
+            industries={industries}
+            subindustryTransform={subindustryTransform}
+            legalForm={legalForm}
+            onSubmit={onSubmit}
+          />
+        </FormProvider>
       </Box>
-    </div>
+    </Box>
   );
 };

@@ -1,17 +1,50 @@
 import { Typography, Box, Button, Grid } from "@mui/material";
+import { LayerIcon } from "@/assets/icons";
 import s from "./styles.module.css";
 
 export const Results = () => {
   return (
-    <div className={s.wrapper}>
-      <section className={s.header}>
-        <Typography className={s.title} variant="h2">
-          Онлайн калькулятор
-        </Typography>
-        <Typography className={s.title} variant="body1">
-          Расчёт объема возможных затрат
-        </Typography>
-      </section>
+    <Box className={s.wrapper}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: { xs: "center", lg: "flex-start" },
+        }}
+        className={s.header}
+      >
+        <Box
+          sx={{
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            maxWidth: { xs: "450px", lg: "546px" },
+            gap: "16px",
+          }}
+        >
+          <LayerIcon className={s.layerIcon} />
+          <Typography
+            sx={{
+              fontSize: { xs: "24px !important", sm: "36px !important" },
+            }}
+            className={s.title}
+            variant="h2"
+          >
+            Инвестиционный калькулятор города Москвы
+          </Typography>
+          <Typography className={s.title} variant="body1">
+            Объем инвестиций в один клик
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            width: { md: "470px", lg: "605px" },
+            height: { md: "428px", lg: "428px" },
+          }}
+        >
+          <div className={s.imgWrapper} />
+        </Box>
+      </Box>
       <Box
         sx={{
           width: { xs: "320px", sm: "400px", md: "800px", lg: "900px" },
@@ -19,6 +52,7 @@ export const Results = () => {
             xs: "none",
             sm: "0px 0px 8px 0px rgba(34, 60, 80, 0.2)",
           },
+          margin: "auto",
         }}
         className={s.results}
       >
@@ -150,6 +184,6 @@ export const Results = () => {
           </Button>
         </Box>
       </Box>
-    </div>
+    </Box>
   );
 };

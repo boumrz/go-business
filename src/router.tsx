@@ -4,7 +4,7 @@ import {
   createBrowserRouter,
   useLocation,
 } from "react-router-dom";
-import { CalculatorPage, ResultsPage } from "@/pages";
+import { CalculatorPage, ResultsPage, AdminPage } from "@/pages";
 
 const PrivateRoutes = () => {
   const { pathname } = useLocation();
@@ -32,6 +32,10 @@ export const router = createBrowserRouter([
       {
         path: "results",
         element: <ResultsPage />,
+      },
+      {
+        path: "admin",
+        element: <AdminPage />,
       },
     ],
   },

@@ -1,262 +1,161 @@
 import { Controller } from "react-hook-form";
-import {
-  Select,
-  MenuItem,
-  InputLabel,
-  RadioGroup,
-  TextField,
-  FormControl,
-  FormControlLabel,
-  Radio,
-  Box,
-} from "@mui/material";
+import { Autocomplete, TextField, Box } from "@mui/material";
 import { MapComponent } from "@/components";
 
+const top100Films = [
+  { name: "123", label: "The Shawshank Redemption", year: 1994 },
+  { name: "efdsf", label: "The Godfather", year: 1972 },
+  { name: "hgghg", label: "The Godfather: Part II", year: 1974 },
+  { name: "wr", label: "The Dark Knight", year: 2008 },
+  { name: "vc", label: "12 Angry Men", year: 1957 },
+];
+
 export const calculatorFormMap = ({
+  control,
   name,
   name1,
   name2,
   name3,
-  control,
   label,
   label1,
   label2,
   label3,
-  placeholder1,
   placeholder2,
   placeholder3,
   placeholder,
-}: any): Record<string, JSX.Element> => ({
-  industry: (
-    <FormControl sx={{ width: "100%" }}>
-      <InputLabel id={name}>{label}</InputLabel>
+  equipments,
+  industries,
+  subindustryTransform,
+  legalForm,
+  watch,
+}: any): Record<string, JSX.Element | null> => {
+  return {
+    industry: (
+      <Controller
+        control={control}
+        name={name}
+        render={({ field: { ref, onChange, ...field } }) => (
+          <Autocomplete
+            options={industries}
+            onChange={(_, data) => onChange(data)}
+            sx={{ width: "100%" }}
+            renderInput={(params) => (
+              <TextField {...params} {...field} inputRef={ref} label={label} />
+            )}
+          />
+        )}
+      />
+    ),
+    subindustry:
+      subindustryTransform.length > 0 ? (
+        <Controller
+          control={control}
+          name={name}
+          render={({ field: { ref, onChange, ...field } }) => (
+            <Autocomplete
+              options={subindustryTransform}
+              onChange={(_, data) => onChange(data)}
+              sx={{ width: "100%" }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  {...field}
+                  inputRef={ref}
+                  label={label}
+                />
+              )}
+            />
+          )}
+        />
+      ) : null,
+    maps: <MapComponent />,
+    counter: (
       <Controller
         control={control}
         name={name}
         render={({ field }) => (
-          <Select
-            sx={{ width: "100%" }}
-            labelId={name}
+          <TextField
+            sx={{ width: { xs: "100%", md: "294px" } }}
+            type="text"
             label={label}
+            placeholder={placeholder}
             {...field}
-          >
-            <MenuItem value="option1">Option 1</MenuItem>
-            <MenuItem value="option2">Option 2</MenuItem>
-            <MenuItem value="option3">Option 3</MenuItem>
-          </Select>
+          />
         )}
       />
-    </FormControl>
-  ),
-  maps: <MapComponent />,
-  counter: (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <TextField
-          sx={{ width: { xs: "100%", md: "294px" } }}
-          type="text"
-          label={label}
-          placeholder={placeholder}
-          {...field}
-        />
-      )}
-    />
-  ),
-  average: (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <TextField
-          sx={{ width: { xs: "100%", md: "294px" } }}
-          type="text"
-          label={label}
-          placeholder={placeholder}
-          {...field}
-        />
-      )}
-    />
-  ),
-  legalForm: (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <RadioGroup {...field}>
-          <FormControlLabel
-            value="option1"
-            control={<Radio />}
-            label="Option 1"
-          />
-          <FormControlLabel
-            value="option2"
-            control={<Radio />}
-            label="Option 2"
-          />
-          <FormControlLabel
-            value="option3"
-            control={<Radio />}
-            label="Option 3"
-          />
-        </RadioGroup>
-      )}
-    />
-  ),
-  taxType: (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <RadioGroup {...field}>
-          <FormControlLabel
-            value="option1"
-            control={<Radio />}
-            label="Option 1"
-          />
-          <FormControlLabel
-            value="option2"
-            control={<Radio />}
-            label="Option 2"
-          />
-          <FormControlLabel
-            value="option3"
-            control={<Radio />}
-            label="Option 3"
-          />
-        </RadioGroup>
-      )}
-    />
-  ),
-  area: (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <TextField
-          sx={{ width: { xs: "100%", md: "188px" } }}
-          type="text"
-          label={label}
-          placeholder={placeholder}
-          {...field}
-        />
-      )}
-    />
-  ),
-  object: (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: { xs: "column", md: "row" },
-        gap: { md: "24px" },
-      }}
-    >
-      <FormControl>
-        <InputLabel id={name1}>{label1}</InputLabel>
-        <Controller
-          control={control}
-          name={name1}
-          render={({ field }) => (
-            <Select
-              sx={{ minWidth: { md: "270px" }, maxWidth: { md: "294px" } }}
-              labelId={name1}
-              placeholder={placeholder1}
-              label={label1}
-              {...field}
-            >
-              <MenuItem value="option1">Option 1</MenuItem>
-              <MenuItem value="option2">Option 2</MenuItem>
-              <MenuItem value="option3">Option 3</MenuItem>
-            </Select>
-          )}
-        />
-      </FormControl>
+    ),
+    average: (
       <Controller
         control={control}
-        name={name2}
+        name={name}
         render={({ field }) => (
           <TextField
-            sx={{ width: { xs: "100%", md: "188px", lg: "230px" } }}
+            sx={{ width: { xs: "100%", md: "294px" } }}
             type="text"
-            label={label2}
-            placeholder={placeholder2}
+            label={label}
+            placeholder={placeholder}
             {...field}
           />
         )}
       />
-    </Box>
-  ),
-  capital: (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: { xs: "column", md: "row" },
-        gap: { md: "24px" },
-      }}
-    >
-      <FormControl>
-        <InputLabel id={name1}>{label1}</InputLabel>
-        <Controller
-          control={control}
-          name={name1}
-          render={({ field }) => (
-            <Select
-              sx={{ minWidth: { md: "270px" }, maxWidth: { md: "294px" } }}
-              labelId={name1}
-              placeholder={placeholder1}
-              label={label1}
-              {...field}
-            >
-              <MenuItem value="option1">Option 1</MenuItem>
-              <MenuItem value="option2">Option 2</MenuItem>
-              <MenuItem value="option3">Option 3</MenuItem>
-            </Select>
-          )}
-        />
-      </FormControl>
+    ),
+    legalForm: (
       <Controller
         control={control}
-        name={name2}
+        name={name}
+        render={({ field: { ref, onChange, ...field } }) => (
+          <Autocomplete
+            options={[
+              { name: "ООО", label: "ООО" },
+              { name: "АО", label: "АО" },
+              { name: "ИП", label: "ИП" },
+            ]}
+            onChange={(_, data) => onChange(data)}
+            sx={{ width: "100%" }}
+            renderInput={(params) => (
+              <TextField {...params} {...field} inputRef={ref} label={label} />
+            )}
+          />
+        )}
+      />
+    ),
+    taxType: legalForm && (
+      <Controller
+        control={control}
+        name={name}
+        render={({ field: { ref, onChange, ...field } }) => (
+          <Autocomplete
+            options={[
+              { name: "Общая", label: "Общая" },
+              { name: "Упрощенная", label: "Упрощенная" },
+              { name: "ЕСХН", label: "ЕСХН" },
+              { name: "Патент", label: "Патент" },
+            ]}
+            onChange={(_, data) => onChange(data)}
+            sx={{ width: "100%" }}
+            renderInput={(params) => (
+              <TextField {...params} {...field} inputRef={ref} label={label} />
+            )}
+          />
+        )}
+      />
+    ),
+    area: (
+      <Controller
+        control={control}
+        name={name}
         render={({ field }) => (
           <TextField
-            sx={{ width: { xs: "100%", md: "188px", lg: "230px" } }}
+            sx={{ width: { xs: "100%", md: "188px" } }}
             type="text"
-            label={label2}
-            placeholder={placeholder2}
+            label={label}
+            placeholder={placeholder}
             {...field}
           />
         )}
       />
-    </Box>
-  ),
-  equipment: (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: { xs: "column" },
-      }}
-    >
-      <FormControl>
-        <InputLabel id={name1}>{label1}</InputLabel>
-        <Controller
-          control={control}
-          name={name1}
-          render={({ field }) => (
-            <Select
-              sx={{ width: "100%" }}
-              labelId={name1}
-              placeholder={placeholder1}
-              label={label1}
-              {...field}
-            >
-              <MenuItem value="option1">Option 1</MenuItem>
-              <MenuItem value="option2">Option 2</MenuItem>
-              <MenuItem value="option3">Option 3</MenuItem>
-            </Select>
-          )}
-        />
-      </FormControl>
+    ),
+    object: (
       <Box
         sx={{
           display: "flex",
@@ -266,10 +165,30 @@ export const calculatorFormMap = ({
       >
         <Controller
           control={control}
+          name={name1}
+          render={({ field: { ref, onChange, ...field } }) => (
+            <Autocomplete
+              options={top100Films}
+              onChange={(_, data) => onChange(data)}
+              sx={{ minWidth: { md: "270px" }, maxWidth: { md: "294px" } }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  {...field}
+                  inputRef={ref}
+                  label={label1}
+                />
+              )}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
           name={name2}
           render={({ field }) => (
             <TextField
-              sx={{ minWidth: "188px" }}
+              sx={{ width: { xs: "100%", md: "188px", lg: "230px" } }}
               type="text"
               label={label2}
               placeholder={placeholder2}
@@ -277,63 +196,156 @@ export const calculatorFormMap = ({
             />
           )}
         />
+      </Box>
+    ),
+    capital: (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          gap: { md: "24px" },
+        }}
+      >
         <Controller
           control={control}
-          name={name3}
+          name={name1}
+          render={({ field: { ref, onChange, ...field } }) => (
+            <Autocomplete
+              options={top100Films}
+              onChange={(_, data) => onChange(data)}
+              sx={{ minWidth: { md: "270px" }, maxWidth: { md: "294px" } }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  {...field}
+                  inputRef={ref}
+                  label={label1}
+                />
+              )}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name={name2}
           render={({ field }) => (
             <TextField
-              sx={{ width: "100%" }}
+              sx={{ width: { xs: "100%", md: "188px", lg: "230px" } }}
               type="text"
-              label={label3}
-              placeholder={placeholder3}
+              label={label2}
+              placeholder={placeholder2}
               {...field}
             />
           )}
         />
       </Box>
-    </Box>
-  ),
-  other: (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: { xs: "column", md: "row" },
-        gap: { md: "24px" },
-      }}
-    >
-      <FormControl>
-        <InputLabel id={name1}>{label1}</InputLabel>
+    ),
+    equipment: (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column" },
+        }}
+      >
         <Controller
           control={control}
           name={name1}
-          render={({ field }) => (
-            <Select
-              sx={{ minWidth: { md: "270px" }, maxWidth: { md: "294px" } }}
-              labelId={name1}
-              placeholder={placeholder1}
-              label={label1}
-              {...field}
-            >
-              <MenuItem value="option1">Option 1</MenuItem>
-              <MenuItem value="option2">Option 2</MenuItem>
-              <MenuItem value="option3">Option 3</MenuItem>
-            </Select>
+          render={({ field: { ref, onChange, ...field } }) => (
+            <Autocomplete
+              options={equipments}
+              onChange={(_, data) => onChange(data)}
+              sx={{ width: "100%" }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  {...field}
+                  inputRef={ref}
+                  label={label1}
+                />
+              )}
+            />
           )}
         />
-      </FormControl>
-      <Controller
-        control={control}
-        name={name2}
-        render={({ field }) => (
-          <TextField
-            sx={{ width: { xs: "100%", md: "188px", lg: "230px" } }}
-            type="text"
-            label={label2}
-            placeholder={placeholder2}
-            {...field}
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            gap: { md: "24px" },
+          }}
+        >
+          <Controller
+            control={control}
+            name={name2}
+            render={({ field }) => (
+              <TextField
+                sx={{ minWidth: "188px" }}
+                type="text"
+                label={label2}
+                placeholder={placeholder2}
+                {...field}
+              />
+            )}
           />
-        )}
-      />
-    </Box>
-  ),
-});
+          <Controller
+            control={control}
+            name={name3}
+            render={({ field }) => (
+              <TextField
+                sx={{ width: "100%" }}
+                type="text"
+                label={label3}
+                placeholder={placeholder3}
+                {...field}
+              />
+            )}
+          />
+        </Box>
+      </Box>
+    ),
+    other: (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          gap: { md: "24px" },
+        }}
+      >
+        <Controller
+          control={control}
+          name={name1}
+          render={({ field: { ref, onChange, ...field } }) => (
+            <Autocomplete
+              options={top100Films}
+              onChange={(_, data) => onChange(data)}
+              sx={{ minWidth: { md: "270px" }, maxWidth: { md: "294px" } }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  {...field}
+                  inputRef={ref}
+                  label={label1}
+                />
+              )}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name={name2}
+          render={({ field }) => (
+            <TextField
+              sx={{ width: { xs: "100%", md: "188px", lg: "230px" } }}
+              type="text"
+              label={label2}
+              placeholder={placeholder2}
+              {...field}
+            />
+          )}
+        />
+      </Box>
+    ),
+  };
+};

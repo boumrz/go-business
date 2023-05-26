@@ -1,9 +1,12 @@
 import { Api } from "../api";
+import { RegisterRequest, LoginRequest } from "./Authorization.dto";
 
-export const AuthorizationService = Api.injectEndpoints({
+export const AuthorizationService = Api.enhanceEndpoints({
+  addTagTypes: ["AUTH"],
+}).injectEndpoints({
   endpoints: (builder) => ({
-    postRegisterUser: builder.mutation<any, any>({
-      query: (params: any) => ({
+    postRegisterUser: builder.mutation<any, RegisterRequest>({
+      query: (params) => ({
         url: "/api/v1/auth/register",
         method: "POST",
         body: {
@@ -21,7 +24,7 @@ export const AuthorizationService = Api.injectEndpoints({
         },
       }),
     }),
-    postLoginUser: builder.mutation<any, any>({
+    postLoginUser: builder.mutation<any, LoginRequest>({
       query: (params: any) => ({
         url: "/api/v1/auth/login",
         method: "POST",
