@@ -1,15 +1,61 @@
 import { SyntheticEvent, useState } from "react";
-import { Box, Tabs, Tab, Typography } from "@mui/material";
-import { Users, Calculations } from "@/components";
+import { Box, Tabs, Tab } from "@mui/material";
+import { Users, Calculations, Counting, Statistics } from "@/components";
 
-function createData(name: string, address: string, email: string) {
-  return { name, address, email };
-}
+const createDataUsers = (inn: string, email: string) => {
+  return { inn, email };
+};
+
+const createDataCalculation = (date: string, user: string, amount: string) => {
+  return { date, user, amount };
+};
+
+const createDataStatistics = (
+  statistic1: string,
+  statistic2: string,
+  statistic3: string
+) => {
+  return { statistic1, statistic2, statistic3 };
+};
 
 const rows = [
-  createData("Frozen yoghurt", "test1", "boumrz@gmail.com"),
-  createData("Frozen yoghurt", "test1", "boumrz@gmail.com"),
-  createData("Frozen yoghurt", "test1", "boumrz@gmail.com"),
+  createDataUsers("770666666666", "ivanov@mail.ru"),
+  createDataUsers("770666666666", "ivanov@mail.ru"),
+  createDataUsers("770666666666", "ivanov@mail.ru"),
+];
+
+const createDataCounting = (data1: string, data2: string, data3: string) => {
+  return { data1, data2, data3 };
+};
+
+const statistics = [
+  createDataStatistics("Статистика 1", "Статистика 2", "Статистика 3"),
+  createDataStatistics("Статистика 1", "Статистика 2", "Статистика 3"),
+  createDataStatistics("Статистика 1", "Статистика 2", "Статистика 3"),
+];
+
+const counting = [
+  createDataCounting("Данные 1", "Данные 2", "Данные 3"),
+  createDataCounting("Данные 1", "Данные 2", "Данные 3"),
+  createDataCounting("Данные 1", "Данные 2", "Данные 3"),
+];
+
+const calculations = [
+  createDataCalculation(
+    "25.03.2023",
+    "Незарегистрированный",
+    "от ... до ... млн. руб"
+  ),
+  createDataCalculation(
+    "25.03.2023",
+    "Незарегистрированный",
+    "от ... до ... млн. руб"
+  ),
+  createDataCalculation(
+    "25.03.2023",
+    "Незарегистрированный",
+    "от ... до ... млн. руб"
+  ),
 ];
 
 export const AdminPanel = () => {
@@ -36,12 +82,7 @@ export const AdminPanel = () => {
   };
 
   return (
-    <Box sx={{ marginTop: "-64px" }}>
-      <Box
-        sx={{ display: "flex", justifyContent: "center", marginBottom: "32px" }}
-      >
-        <Typography variant="h4">Панель администратора</Typography>
-      </Box>
+    <Box sx={{ paddingTop: "32px", paddingLeft: "64px", paddingRight: "64px" }}>
       <Box>
         <Box
           sx={{ borderBottom: 1, borderColor: "divider", marginBottom: "16px" }}
@@ -61,7 +102,13 @@ export const AdminPanel = () => {
           <Users users={rows} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Calculations calculations={rows} />
+          <Calculations calculations={calculations} />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <Statistics statistics={statistics} />
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          <Counting counting={counting} />
         </TabPanel>
       </Box>
     </Box>

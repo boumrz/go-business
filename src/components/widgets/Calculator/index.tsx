@@ -10,10 +10,12 @@ import {
 } from "@/services";
 // @ts-ignore
 import { LayerIcon } from "@/assets/icons";
+import { useMapsContext } from "@/contexts";
 import { CalculatorForm } from "./CalculatorForm";
 import s from "./styles.module.css";
 
 export const Calculator = () => {
+  const { districtsByAreas } = useMapsContext();
   const [subindustryTransform, setSubindustryTransform] = useState([]);
   const formData = useForm({
     mode: "onSubmit",
@@ -25,8 +27,6 @@ export const Calculator = () => {
   const legalForm = data?.legalForm;
   // @ts-ignore
   const industry = data?.industry;
-  console.log("data", data);
-  console.log("subindustryTransform", subindustryTransform);
 
   useEffect(() => {
     if (industry) {
@@ -70,6 +70,7 @@ export const Calculator = () => {
   }
 
   const onSubmit = (data: any) => {
+    console.log("districtsByAreas", districtsByAreas);
     console.log("data", data);
   };
 

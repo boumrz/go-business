@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Box, AppBar, Toolbar, Modal, Typography } from "@mui/material";
+import { ManageAccounts, Home } from "@mui/icons-material";
 import { useMainContext, useAuthContext } from "@/contexts";
 // @ts-ignore
 import { LogoIcon } from "@/assets/icons";
@@ -35,7 +37,6 @@ export const Header = () => {
       <Box
         sx={{
           flexGrow: 1,
-          marginBottom: "96px",
           minWidth: "392px",
           top: 0,
           position: "sticky",
@@ -57,9 +58,17 @@ export const Header = () => {
                 Вход
               </button>
             ) : (
-              <Typography sx={{ color: "#6750a4" }} variant="body2">
-                Пользователь
-              </Typography>
+              <Box sx={{ display: "flex", gap: "20px", alignItems: "center" }}>
+                <Typography sx={{ color: "#6750a4" }} variant="body2">
+                  Пользователь
+                </Typography>
+                <Link to="/calculator">
+                  <Home />
+                </Link>
+                <Link to="/admin">
+                  <ManageAccounts />
+                </Link>
+              </Box>
             )}
           </Toolbar>
         </AppBar>

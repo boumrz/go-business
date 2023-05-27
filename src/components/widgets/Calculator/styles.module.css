@@ -1,6 +1,7 @@
 .wrapper {
   display: grid;
   place-content: center;
+  padding-top: 96px;
   gap: 75px;
 }
 

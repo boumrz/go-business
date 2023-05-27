@@ -1,0 +1,7 @@
+.back {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  text-decoration: none;
+  color: #3a6cab;
+}

@@ -154,13 +154,20 @@ export const CalculatorForm = ({
           </>
         )}
         <Grid md={3} lg={3} xl={3} item>
-          <Typography sx={{ width: { xs: "320px" } }} variant="subtitle1">
+          <Typography
+            sx={{
+              width: { xs: "320px" },
+              marginBottom: { xs: "-32px", md: "inherit" },
+            }}
+            variant="subtitle1"
+          >
             Район
           </Typography>
         </Grid>
         <Grid md={7} lg={7} xl={7} sx={{ width: { xs: "320px" } }} item>
           <MapComponent />
         </Grid>
+
         <Grid md={3} lg={3} xl={3} item></Grid>
         <Grid
           md={7}

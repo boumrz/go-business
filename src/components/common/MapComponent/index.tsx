@@ -23,10 +23,12 @@ export const MapComponent = () => {
 
   return (
     <div className={s.wrapper}>
-      <button className={s.button} onClick={handleOpen} type="button">
-        <MarkerMapIcon /> Открыть карту
-      </button>
-      <div className={cn(s.meta, s.empty)}>
+      <Box sx={{ width: "100%", display: { xs: "none", md: "inherit" } }}>
+        <button className={s.button} onClick={handleOpen} type="button">
+          <MarkerMapIcon /> Открыть карту
+        </button>
+      </Box>
+      <div className={cn(s.meta, s.empty)}> 
         {Object.entries(districtsByAreas).map(([key, values]) => (
           <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {(values as Array<any>).length > 0 && (
@@ -38,6 +40,7 @@ export const MapComponent = () => {
                       style={{
                         backgroundColor: color,
                         color: "black",
+                        opacity: 0.8,
                       }}
                       label={item}
                     />
@@ -79,6 +82,7 @@ export const MapComponent = () => {
                             style={{
                               backgroundColor: color,
                               color: "black",
+                              opacity: 0.8,
                             }}
                             label={item}
                           />
