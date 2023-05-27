@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Отчет</title>
+    <style>
+      body {
+        margin: 0;
+        overflow-x: hidden;
+        padding: 0;
+        font: 500 18px / 36px "Raleway", "SB Sans Text", "Verdana", "Roboto",
+          sans-serif;
+      }
+
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: 4px solid #d31b2c;
+        margin-bottom: 80px;
+      }
+
+      .header {
+        width: 100%;
+        padding-left: 80px;
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: flex-start;
+        height: 136px;
+      }
+
+      .logo {
+        width: 45px;
+        height: 55px;
+      }
+
+      .header-text {
+        font-size: 20px;
+        text-transform: uppercase;
+      }
+
+      .title {
+        text-align: center;
+        font-size: 36px;
+      }
+
+      .list {
+        position: relative;
+        margin-left: 120px;
+        margin-right: 100px;
+        border-bottom: 4px solid #d31b2c;
+      }
+
+      .background-image {
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        z-index: -1;
+        bottom: -20px;
+        right: 0;
+        background-image: url("./2.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      .image-wrapper {
+        position: relative;
+        width: 400px;
+        height: 400px;
+      }
+
+      .report-title {
+        font-size: 24px;
+        width: 100%;
+        height: 76px;
+        margin-bottom: 52px;
+        background-color: #eef3fa;
+        display: flex;
+        align-items: center;
+        padding-left: 120px;
+      }
+
+      .list-title {
+        font-size: 18px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <img src="./logo.svg" alt="Логотип" class="logo" />
+      <div class="header-text">
+        Экономика<br />
+        Москвы
+      </div>
+    </header>
+    <div class="report-title">ДЕТАЛИ РАСХОДОВ</div>
+
+    <ol class="list">
+      <!-- 1 -->
+      <li>
+        <div class="list-title">
+          Актуальные меры поддержки для бизнеса от Правительства Москвы
+        </div>
+        <a href="https://cashback.moscow.business/"
+          >https://cashback.moscow.business/</a
+        >
+        <p>
+          Гранты, субсидии и другие меры поддержки для предпринимателей Москвы.
+          Развивайте свой бизнес с помощью от правительства Москвы. Программы
+          для начинающих и действующих предпринимателей столицы.
+        </p>
+      </li>
+      <!-- 2 -->
+      <li>
+        <div class="list-title">Агентство промышленного развития Москвы</div>
+        <a href="https://apr.moscow/">https://apr.moscow/</a>
+        <p>Помогаем промышленным предприятиям успешно развивать свой бизнес</p>
+      </li>
+      <!-- 3 -->
+      <li>
+        <div class="list-title">
+          Московский Фонд поддержки промышленности и предпринимательства
+        </div>
+        <a href="https://mfppp.ru/">https://mfppp.ru/</a>
+        <p>
+          Московский Фонд поддержки промышленности и предпринимательства.
+          Финансовая поддержка субъектов промышленности города Москвы.
+        </p>
+      </li>
+      <!-- 4 -->
+      <li>
+        <div class="list-title">Московская торгово-промышленная палата</div>
+        <a
+          href="https://mostpp.ru/projects/uslugi-mtpp-dlya-biznesa/podderzhka-predprinimatelstva/"
+          >https://mostpp.ru/projects/uslugi-mtpp-dlya-biznesa/podderzhka-predprinimatelstva/
+        </a>
+        <p>
+          МТПП оказывает услуги по поддержке репутации и повышению уровня
+          делового имиджа бизнеса, способствует продвижению и росту узнаваемости
+          вашего бизнеса среди предпринимательского сообщества.
+        </p>
+      </li>
+      <!-- 5 -->
+      <li>
+        <div class="list-title">
+          Городское агентство управления инвестициями
+        </div>
+        <a href="http://prom.gbugaui.ru/altservices"
+          >http://prom.gbugaui.ru/altservices
+        </a>
+        <p>
+          Подбор производителей альтернативного оборудования, комплектующих и
+          материалов, поставщиков сервисных услуг. Помощь в организации пилотных
+          проектов. Образовательные программы для подготовки специалистов.
+        </p>
+      </li>
+      <!-- 6 -->
+      <li>
+        <div class="list-title">Инвестиционный портал города Москвы</div>
+        <a href="https://investmoscow.ru/">https://investmoscow.ru/ </a>
+        <p>Решение проблем инвесторов за 10 дней.</p>
+      </li>
+      <!-- 7 -->
+      <li>
+        <div class="list-title">Московский экспортный центр</div>
+        <a href="https://www.moscow-export.com/subsidii/"
+          >https://www.moscow-export.com/subsidii/
+        </a>
+        <p>Субсидии для экспортеров Москвы.</p>
+      </li>
+      <!-- 8 -->
+      <li>
+        <div class="list-title">Центр поддержки экономики Москвы</div>
+        <a href="https://helpmoscoweconomy.ru/"
+          >https://helpmoscoweconomy.ru/
+        </a>
+        <p>Антикризисные меры.</p>
+      </li>
+      <div class="background-image"></div>
+    </ol>
+  </body>
+</html>
