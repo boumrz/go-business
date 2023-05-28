@@ -13,6 +13,14 @@ interface EquipmentIdAndCountPairListType {
   second: string; // количество оборудования
 }
 
+interface OtherTaxType {
+  totalOtherTax: string;
+  landTax: string;
+  propertyTax: string;
+  transportTax: string;
+  otherTax: string;
+}
+
 export interface CalculationRequest {
   organizationalAndLegalForm?: string; // LLC (юр лицо) / IE (ИП)
   taxationSystemType?: string; // General (общая), Simplified (упрощенная), Patent (Патент)
@@ -45,4 +53,9 @@ export interface CalculationResponse {
   accountingCost: number; // ведение бух учета
   totalCostMinOfAll: number; // минимальный общий объем инвестиций
   totalCostMaxOfAll: number; // максимальный общий объем инвестиций
+  initialExpenses: number; // исходные расходы
+  expensesJobPaymentTotalJobPayment: number; // Оплата труда
+  expensesJobPaymentTotalPayedSalary: number; // Общая Заработная плата
+  expensesJobPaymentMainTaxes: number; // Основные налоги
+  otherTax: OtherTaxType;
 }

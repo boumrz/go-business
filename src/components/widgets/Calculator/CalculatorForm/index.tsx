@@ -83,7 +83,8 @@ export const CalculatorForm = ({
             render={({ field: { ref, onChange, ...field } }) => (
               <Autocomplete
                 options={[
-                  { name: "LLC", label: "Юридическое лицо" },
+                  { name: "OOO", label: "ООО" },
+                  { name: "AO", label: "АО" },
                   { name: "IE", label: "ИП" },
                 ]}
                 onChange={(_, data) => onChange(data)}

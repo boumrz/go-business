@@ -30,9 +30,9 @@ const style = {
 export const Results = ({ isResult, handleResultModal }: any) => {
   const { calculationResults } = useMainContext();
 
-  const handleGeneratePDF = () => {
-    console.log("generatePDF");
-  };
+  // const handleGeneratePDF = () => {
+  //   console.log("generatePDF");
+  // };
 
   return (
     <Modal
@@ -96,8 +96,10 @@ export const Results = ({ isResult, handleResultModal }: any) => {
               className={s.title}
               variant="h2"
             >
-              {calculationResults?.totalCostMinOfAll || "0"}&nbsp;–&nbsp;
-              {calculationResults?.totalCostMaxOfAll || "0"}
+              {Math.round(Number(calculationResults?.totalCostMinOfAll || 0))}
+              &nbsp;руб.&nbsp;–&nbsp;
+              {Math.round(Number(calculationResults?.totalCostMaxOfAll || 0))}
+              &nbsp;руб.&nbsp;
             </Typography>
           </header>
           <Box alignItems="center">
@@ -129,9 +131,18 @@ export const Results = ({ isResult, handleResultModal }: any) => {
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="body1">
-                  {calculationResults?.capitalInvestmentsTotalMinCost || "0"}
-                  &nbsp;-&nbsp;
-                  {calculationResults?.capitalInvestmentsTotalMaxCost || "0"}
+                  {Math.round(
+                    Number(
+                      calculationResults?.capitalInvestmentsTotalMinCost || 0
+                    )
+                  )}
+                  &nbsp;руб.&nbsp;-&nbsp;
+                  {Math.round(
+                    Number(
+                      calculationResults?.capitalInvestmentsTotalMaxCost || 0
+                    )
+                  )}
+                  &nbsp;руб.&nbsp;
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -141,8 +152,13 @@ export const Results = ({ isResult, handleResultModal }: any) => {
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="body1">
-                  {calculationResults?.capitalInvestmentsTotalBuildingCost ||
-                    ""}
+                  {Math.round(
+                    Number(
+                      calculationResults?.capitalInvestmentsTotalBuildingCost ||
+                        0
+                    )
+                  )}
+                  &nbsp;руб.&nbsp;
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -152,8 +168,13 @@ export const Results = ({ isResult, handleResultModal }: any) => {
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="body1">
-                  {calculationResults?.capitalInvestmentsCapitalTotalBuildingCost ||
-                    ""}
+                  {Math.round(
+                    Number(
+                      calculationResults?.capitalInvestmentsCapitalTotalBuildingCost ||
+                        0
+                    )
+                  )}
+                  &nbsp;руб.&nbsp;
                 </Typography>
               </Grid>
             </Grid>
@@ -175,7 +196,12 @@ export const Results = ({ isResult, handleResultModal }: any) => {
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="body1">
-                  {calculationResults?.costsOfOpeningProductionTotalCost}
+                  {Math.round(
+                    Number(
+                      calculationResults?.costsOfOpeningProductionTotalCost || 0
+                    )
+                  )}
+                  &nbsp;руб.&nbsp;
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -185,8 +211,13 @@ export const Results = ({ isResult, handleResultModal }: any) => {
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="body1">
-                  {calculationResults?.costsOfOpeningProductionEquipmentPurchasePriceTotalEquipmentCost ||
-                    ""}
+                  {Math.round(
+                    Number(
+                      calculationResults?.costsOfOpeningProductionEquipmentPurchasePriceTotalEquipmentCost ||
+                        0
+                    )
+                  )}
+                  &nbsp;руб.&nbsp;
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -196,8 +227,13 @@ export const Results = ({ isResult, handleResultModal }: any) => {
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="body1">
-                  {calculationResults?.costsOfOpeningProductionHiringStaffTotalStaffCost ||
-                    ""}
+                  {Math.round(
+                    Number(
+                      calculationResults?.costsOfOpeningProductionHiringStaffTotalStaffCost ||
+                        0
+                    )
+                  )}
+                  &nbsp;руб.&nbsp;
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -207,8 +243,13 @@ export const Results = ({ isResult, handleResultModal }: any) => {
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="body1">
-                  {calculationResults?.costsOfOpeningProductionPurchasePatentPatentCost ||
-                    ""}
+                  {Math.round(
+                    Number(
+                      calculationResults?.costsOfOpeningProductionPurchasePatentPatentCost ||
+                        0
+                    )
+                  )}
+                  &nbsp;руб.&nbsp;
                 </Typography>
               </Grid>
             </Grid>
@@ -235,8 +276,8 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                 color="text.secondary"
                 gutterBottom
               >
-                Последующие расходы, которые понесёт организация <br /> после
-                начала работы (стоимость указана за 1 месяц){" "}
+                Последующие расходы, которые понесёт организация после начала
+                работы (стоимость указана за 1 месяц)
                 <Box
                   sx={{
                     display: { xs: "none", sm: "block" },
@@ -263,7 +304,15 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">104'980'000&nbsp;руб.</Typography>
+                  <Typography variant="body1">
+                    {Math.round(
+                      Number(
+                        calculationResults?.expensesJobPaymentTotalJobPayment ||
+                          0
+                      )
+                    )}
+                    &nbsp;руб.
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={s.secondary} variant="body1">
@@ -272,7 +321,13 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                 </Grid>
                 <Grid item xs={6}>
                   <Typography variant="body1">
-                    {calculationResults?.totalSalaryPayment || ""}
+                    {Math.round(
+                      Number(
+                        calculationResults?.expensesJobPaymentTotalPayedSalary ||
+                          0
+                      )
+                    )}
+                    &nbsp;руб.&nbsp;
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
@@ -281,7 +336,10 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">2'500'000&nbsp;руб.</Typography>
+                  <Typography variant="body1">
+                    {Math.round(Number(calculationResults?.allTax || 0))}
+                    &nbsp;руб.
+                  </Typography>
                 </Grid>
               </Grid>
               <Grid
@@ -300,7 +358,12 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">104'980'000&nbsp;руб.</Typography>
+                  <Typography variant="body1">
+                    {Math.round(
+                      Number(calculationResults?.otherTax?.totalOtherTax || 0)
+                    )}
+                    &nbsp;руб.
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={s.secondary} variant="body1">
@@ -308,7 +371,12 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">2'500'000&nbsp;руб.</Typography>
+                  <Typography variant="body1">
+                    {Math.round(
+                      Number(calculationResults?.otherTax?.landTax || 0)
+                    )}
+                    &nbsp;руб.
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={s.secondary} variant="body1">
@@ -316,7 +384,12 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">2'500'000&nbsp;руб.</Typography>
+                  <Typography variant="body1">
+                    {Math.round(
+                      Number(calculationResults?.otherTax?.propertyTax || 0)
+                    )}
+                    &nbsp;руб.
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={s.secondary} variant="body1">
@@ -324,7 +397,12 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">2'500'000&nbsp;руб.</Typography>
+                  <Typography variant="body1">
+                    {Math.round(
+                      Number(calculationResults?.otherTax?.transportTax || 0)
+                    )}
+                    &nbsp;руб.
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={s.secondary} variant="body1">
@@ -332,7 +410,12 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">2'500'000&nbsp;руб.</Typography>
+                  <Typography variant="body1">
+                    {Math.round(
+                      Number(calculationResults?.otherTax?.otherTax || 0)
+                    )}
+                    &nbsp;руб.
+                  </Typography>
                 </Grid>
               </Grid>
               <Grid
@@ -354,7 +437,12 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">104'980'000&nbsp;руб.</Typography>
+                  <Typography variant="body1">
+                    {Math.round(
+                      Number(calculationResults?.initialExpenses || 0)
+                    )}
+                    &nbsp;руб.
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={s.secondary} variant="body1">
@@ -363,7 +451,9 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                 </Grid>
                 <Grid item xs={6}>
                   <Typography variant="body1">
-                    {calculationResults?.accountingCost || ""}
+                    {Math.round(
+                      Number(calculationResults?.accountingCost || 0)
+                    )}
                   </Typography>
                 </Grid>
               </Grid>
@@ -374,18 +464,18 @@ export const Results = ({ isResult, handleResultModal }: any) => {
             sx={{
               display: "flex",
               flexDirection: { xs: "column", md: "row" },
-              justifyContent: "space-between",
+              justifyContent: "flex-end",
               gap: "20px;",
             }}
           >
-            <Button
+            {/* <Button
               sx={{ backgroundColor: "#D31B2C" }}
               variant="contained"
               type="button"
               onClick={handleGeneratePDF}
             >
               Получить детализированный расчет
-            </Button>
+            </Button> */}
             <Button
               sx={{ backgroundColor: "#D31B2C" }}
               variant="contained"

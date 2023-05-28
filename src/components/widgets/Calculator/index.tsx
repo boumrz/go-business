@@ -8,6 +8,7 @@ import {
   useGetBuildingsListQuery,
   usePostCalculationMutation,
   useGetCapitalBuildingsListQuery,
+  // useGetSavePDFQuery,
   STORAGE,
 } from "@/services";
 // @ts-ignore
@@ -22,6 +23,7 @@ export const Calculator = () => {
   const { handleSetCalculationResults } = useMainContext();
   const [subindustryTransform, setSubindustryTransform] = useState([]);
   const [isResult, setIsResult] = useState<boolean>(false);
+  // const [] = useGetSavePDFQuery();
   const formData = useForm({
     mode: "onSubmit",
     defaultValues: {

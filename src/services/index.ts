@@ -8,3 +8,4 @@ export * from "./BuildingsService/Buildings.service";
 export * from "./RegionService/Region.service";
 export * from "./Storage.service";
 export * from "./CalculationService/Calculation.service";
+export * from "./FilesService/Files.service";
