@@ -15,6 +15,8 @@ export const RootLayout = (props: RootLayoutProps) => {
   const { data: user } = useGetUserQuery(null, {
     skip: !authToken,
   });
+  console.log("user", user);
+
   const token = STORAGE.getToken();
 
   useEffect(() => {

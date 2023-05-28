@@ -6,8 +6,8 @@ import {
   DataIcon,
   StatisticsIcon,
   CountingIcon,
+  //@ts-ignore
 } from "@/assets/icons";
-import s from "./styles.module.css";
 
 const createDataUsers = (inn: string, email: string) => {
   return { inn, email };

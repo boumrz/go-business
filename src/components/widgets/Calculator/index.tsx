@@ -4,7 +4,6 @@ import { Typography, Box, CircularProgress } from "@mui/material";
 import {
   useGetEquipmentListQuery,
   useGetRegionListQuery,
-  useGetAccountingListQuery,
   useGetIndustryListQuery,
   useGetBuildingsListQuery,
   usePostCalculationMutation,
@@ -78,6 +77,7 @@ export const Calculator = () => {
   const { data: buildings, isFetching: isFetchingBuildings } =
     useGetBuildingsListQuery();
   const { data: capitalBuildings, isFetching: isFetchingCapitalBuildings } =
+    //@ts-ignore
     useGetCapitalBuildingsListQuery();
   const { data: industries } = useGetIndustryListQuery({
     name: industry?.name,

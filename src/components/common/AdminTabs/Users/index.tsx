@@ -40,6 +40,7 @@ export const Users = ({ users }: any) => {
     console.log("remove");
   };
 
+  //@ts-ignore
   const handleMore = (_event: any, user: any) => {
     navigate("/user/123");
   };

@@ -1,12 +1,12 @@
 import { createContext, ReactNode, useMemo, useState, useContext } from "react";
-import { CalculationResponse } from '../services/CalculationService/Calculation.dto';
+import { CalculationResponse } from "../services/CalculationService/Calculation.dto";
 
 interface MainContextValue {
   isOpen: boolean;
-  calculationResults: CalculationResponse;
   handleIsOpenAuthModal: () => void;
   handleIsCloseAuthModal: () => void;
-  handleSetCalculationResults: (results: any) => void;
+  handleSetCalculationResults: (results: CalculationResponse) => void;
+  calculationResults?: CalculationResponse;
 }
 
 interface MainProviderProps {
@@ -17,9 +17,11 @@ export const MainContext = createContext({} as MainContextValue);
 
 export const MainProvider = ({ children }: MainProviderProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [calculationResults, setCalculationResults] = useState<CalculationResponse>();
+  const [calculationResults, setCalculationResults] = useState<
+    CalculationResponse | undefined
+  >();
 
-  const handleSetCalculationResults = (results: any) => {
+  const handleSetCalculationResults = (results: CalculationResponse) => {
     setCalculationResults(results);
   };
 
