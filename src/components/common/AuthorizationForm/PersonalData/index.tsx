@@ -1,8 +1,9 @@
-import { Controller, useFormContext } from "react-hook-form";
-import { Box, TextField } from "@mui/material";
+import { Controller, useFormContext, useFormState } from "react-hook-form";
+import { Box, TextField, Typography } from "@mui/material";
 
 export const PersonalData = () => {
   const { control } = useFormContext();
+  const { errors } = useFormState({ control });
 
   return (
     <Box sx={{ display: { xs: "flex" }, flexDirection: { xs: "column" } }}>
@@ -41,14 +42,32 @@ export const PersonalData = () => {
         control={control}
         name="password"
         render={({ field }) => (
-          <TextField type="password" label="Пароль" {...field} />
+          <>
+            <TextField type="password" label="Пароль" {...field} />
+            {errors?.password && (
+              <Typography sx={{ color: "#d31b2c", marginBottom: "24px" }}>
+                пароли не совпадают
+              </Typography>
+            )}
+          </>
         )}
       />
       <Controller
         control={control}
         name="confirmPassword"
         render={({ field }) => (
-          <TextField type="password" label="Подтверждение пароля" {...field} />
+          <>
+            <TextField
+              type="password"
+              label="Подтверждение пароля"
+              {...field}
+            />
+            {errors?.password && (
+              <Typography sx={{ color: "#d31b2c" }}>
+                пароли не совпадают
+              </Typography>
+            )}
+          </>
         )}
       />
     </Box>

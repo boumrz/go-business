@@ -1,6 +1,7 @@
 import { useState } from "react";
 import cn from "clsx";
 import { Chip, Modal, Box, Typography } from "@mui/material";
+import { Close } from "@mui/icons-material";
 import { useMapsContext } from "@/contexts";
 import { MoscowMap } from "@/components";
 // @ts-ignore
@@ -28,7 +29,7 @@ export const MapComponent = () => {
           <MarkerMapIcon /> Открыть карту
         </button>
       </Box>
-      <div className={cn(s.meta, s.empty)}> 
+      <div className={cn(s.meta, s.empty)}>
         {Object.entries(districtsByAreas).map(([key, values]) => (
           <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {(values as Array<any>).length > 0 && (
@@ -61,7 +62,7 @@ export const MapComponent = () => {
       >
         <Box
           className={s.modal}
-          sx={{ bgcolor: "background.paper", boxShadow: 24 }}
+          sx={{ bgcolor: "background.paper", boxShadow: 24, display: "flex" }}
         >
           <MoscowMap />
           <div className={s.meta}>
@@ -105,6 +106,16 @@ export const MapComponent = () => {
                 />
               </span>
             )}
+            <Box
+              sx={{
+                position: "absolute",
+                right: "32px",
+                top: "24px",
+                zIndex: 100000,
+              }}
+            >
+              <Close sx={{ cursor: "pointer" }} onClick={handleClose} />
+            </Box>
           </div>
         </Box>
       </Modal>

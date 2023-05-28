@@ -8,6 +8,7 @@ import {
   useGetBuildingsListQuery,
   usePostCalculationMutation,
   useGetCapitalBuildingsListQuery,
+  STORAGE,
 } from "@/services";
 // @ts-ignore
 import { LayerIcon } from "@/assets/icons";
@@ -17,8 +18,8 @@ import { Results } from "@/components";
 import s from "./styles.module.css";
 
 export const Calculator = () => {
-  const { labels } = useMapsContext();
-  const { calculationResults, handleSetCalculationResults } = useMainContext();
+  const { labels, handleChangeLabels } = useMapsContext();
+  const { handleSetCalculationResults } = useMainContext();
   const [subindustryTransform, setSubindustryTransform] = useState([]);
   const [isResult, setIsResult] = useState<boolean>(false);
   const formData = useForm({
@@ -40,13 +41,11 @@ export const Calculator = () => {
         {
           type: "",
           count: "",
-          cost: "",
         },
       ],
       otherType: [
         {
           type: "",
-          value: "",
         },
       ],
     },
@@ -57,6 +56,8 @@ export const Calculator = () => {
   const legalForm = data?.organizationalAndLegalForm;
   // @ts-ignore
   const industry = data?.industryId;
+  // @ts-ignore
+  const districts = data?.districts;
 
   useEffect(() => {
     if (industry) {
@@ -69,13 +70,42 @@ export const Calculator = () => {
     }
   }, [industry]);
 
+  useEffect(() => {
+    if (districts) {
+      console.log("labels", labels);
+      const tempLabel =
+        districts
+          .filter(({ label }: any) => {
+            let flag = false;
+
+            labels.forEach(({ item }) => {
+              if (item === label) {
+                flag = true;
+              }
+            });
+
+            if (!flag) {
+              return true;
+            }
+
+            return false;
+          })
+          .map(({ label }: any) => ({ item: label })) || [];
+
+      handleChangeLabels([...labels, ...tempLabel]);
+    }
+  }, [districts]);
+
   const [postCalculation, { data: dataResults }] = usePostCalculationMutation();
   const { data: equipments, isFetching: isFetchingEquipment } =
     useGetEquipmentListQuery();
   const { data: regions, isFetching: isFetchingRegion } =
     useGetRegionListQuery();
-  const { data: buildings, isFetching: isFetchingBuildings } =
-    useGetBuildingsListQuery();
+  const {
+    data: buildings,
+    isFetching: isFetchingBuildings,
+    isError,
+  } = useGetBuildingsListQuery();
   const { data: capitalBuildings, isFetching: isFetchingCapitalBuildings } =
     //@ts-ignore
     useGetCapitalBuildingsListQuery();
@@ -83,14 +113,16 @@ export const Calculator = () => {
     name: industry?.name,
   });
 
+  if (isError) {
+    STORAGE.clear();
+  }
+
   useEffect(() => {
     if (dataResults) {
       setIsResult(true);
       handleSetCalculationResults(dataResults);
     }
   }, [dataResults]);
-
-  console.log("calculationResults", calculationResults);
 
   if (
     isFetchingEquipment ||
@@ -105,10 +137,12 @@ export const Calculator = () => {
     );
   }
 
-  const onSubmit = (data: any) => {
-    console.log("data.otherType", data.otherType);
+  const onSubmit = (data: any, event: any) => {
+    if (event.keyCode === 13) {
+      return;
+    }
     postCalculation({
-      regionIds: labels?.map(({ item }: any) => item),
+      regionNames: labels?.map(({ item }: any) => item),
       organizationalAndLegalForm: data.organizationalAndLegalForm?.name || "",
       taxationSystemType: data.taxationSystemType?.name || "",
       industryId: data.industryId?.id || "f4117186-fcfc-11ed-be56-0242ac120002",
@@ -136,13 +170,7 @@ export const Calculator = () => {
       ),
       staffCount: data?.staffCount || "",
       averageSalary: data?.averageSalary || "",
-      otherNeeds: data.otherType?.map(
-        ({ type, value }: any) =>
-          ({
-            first: type,
-            second: value,
-          } || [])
-      ),
+      otherNeeds: data.otherType?.map(({ type }: any) => type) || [],
     });
   };
 
@@ -199,7 +227,8 @@ export const Calculator = () => {
             xs: "none",
             sm: "0px 0px 8px 0px rgba(34, 60, 80, 0.2)",
           },
-          margin: "auto",
+          margin: "0 auto",
+          marginBottom: "64px",
         }}
         className={s.calculator}
       >

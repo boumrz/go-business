@@ -12,10 +12,10 @@ interface RootLayoutProps {
 export const RootLayout = (props: RootLayoutProps) => {
   const { children } = props;
   const { handleToken, token: authToken } = useAuthContext();
+  // @ts-ignore
   const { data: user } = useGetUserQuery(null, {
     skip: !authToken,
   });
-  console.log("user", user);
 
   const token = STORAGE.getToken();
 

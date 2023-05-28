@@ -18,7 +18,7 @@ export interface CalculationRequest {
   taxationSystemType?: string; // General (общая), Simplified (упрощенная), Patent (Патент)
   industryId?: string; // область производства
   subindustryId?: string; // подотрасль производства
-  regionIds?: Array<string>; // передать все районы без округов
+  regionNames?: Array<string>; // передать все районы без округов
   areaOnRegions?: number; // площадь земельного участка
   buildingCostIdAndAreaPairList?: Array<BuildingCostIdAndAreaPairListType>; // id и площадь объектов недвижимости
   otherCapitalBuildingCostIdAndAreaPairList?: Array<BuildingCostIdAndAreaPairListType>; // id и площадь иных объектов недвижимости

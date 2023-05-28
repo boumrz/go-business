@@ -21,7 +21,6 @@ export const CalculatorForm = ({
   onSubmit,
 }: any) => {
   const { control, handleSubmit } = useFormContext();
-  console.log("buildings", buildings);
 
   const { fields: fieldOthers, append: appendOthers } = useFieldArray({
     control,
@@ -198,12 +197,21 @@ export const CalculatorForm = ({
           <MapComponent />
         </Grid>
 
-        <Grid md={3} lg={3} xl={3} item></Grid>
+        <Grid
+          md={3}
+          lg={3}
+          xl={3}
+          sx={{ display: { xs: "none", md: "inherit" } }}
+          item
+        ></Grid>
         <Grid
           md={7}
           lg={7}
           xl={7}
-          sx={{ width: { xs: "320px" }, marginTop: "-40px" }}
+          sx={{
+            width: { xs: "320px" },
+            marginTop: "-40px",
+          }}
           item
         >
           <Controller
@@ -213,7 +221,11 @@ export const CalculatorForm = ({
               <Autocomplete
                 options={districts}
                 onChange={(_, data) => onChange(data)}
-                sx={{ width: "100%" }}
+                sx={{
+                  width: "100%",
+                  display: { xs: "inherit", md: "none" },
+                }}
+                multiple
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -227,11 +239,20 @@ export const CalculatorForm = ({
           />
         </Grid>
         <Grid md={3} lg={3} xl={3} item>
-          <Typography sx={{ width: { xs: "320px" } }} variant="subtitle1">
+          <Typography
+            sx={{ width: { xs: "320px" }, marginTop: { md: "-48px" } }}
+            variant="subtitle1"
+          >
             Штатная численность сотрудников,чел
           </Typography>
         </Grid>
-        <Grid md={7} lg={7} xl={7} sx={{ width: { xs: "320px" } }} item>
+        <Grid
+          md={7}
+          lg={7}
+          xl={7}
+          sx={{ width: { xs: "320px" }, marginTop: { md: "-48px" } }}
+          item
+        >
           <Controller
             control={control}
             name="staffCount"
@@ -427,7 +448,8 @@ export const CalculatorForm = ({
               key={item.key}
               sx={{
                 display: "flex",
-                flexDirection: { xs: "column" },
+                flexDirection: { xs: "column", md: "row" },
+                gap: { md: "24px" },
               }}
             >
               <Controller
@@ -437,7 +459,10 @@ export const CalculatorForm = ({
                   <Autocomplete
                     options={equipments}
                     onChange={(_, data) => onChange(data)}
-                    sx={{ width: "100%" }}
+                    sx={{
+                      minWidth: { md: "270px" },
+                      maxWidth: { md: "294px" },
+                    }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
@@ -449,41 +474,19 @@ export const CalculatorForm = ({
                   />
                 )}
               />
-
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", md: "row" },
-                  gap: { md: "24px" },
-                }}
-              >
-                <Controller
-                  control={control}
-                  name={`equipmentType.${index}.count`}
-                  render={({ field }) => (
-                    <TextField
-                      sx={{ minWidth: "188px" }}
-                      type="text"
-                      label="Кол-во, шт"
-                      placeholder="1"
-                      {...field}
-                    />
-                  )}
-                />
-                <Controller
-                  control={control}
-                  name={`equipmentType.${index}.cost`}
-                  render={({ field }) => (
-                    <TextField
-                      sx={{ width: "100%" }}
-                      type="text"
-                      label="Цена"
-                      placeholder="1 000 000"
-                      {...field}
-                    />
-                  )}
-                />
-              </Box>
+              <Controller
+                control={control}
+                name={`equipmentType.${index}.count`}
+                render={({ field }) => (
+                  <TextField
+                    sx={{ minWidth: "188px" }}
+                    type="text"
+                    label="Кол-во, шт"
+                    placeholder="1"
+                    {...field}
+                  />
+                )}
+              />
             </Box>
           ))}
           <Button
@@ -526,20 +529,6 @@ export const CalculatorForm = ({
                     type="text"
                     label="Потребность"
                     placeholder="1"
-                  />
-                )}
-              />
-
-              <Controller
-                control={control}
-                name={`otherType.${index}.value`}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    sx={{ width: { xs: "100%", md: "188px", lg: "230px" } }}
-                    type="text"
-                    label="Площадь, м.кв."
-                    placeholder="200"
                   />
                 )}
               />

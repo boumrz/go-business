@@ -9,3 +9,8 @@
     fill: #5f6368 !important;
   }
 }
+
+.fakeStats {
+  height: 100vh;
+  background-image: url("./fakeStatistics.svg");
+}

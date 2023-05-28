@@ -14,7 +14,7 @@ export const CalculationService = Api.enhanceEndpoints({
           taxationSystemType: params.taxationSystemType,
           industryId: params.industryId,
           subindustryId: params.subindustryId,
-          regionIds: params.regionIds,
+          regionNames: params.regionNames,
           areaOnRegions: Number(params.areaOnRegions),
           buildingCostIdAndAreaPairList: params.buildingCostIdAndAreaPairList,
           otherCapitalBuildingCostIdAndAreaPairList:

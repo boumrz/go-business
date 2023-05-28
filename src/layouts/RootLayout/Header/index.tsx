@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Box, AppBar, Toolbar, Modal, Typography } from "@mui/material";
-import { ManageAccounts, Home } from "@mui/icons-material";
+import { ManageAccounts, Home, Close } from "@mui/icons-material";
 import { useMainContext, useAuthContext } from "@/contexts";
 // @ts-ignore
 import { LogoIcon, UserIcon } from "@/assets/icons";
@@ -89,8 +89,22 @@ export const Header = () => {
       >
         <Box
           className={s.auth}
-          sx={{ bgcolor: "background.paper", boxShadow: 24 }}
+          sx={{
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            width: { xs: "320px", sm: "448px" },
+          }}
         >
+          <Box
+            sx={{
+              position: "absolute",
+              right: "32px",
+              top: "24px",
+              zIndex: 100000,
+            }}
+          >
+            <Close sx={{ cursor: "pointer" }} onClick={handleClose} />
+          </Box>
           <Authorization />
         </Box>
       </Modal>

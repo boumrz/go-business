@@ -25,11 +25,18 @@ export const Registration = ({
     mode: "onSubmit",
   });
 
-  const { handleSubmit } = formData;
+  const { handleSubmit, setError, getValues, clearErrors } = formData;
 
   const onRegister = (formData: any) => {
-    console.log("onSubmitRegistration", formData);
     postRegister(formData);
+  };
+
+  const validateNextStep = (event: any) => {
+    if (getValues("password") === getValues("confirmPassword")) {
+      handleNextStep(event);
+      clearErrors();
+    }
+    setError("password", { type: "custom", message: "пароли не совпадают" });
   };
 
   useEffect(() => {
@@ -71,7 +78,7 @@ export const Registration = ({
               <button
                 className={s.button}
                 type="button"
-                onClick={handleNextStep}
+                onClick={validateNextStep}
               >
                 Далее
               </button>

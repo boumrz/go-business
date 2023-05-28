@@ -1,13 +1,12 @@
 import { SyntheticEvent, useState } from "react";
 import { Box, Stack, Chip, Typography } from "@mui/material";
-import { Users, Calculations, Counting, Statistics } from "@/components";
+import { Users, Calculations, Counting } from "@/components";
 import {
   UsersIcon,
-  DataIcon,
   StatisticsIcon,
-  CountingIcon,
   //@ts-ignore
 } from "@/assets/icons";
+import s from "./styles.module.css";
 
 const createDataUsers = (inn: string, email: string) => {
   return { inn, email };
@@ -17,13 +16,13 @@ const createDataCalculation = (date: string, user: string, amount: string) => {
   return { date, user, amount };
 };
 
-const createDataStatistics = (
-  statistic1: string,
-  statistic2: string,
-  statistic3: string
-) => {
-  return { statistic1, statistic2, statistic3 };
-};
+// const createDataStatistics = (
+//   statistic1: string,
+//   statistic2: string,
+//   statistic3: string
+// ) => {
+//   return { statistic1, statistic2, statistic3 };
+// };
 
 const rows = [
   createDataUsers("770666666666", "ivanov@mail.ru"),
@@ -35,11 +34,11 @@ const createDataCounting = (data1: string, data2: string, data3: string) => {
   return { data1, data2, data3 };
 };
 
-const statistics = [
-  createDataStatistics("Статистика 1", "Статистика 2", "Статистика 3"),
-  createDataStatistics("Статистика 1", "Статистика 2", "Статистика 3"),
-  createDataStatistics("Статистика 1", "Статистика 2", "Статистика 3"),
-];
+// const statistics = [
+//   createDataStatistics("Статистика 1", "Статистика 2", "Статистика 3"),
+//   createDataStatistics("Статистика 1", "Статистика 2", "Статистика 3"),
+//   createDataStatistics("Статистика 1", "Статистика 2", "Статистика 3"),
+// ];
 
 const counting = [
   createDataCounting("Данные 1", "Данные 2", "Данные 3"),
@@ -114,7 +113,7 @@ export const AdminPanel = () => {
               </Box>
             }
           />
-          <Chip
+          {/* <Chip
             sx={{
               backgroundColor: value === 1 ? "#EEF3FA" : "white",
               border: value === 1 ? "" : "1px solid #CFD0D2",
@@ -135,7 +134,7 @@ export const AdminPanel = () => {
                 </Typography>
               </Box>
             }
-          />
+          /> */}
           <Chip
             sx={{
               backgroundColor: value === 2 ? "#EEF3FA" : "white",
@@ -158,7 +157,7 @@ export const AdminPanel = () => {
               </Box>
             }
           />
-          <Chip
+          {/* <Chip
             sx={{
               backgroundColor: value === 3 ? "#EEF3FA" : "white",
               border: value === 3 ? "" : "1px solid #CFD0D2",
@@ -179,7 +178,7 @@ export const AdminPanel = () => {
                 </Typography>
               </Box>
             }
-          />
+          /> */}
         </Stack>
         <TabPanel value={value} index={0}>
           <Typography
@@ -216,9 +215,10 @@ export const AdminPanel = () => {
               marginBottom: "40px",
             }}
           >
-            Статистика
+            Статистика (в разработке)
           </Typography>
-          <Statistics statistics={statistics} />
+          <div className={s.fakeStats}></div>
+          {/* <Statistics statistics={statistics} /> */}
         </TabPanel>
         <TabPanel value={value} index={3}>
           <Typography

@@ -7,6 +7,7 @@ import {
   CardContent,
   Card,
 } from "@mui/material";
+import { Close } from "@mui/icons-material";
 // @ts-ignore
 import { LayerIcon, InfoIcon } from "@/assets/icons";
 import { useMainContext } from "@/contexts";
@@ -14,14 +15,14 @@ import s from "./styles.module.css";
 
 const style = {
   position: "absolute" as "absolute",
-  top: "50%",
+  top: "55%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   borderRadius: "16px",
   boxShadow: "0px 0px 8px 0px rgba(34, 60, 80, 0.2)",
-  width: 824,
+  width: { xs: "320px", sm: "480px", md: "824px" },
   overflow: "auto",
-  height: "85%",
+  height: "90%",
   bgcolor: "background.paper",
   border: "none",
 };
@@ -41,6 +42,19 @@ export const Results = ({ isResult, handleResultModal }: any) => {
       onClose={() => handleResultModal(false)}
     >
       <Box sx={style}>
+        <Box
+          sx={{
+            position: "absolute",
+            right: "32px",
+            top: "24px",
+            zIndex: 100000,
+          }}
+        >
+          <Close
+            sx={{ cursor: "pointer" }}
+            onClick={() => handleResultModal(false)}
+          />
+        </Box>
         <Box
           sx={{
             boxShadow: {
@@ -75,7 +89,13 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                 Общий объем инвестиций составит
               </Typography>
             </Box>
-            <Typography className={s.title} variant="h2">
+            <Typography
+              sx={{
+                fontSize: { xs: "24px !important", sm: "36px !important" },
+              }}
+              className={s.title}
+              variant="h2"
+            >
               {calculationResults?.totalCostMinOfAll || "0"}&nbsp;–&nbsp;
               {calculationResults?.totalCostMaxOfAll || "0"}
             </Typography>
@@ -95,6 +115,7 @@ export const Results = ({ isResult, handleResultModal }: any) => {
             <Grid
               container
               rowSpacing={2}
+              sx={{ display: { xs: "grid", sm: "flex" } }}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
               marginBottom={5}
             >
@@ -103,19 +124,19 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                   sx={{ fontSize: 16, fontWeight: 500 }}
                   variant="body1"
                 >
-                  Капитальные вложения
+                  Капитальные&nbsp;вложения
                 </Typography>
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="body1">
-                  {calculationResults?.capitalInvestmentsTotalMinCost}
+                  {calculationResults?.capitalInvestmentsTotalMinCost || "0"}
                   &nbsp;-&nbsp;
-                  {calculationResults?.capitalInvestmentsTotalMaxCost}
+                  {calculationResults?.capitalInvestmentsTotalMaxCost || "0"}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
                 <Typography className={s.secondary} variant="body1">
-                  - Строительство зданий
+                  -&nbsp;Строительство зданий
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -126,7 +147,7 @@ export const Results = ({ isResult, handleResultModal }: any) => {
               </Grid>
               <Grid item xs={6}>
                 <Typography className={s.secondary} variant="body1">
-                  - Прочие объекты капитального строительства
+                  -&nbsp;Прочие объекты капитального строительства
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -141,6 +162,7 @@ export const Results = ({ isResult, handleResultModal }: any) => {
               container
               rowSpacing={2}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+              sx={{ display: { xs: "grid", sm: "flex" } }}
               marginBottom={5}
             >
               <Grid item xs={6} paddingBottom={1}>
@@ -158,7 +180,7 @@ export const Results = ({ isResult, handleResultModal }: any) => {
               </Grid>
               <Grid item xs={6}>
                 <Typography className={s.secondary} variant="body1">
-                  - Приобретение оборудования
+                  -&nbsp;Приобретение оборудования
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -169,7 +191,7 @@ export const Results = ({ isResult, handleResultModal }: any) => {
               </Grid>
               <Grid item xs={6}>
                 <Typography className={s.secondary} variant="body1">
-                  - Найм персонала
+                  -&nbsp;Найм персонала
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -180,7 +202,7 @@ export const Results = ({ isResult, handleResultModal }: any) => {
               </Grid>
               <Grid item xs={6}>
                 <Typography className={s.secondary} variant="body1">
-                  - Покупка патента
+                  -&nbsp;Покупка патента
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -193,7 +215,6 @@ export const Results = ({ isResult, handleResultModal }: any) => {
           </Box>
           <Card
             sx={{
-              minWidth: 275,
               backgroundColor: "#EEF3FA",
               padding: "12px",
               marginBottom: "72px",
@@ -202,7 +223,7 @@ export const Results = ({ isResult, handleResultModal }: any) => {
             <CardContent>
               <Typography
                 sx={{
-                  fontSize: 20,
+                  fontSize: { xs: 16, sm: 20 },
                   fontWeight: 500,
                   color: "#202124",
                   display: "flex",
@@ -215,10 +236,20 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                 gutterBottom
               >
                 Последующие расходы, которые понесёт организация <br /> после
-                начала работы (стоимость указана за 1 месяц) <InfoIcon />
+                начала работы (стоимость указана за 1 месяц){" "}
+                <Box
+                  sx={{
+                    display: { xs: "none", sm: "block" },
+                    width: 20,
+                    height: 20,
+                  }}
+                >
+                  <InfoIcon style={{ width: 20, height: 20 }} />
+                </Box>
               </Typography>
               <Grid
                 container
+                sx={{ display: { xs: "grid", sm: "flex" } }}
                 rowSpacing={2}
                 columnSpacing={{ xs: 1, sm: 2, md: 3 }}
                 marginBottom={5}
@@ -232,11 +263,11 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">104'980'000 руб.</Typography>
+                  <Typography variant="body1">104'980'000&nbsp;руб.</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={s.secondary} variant="body1">
-                    - Заработная плата
+                    -&nbsp;Заработная плата
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
@@ -246,16 +277,17 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={s.secondary} variant="body1">
-                    - Налоги
+                    -&nbsp;Налоги
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">2'500'000 руб.</Typography>
+                  <Typography variant="body1">2'500'000&nbsp;руб.</Typography>
                 </Grid>
               </Grid>
               <Grid
                 container
                 rowSpacing={2}
+                sx={{ display: { xs: "grid", sm: "flex" } }}
                 columnSpacing={{ xs: 1, sm: 2, md: 3 }}
                 marginBottom={5}
               >
@@ -268,61 +300,65 @@ export const Results = ({ isResult, handleResultModal }: any) => {
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">104'980'000 руб.</Typography>
+                  <Typography variant="body1">104'980'000&nbsp;руб.</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={s.secondary} variant="body1">
-                    - На землю
+                    -&nbsp;На землю
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">2'500'000 руб.</Typography>
+                  <Typography variant="body1">2'500'000&nbsp;руб.</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={s.secondary} variant="body1">
-                    - На имущество
+                    -&nbsp;На имущество
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">2'500'000 руб.</Typography>
+                  <Typography variant="body1">2'500'000&nbsp;руб.</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={s.secondary} variant="body1">
-                    - Транспортный
+                    -&nbsp;Транспортный
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">2'500'000 руб.</Typography>
+                  <Typography variant="body1">2'500'000&nbsp;руб.</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={s.secondary} variant="body1">
-                    - Прочие
+                    -&nbsp;Прочие
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">2'500'000 руб.</Typography>
+                  <Typography variant="body1">2'500'000&nbsp;руб.</Typography>
                 </Grid>
               </Grid>
               <Grid
                 container
+                sx={{ display: { xs: "grid", sm: "flex" } }}
                 rowSpacing={2}
                 columnSpacing={{ xs: 1, sm: 2, md: 3 }}
                 marginBottom={5}
               >
                 <Grid item xs={6} paddingBottom={1}>
                   <Typography
-                    sx={{ fontSize: 16, fontWeight: 500 }}
+                    sx={{
+                      fontSize: 16,
+                      fontWeight: 500,
+                    }}
                     variant="body1"
                   >
                     Исходные расходы
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1">104'980'000 руб.</Typography>
+                  <Typography variant="body1">104'980'000&nbsp;руб.</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={s.secondary} variant="body1">
-                    - Ведение бухгалтерского учёта
+                    -&nbsp;Ведение бухгалтерского учёта
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
@@ -337,6 +373,7 @@ export const Results = ({ isResult, handleResultModal }: any) => {
           <Box
             sx={{
               display: "flex",
+              flexDirection: { xs: "column", md: "row" },
               justifyContent: "space-between",
               gap: "20px;",
             }}

@@ -10,6 +10,12 @@ export const RegionService = Api.enhanceEndpoints({
         method: "GET",
       }),
       providesTags: ["REGION"],
+      transformResponse: (elements: Array<any>) => {
+        return elements.map((item) => ({
+          ...item,
+          label: item.name,
+        }));
+      },
     }),
   }),
 });
