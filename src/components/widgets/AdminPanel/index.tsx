@@ -1,6 +1,13 @@
 import { SyntheticEvent, useState } from "react";
-import { Box, Tabs, Tab } from "@mui/material";
+import { Box, Stack, Chip, Typography } from "@mui/material";
 import { Users, Calculations, Counting, Statistics } from "@/components";
+import {
+  UsersIcon,
+  DataIcon,
+  StatisticsIcon,
+  CountingIcon,
+} from "@/assets/icons";
+import s from "./styles.module.css";
 
 const createDataUsers = (inn: string, email: string) => {
   return { inn, email };
@@ -82,32 +89,148 @@ export const AdminPanel = () => {
   };
 
   return (
-    <Box sx={{ paddingTop: "32px", paddingLeft: "64px", paddingRight: "64px" }}>
+    <Box sx={{ paddingTop: "16px", paddingLeft: "64px", paddingRight: "64px" }}>
       <Box>
-        <Box
-          sx={{ borderBottom: 1, borderColor: "divider", marginBottom: "16px" }}
-        >
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-          >
-            <Tab label="Пользователи" />
-            <Tab label="История расчетов" />
-            <Tab label="Статистика" />
-            <Tab label="Данные для расчетов" />
-          </Tabs>
-        </Box>
+        <Stack sx={{ marginBottom: "60px" }} direction="row" spacing={1}>
+          <Chip
+            sx={{
+              backgroundColor: value === 0 ? "#EEF3FA" : "white",
+              border: value === 0 ? "" : "1px solid #CFD0D2",
+              padding: "4px 8px 4px 8px",
+            }}
+            size="small"
+            onClick={(event: any) => handleChange(event, 0)}
+            label={
+              <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <UsersIcon />{" "}
+                <Typography
+                  sx={{
+                    fontSize: 14,
+                    color: value === 0 ? "#3A6CAB" : "#5F6368",
+                  }}
+                >
+                  Пользователи
+                </Typography>
+              </Box>
+            }
+          />
+          <Chip
+            sx={{
+              backgroundColor: value === 1 ? "#EEF3FA" : "white",
+              border: value === 1 ? "" : "1px solid #CFD0D2",
+              padding: "4px 8px 4px 8px",
+            }}
+            size="small"
+            onClick={(event: any) => handleChange(event, 1)}
+            label={
+              <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <CountingIcon />{" "}
+                <Typography
+                  sx={{
+                    fontSize: 14,
+                    color: value === 1 ? "#3A6CAB" : "#5F6368",
+                  }}
+                >
+                  История расчетов
+                </Typography>
+              </Box>
+            }
+          />
+          <Chip
+            sx={{
+              backgroundColor: value === 2 ? "#EEF3FA" : "white",
+              border: value === 2 ? "" : "1px solid #CFD0D2",
+              padding: "4px 8px 4px 8px",
+            }}
+            size="small"
+            onClick={(event: any) => handleChange(event, 2)}
+            label={
+              <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <StatisticsIcon />{" "}
+                <Typography
+                  sx={{
+                    fontSize: 14,
+                    color: value === 2 ? "#3A6CAB" : "#5F6368",
+                  }}
+                >
+                  Статистика
+                </Typography>
+              </Box>
+            }
+          />
+          <Chip
+            sx={{
+              backgroundColor: value === 3 ? "#EEF3FA" : "white",
+              border: value === 3 ? "" : "1px solid #CFD0D2",
+              padding: "4px 8px 4px 8px",
+            }}
+            size="small"
+            onClick={(event: any) => handleChange(event, 3)}
+            label={
+              <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <DataIcon />{" "}
+                <Typography
+                  sx={{
+                    fontSize: 14,
+                    color: value === 3 ? "#3A6CAB" : "#5F6368",
+                  }}
+                >
+                  Данные для расчетов
+                </Typography>
+              </Box>
+            }
+          />
+        </Stack>
         <TabPanel value={value} index={0}>
+          <Typography
+            sx={{
+              fontSize: 36,
+              fontWeight: 500,
+              lineHeight: "44px",
+              marginBottom: "40px",
+            }}
+          >
+            Пользователи
+          </Typography>
           <Users users={rows} />
         </TabPanel>
         <TabPanel value={value} index={1}>
+          <Typography
+            sx={{
+              fontSize: 36,
+              fontWeight: 500,
+              lineHeight: "44px",
+              marginBottom: "40px",
+            }}
+          >
+            История расчётов
+          </Typography>
           <Calculations calculations={calculations} />
         </TabPanel>
         <TabPanel value={value} index={2}>
+          <Typography
+            sx={{
+              fontSize: 36,
+              fontWeight: 500,
+              lineHeight: "44px",
+              marginBottom: "40px",
+            }}
+          >
+            Статистика
+          </Typography>
           <Statistics statistics={statistics} />
         </TabPanel>
         <TabPanel value={value} index={3}>
+          <Typography
+            sx={{
+              fontSize: 36,
+              fontWeight: 500,
+              lineHeight: "44px",
+              marginBottom: "40px",
+            }}
+          >
+            Данные для расчётов
+          </Typography>
           <Counting counting={counting} />
         </TabPanel>
       </Box>

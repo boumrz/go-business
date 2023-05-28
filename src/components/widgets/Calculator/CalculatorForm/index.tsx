@@ -1,4 +1,4 @@
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useFormContext, useFieldArray } from "react-hook-form";
 import {
   Typography,
   Box,
@@ -10,23 +10,55 @@ import {
 import { MapComponent } from "@/components";
 import s from "../styles.module.css";
 
-const top100Films = [
-  { name: "123", label: "The Shawshank Redemption", year: 1994 },
-  { name: "efdsf", label: "The Godfather", year: 1972 },
-  { name: "hgghg", label: "The Godfather: Part II", year: 1974 },
-  { name: "wr", label: "The Dark Knight", year: 2008 },
-  { name: "vc", label: "12 Angry Men", year: 1957 },
-];
-
 export const CalculatorForm = ({
   subindustryTransform,
   districts,
+  capitalBuildings,
+  buildings,
   industries,
   equipments,
   legalForm,
   onSubmit,
 }: any) => {
   const { control, handleSubmit } = useFormContext();
+  console.log("buildings", buildings);
+
+  const { fields: fieldOthers, append: appendOthers } = useFieldArray({
+    control,
+    name: "otherType",
+  });
+
+  const { fields: fieldBuildings, append: appendBuildings } = useFieldArray({
+    control,
+    name: "typeBuild",
+  });
+
+  const { fields: fieldCapitals, append: appendCapital } = useFieldArray({
+    control,
+    name: "capitalType",
+  });
+
+  const { fields: fieldEquipments, append: appendEquipments } = useFieldArray({
+    control,
+    name: "equipmentType",
+  });
+
+  const handleAddOthers = () => {
+    appendOthers({ type: "", value: "" });
+  };
+
+  const handleAddEquipments = () => {
+    appendEquipments({ count: "", cost: "", type: "" });
+  };
+
+  const handleAddBuilding = () => {
+    appendBuildings({ value: "", type: "" });
+  };
+
+  const handleAddCapitals = () => {
+    appendCapital({ value: "", type: "" });
+  };
+
   return (
     <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
       <Typography className={s.title} variant="h3">
@@ -48,13 +80,12 @@ export const CalculatorForm = ({
         <Grid md={7} lg={7} xl={7} sx={{ width: { xs: "320px" } }} item>
           <Controller
             control={control}
-            name="legalForm"
+            name="organizationalAndLegalForm"
             render={({ field: { ref, onChange, ...field } }) => (
               <Autocomplete
                 options={[
-                  { name: "ООО", label: "ООО" },
-                  { name: "АО", label: "АО" },
-                  { name: "ИП", label: "ИП" },
+                  { name: "LLC", label: "Юридическое лицо" },
+                  { name: "IE", label: "ИП" },
                 ]}
                 onChange={(_, data) => onChange(data)}
                 sx={{ width: "100%" }}
@@ -76,14 +107,13 @@ export const CalculatorForm = ({
             <Grid md={7} lg={7} xl={7} sx={{ width: { xs: "320px" } }} item>
               <Controller
                 control={control}
-                name="taxType"
+                name="taxationSystemType"
                 render={({ field: { ref, onChange, ...field } }) => (
                   <Autocomplete
                     options={[
-                      { name: "Общая", label: "Общая" },
-                      { name: "Упрощенная", label: "Упрощенная" },
-                      { name: "ЕСХН", label: "ЕСХН" },
-                      { name: "Патент", label: "Патент" },
+                      { name: "general", label: "Общая" },
+                      { name: "simplified", label: "Упрощенная" },
+                      { name: "patent", label: "Патент" },
                     ]}
                     onChange={(_, data) => onChange(data)}
                     sx={{ width: "100%" }}
@@ -109,7 +139,7 @@ export const CalculatorForm = ({
         <Grid md={7} lg={7} xl={7} sx={{ width: { xs: "320px" } }} item>
           <Controller
             control={control}
-            name="industry"
+            name="industryId"
             render={({ field: { ref, onChange, ...field } }) => (
               <Autocomplete
                 options={industries}
@@ -133,7 +163,7 @@ export const CalculatorForm = ({
             <Grid md={7} lg={7} xl={7} sx={{ width: { xs: "320px" } }} item>
               <Controller
                 control={control}
-                name="subindustry"
+                name="subindustryId"
                 render={({ field: { ref, onChange, ...field } }) => (
                   <Autocomplete
                     options={subindustryTransform}
@@ -204,7 +234,7 @@ export const CalculatorForm = ({
         <Grid md={7} lg={7} xl={7} sx={{ width: { xs: "320px" } }} item>
           <Controller
             control={control}
-            name="counter"
+            name="staffCount"
             render={({ field }) => (
               <TextField
                 sx={{ width: { xs: "100%", md: "294px" } }}
@@ -224,7 +254,7 @@ export const CalculatorForm = ({
         <Grid md={7} lg={7} xl={7} sx={{ width: { xs: "320px" } }} item>
           <Controller
             control={control}
-            name="average"
+            name="averageSalary"
             render={({ field }) => (
               <TextField
                 sx={{ width: { xs: "100%", md: "294px" } }}
@@ -244,7 +274,7 @@ export const CalculatorForm = ({
         <Grid md={7} lg={7} xl={7} sx={{ width: { xs: "320px" } }} item>
           <Controller
             control={control}
-            name="area"
+            name="areaOnRegions"
             render={({ field }) => (
               <TextField
                 sx={{ width: { xs: "100%", md: "188px" } }}
@@ -262,135 +292,9 @@ export const CalculatorForm = ({
           </Typography>
         </Grid>
         <Grid md={7} lg={7} xl={7} sx={{ width: { xs: "320px" } }} item>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: { xs: "column", md: "row" },
-              gap: { md: "24px" },
-            }}
-          >
-            <Controller
-              control={control}
-              name="typeBuild"
-              render={({ field: { ref, onChange, ...field } }) => (
-                <Autocomplete
-                  options={top100Films}
-                  onChange={(_, data) => onChange(data)}
-                  sx={{
-                    minWidth: { md: "270px" },
-                    maxWidth: { md: "294px" },
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      {...field}
-                      inputRef={ref}
-                      label="Тип здания"
-                    />
-                  )}
-                />
-              )}
-            />
-
-            <Controller
-              control={control}
-              name="squareBuild"
-              render={({ field }) => (
-                <TextField
-                  sx={{ width: { xs: "100%", md: "188px", lg: "230px" } }}
-                  type="text"
-                  label="Площадь, м.кв."
-                  placeholder="1 000"
-                  {...field}
-                />
-              )}
-            />
-          </Box>
-        </Grid>
-        <Grid md={3} lg={3} xl={3} item>
-          <Typography sx={{ width: { xs: "320px" } }} variant="subtitle1">
-            Иные капитальные сооружения
-          </Typography>
-        </Grid>
-        <Grid md={7} lg={7} xl={7} sx={{ width: { xs: "320px" } }} item>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: { xs: "column", md: "row" },
-              gap: { md: "24px" },
-            }}
-          >
-            <Controller
-              control={control}
-              name="capitalType"
-              render={({ field: { ref, onChange, ...field } }) => (
-                <Autocomplete
-                  options={top100Films}
-                  onChange={(_, data) => onChange(data)}
-                  sx={{
-                    minWidth: { md: "270px" },
-                    maxWidth: { md: "294px" },
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      {...field}
-                      inputRef={ref}
-                      label="Тип здания"
-                    />
-                  )}
-                />
-              )}
-            />
-
-            <Controller
-              control={control}
-              name="capitalSquare"
-              render={({ field }) => (
-                <TextField
-                  sx={{ width: { xs: "100%", md: "188px", lg: "230px" } }}
-                  type="text"
-                  label="Площадь, м.кв."
-                  placeholder="1 000"
-                  {...field}
-                />
-              )}
-            />
-          </Box>
-        </Grid>
-        <Grid md={3} lg={3} xl={3} item>
-          <Typography sx={{ width: { xs: "320px" } }} variant="subtitle1">
-            Оборудование
-          </Typography>
-        </Grid>
-        <Grid md={7} lg={7} xl={7} sx={{ width: { xs: "320px" } }} item>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: { xs: "column" },
-            }}
-          >
-            <Controller
-              control={control}
-              name="equipmentType"
-              render={({ field: { ref, onChange, ...field } }) => (
-                <Autocomplete
-                  options={equipments}
-                  onChange={(_, data) => onChange(data)}
-                  sx={{ width: "100%" }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      {...field}
-                      inputRef={ref}
-                      label="Тип оборудования"
-                    />
-                  )}
-                />
-              )}
-            />
-
+          {fieldBuildings.map((item: any, index: any) => (
             <Box
+              key={item.key}
               sx={{
                 display: "flex",
                 flexDirection: { xs: "column", md: "row" },
@@ -399,32 +303,200 @@ export const CalculatorForm = ({
             >
               <Controller
                 control={control}
-                name="equipmentQuantity"
-                render={({ field }) => (
-                  <TextField
-                    sx={{ minWidth: "188px" }}
-                    type="text"
-                    label="Кол-во, шт"
-                    placeholder="1"
-                    {...field}
+                name={`typeBuild.${index}.type`}
+                render={({ field: { ref, onChange, ...field } }) => (
+                  <Autocomplete
+                    options={buildings}
+                    onChange={(_, data) => onChange(data)}
+                    sx={{
+                      minWidth: { md: "270px" },
+                      maxWidth: { md: "294px" },
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        {...field}
+                        inputRef={ref}
+                        label="Тип здания"
+                      />
+                    )}
                   />
                 )}
               />
+
               <Controller
                 control={control}
-                name="equipmentCount"
+                name={`typeBuild.${index}.value`}
                 render={({ field }) => (
                   <TextField
-                    sx={{ width: "100%" }}
+                    sx={{ width: { xs: "100%", md: "188px", lg: "230px" } }}
                     type="text"
-                    label="Цена"
-                    placeholder="1 000 000"
+                    label="Площадь, м.кв."
+                    placeholder="1 000"
                     {...field}
                   />
                 )}
               />
             </Box>
-          </Box>
+          ))}
+          <Button
+            sx={{
+              color: "#3A6CAB",
+              paddingLeft: 0,
+              backgroundColor: "white",
+              "&:hover": { backgroundColor: "white" },
+            }}
+            onClick={handleAddBuilding}
+          >
+            + Добавить объект
+          </Button>
+        </Grid>
+        <Grid md={3} lg={3} xl={3} item>
+          <Typography sx={{ width: { xs: "320px" } }} variant="subtitle1">
+            Иные капитальные сооружения
+          </Typography>
+        </Grid>
+        <Grid md={7} lg={7} xl={7} sx={{ width: { xs: "320px" } }} item>
+          {fieldCapitals.map((item: any, index: any) => (
+            <Box
+              key={item.key}
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", md: "row" },
+                gap: { md: "24px" },
+              }}
+            >
+              <Controller
+                control={control}
+                name={`capitalType.${index}.type`}
+                render={({ field: { ref, onChange, ...field } }) => (
+                  <Autocomplete
+                    options={capitalBuildings}
+                    onChange={(_, data) => onChange(data)}
+                    sx={{
+                      minWidth: { md: "270px" },
+                      maxWidth: { md: "294px" },
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        {...field}
+                        inputRef={ref}
+                        label="Тип здания"
+                      />
+                    )}
+                  />
+                )}
+              />
+
+              <Controller
+                control={control}
+                name={`capitalType.${index}.value`}
+                render={({ field }) => (
+                  <TextField
+                    sx={{ width: { xs: "100%", md: "188px", lg: "230px" } }}
+                    type="text"
+                    label="Площадь, м.кв."
+                    placeholder="1 000"
+                    {...field}
+                  />
+                )}
+              />
+            </Box>
+          ))}
+          <Button
+            sx={{
+              color: "#3A6CAB",
+              paddingLeft: 0,
+              backgroundColor: "white",
+              "&:hover": { backgroundColor: "white" },
+            }}
+            onClick={handleAddCapitals}
+          >
+            + Добавить объект
+          </Button>
+        </Grid>
+        <Grid md={3} lg={3} xl={3} item>
+          <Typography sx={{ width: { xs: "320px" } }} variant="subtitle1">
+            Оборудование
+          </Typography>
+        </Grid>
+        <Grid md={7} lg={7} xl={7} sx={{ width: { xs: "320px" } }} item>
+          {fieldEquipments.map((item: any, index: any) => (
+            <Box
+              key={item.key}
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column" },
+              }}
+            >
+              <Controller
+                control={control}
+                name={`equipmentType.${index}.type`}
+                render={({ field: { ref, onChange, ...field } }) => (
+                  <Autocomplete
+                    options={equipments}
+                    onChange={(_, data) => onChange(data)}
+                    sx={{ width: "100%" }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        {...field}
+                        inputRef={ref}
+                        label="Тип оборудования"
+                      />
+                    )}
+                  />
+                )}
+              />
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", md: "row" },
+                  gap: { md: "24px" },
+                }}
+              >
+                <Controller
+                  control={control}
+                  name={`equipmentType.${index}.count`}
+                  render={({ field }) => (
+                    <TextField
+                      sx={{ minWidth: "188px" }}
+                      type="text"
+                      label="Кол-во, шт"
+                      placeholder="1"
+                      {...field}
+                    />
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name={`equipmentType.${index}.cost`}
+                  render={({ field }) => (
+                    <TextField
+                      sx={{ width: "100%" }}
+                      type="text"
+                      label="Цена"
+                      placeholder="1 000 000"
+                      {...field}
+                    />
+                  )}
+                />
+              </Box>
+            </Box>
+          ))}
+          <Button
+            sx={{
+              color: "#3A6CAB",
+              paddingLeft: 0,
+              backgroundColor: "white",
+              "&:hover": { backgroundColor: "white" },
+            }}
+            onClick={handleAddEquipments}
+          >
+            + Добавить тип оборудования
+          </Button>
         </Grid>
         <Grid md={3} lg={3} xl={3} item>
           <Typography sx={{ width: { xs: "320px" } }} variant="subtitle1">
@@ -432,50 +504,58 @@ export const CalculatorForm = ({
           </Typography>
         </Grid>
         <Grid md={7} lg={7} xl={7} sx={{ width: { xs: "320px" } }} item>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: { xs: "column", md: "row" },
-              gap: { md: "24px" },
-            }}
-          >
-            <Controller
-              control={control}
-              name="otherType"
-              render={({ field: { ref, onChange, ...field } }) => (
-                <Autocomplete
-                  options={top100Films}
-                  onChange={(_, data) => onChange(data)}
-                  sx={{
-                    minWidth: { md: "270px" },
-                    maxWidth: { md: "294px" },
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      {...field}
-                      inputRef={ref}
-                      label="Иное 1"
-                    />
-                  )}
-                />
-              )}
-            />
+          {fieldOthers.map((item: any, index: any) => (
+            <Box
+              key={item.key}
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", md: "row" },
+                gap: { md: "24px" },
+              }}
+            >
+              <Controller
+                control={control}
+                name={`otherType.${index}.type`}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    sx={{
+                      minWidth: { md: "270px" },
+                      maxWidth: { md: "294px" },
+                    }}
+                    type="text"
+                    label="Потребность"
+                    placeholder="1"
+                  />
+                )}
+              />
 
-            <Controller
-              control={control}
-              name="otherSquare"
-              render={({ field }) => (
-                <TextField
-                  sx={{ width: { xs: "100%", md: "188px", lg: "230px" } }}
-                  type="text"
-                  label="Площадь, м.кв."
-                  placeholder="200"
-                  {...field}
-                />
-              )}
-            />
-          </Box>
+              <Controller
+                control={control}
+                name={`otherType.${index}.value`}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    sx={{ width: { xs: "100%", md: "188px", lg: "230px" } }}
+                    type="text"
+                    label="Площадь, м.кв."
+                    placeholder="200"
+                  />
+                )}
+              />
+            </Box>
+          ))}
+          <Button
+            sx={{
+              color: "#3A6CAB",
+              paddingLeft: 0,
+              backgroundColor: "white",
+              "&:hover": { backgroundColor: "white" },
+            }}
+            onClick={handleAddOthers}
+          >
+            + Добавить объект
+          </Button>
         </Grid>
       </Grid>
       <Button

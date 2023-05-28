@@ -45,7 +45,12 @@ export const Final = () => {
         control={control}
         name="industry"
         render={({ field }) => (
-          <TextField type="text" label="Иванов и компания" {...field} />
+          <TextField
+            type="text"
+            label="Отрасль"
+            placeholder="Металлургия"
+            {...field}
+          />
         )}
       />
       <Controller
@@ -64,9 +69,9 @@ export const Final = () => {
       />
       <Controller
         control={control}
-        name="job"
+        name="position"
         render={({ field }) => (
-          <TextField type="text" label="Генеральный директор" {...field} />
+          <TextField type="text" label="Должность" {...field} />
         )}
       />
     </Box>

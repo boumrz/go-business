@@ -4,29 +4,60 @@ import { Typography, Box, CircularProgress } from "@mui/material";
 import {
   useGetEquipmentListQuery,
   useGetRegionListQuery,
-  useGetDistrictListQuery,
   useGetAccountingListQuery,
   useGetIndustryListQuery,
+  useGetBuildingsListQuery,
+  usePostCalculationMutation,
+  useGetCapitalBuildingsListQuery,
 } from "@/services";
 // @ts-ignore
 import { LayerIcon } from "@/assets/icons";
-import { useMapsContext } from "@/contexts";
+import { useMapsContext, useMainContext } from "@/contexts";
 import { CalculatorForm } from "./CalculatorForm";
+import { Results } from "@/components";
 import s from "./styles.module.css";
 
 export const Calculator = () => {
-  const { districtsByAreas } = useMapsContext();
+  const { labels } = useMapsContext();
+  const { calculationResults, handleSetCalculationResults } = useMainContext();
   const [subindustryTransform, setSubindustryTransform] = useState([]);
+  const [isResult, setIsResult] = useState<boolean>(false);
   const formData = useForm({
     mode: "onSubmit",
-    defaultValues: {},
+    defaultValues: {
+      typeBuild: [
+        {
+          type: "",
+          value: "",
+        },
+      ],
+      capitalType: [
+        {
+          type: "",
+          value: "",
+        },
+      ],
+      equipmentType: [
+        {
+          type: "",
+          count: "",
+          cost: "",
+        },
+      ],
+      otherType: [
+        {
+          type: "",
+          value: "",
+        },
+      ],
+    },
   });
   const { watch } = formData;
   const data = watch();
   // @ts-ignore
-  const legalForm = data?.legalForm;
+  const legalForm = data?.organizationalAndLegalForm;
   // @ts-ignore
-  const industry = data?.industry;
+  const industry = data?.industryId;
 
   useEffect(() => {
     if (industry) {
@@ -39,28 +70,33 @@ export const Calculator = () => {
     }
   }, [industry]);
 
+  const [postCalculation, { data: dataResults }] = usePostCalculationMutation();
   const { data: equipments, isFetching: isFetchingEquipment } =
     useGetEquipmentListQuery();
-  const { data: accounting, isFetching: isFetchingAccounting } =
-    useGetAccountingListQuery();
   const { data: regions, isFetching: isFetchingRegion } =
     useGetRegionListQuery();
-  const { data: districts, isFetching: isFetchingDistrict } =
-    useGetDistrictListQuery();
+  const { data: buildings, isFetching: isFetchingBuildings } =
+    useGetBuildingsListQuery();
+  const { data: capitalBuildings, isFetching: isFetchingCapitalBuildings } =
+    useGetCapitalBuildingsListQuery();
   const { data: industries } = useGetIndustryListQuery({
     name: industry?.name,
   });
 
-  console.log("accounting", accounting);
-  console.log("regions", regions);
-  console.log("districts", districts);
-  console.log("industries", industries);
+  useEffect(() => {
+    if (dataResults) {
+      setIsResult(true);
+      handleSetCalculationResults(dataResults);
+    }
+  }, [dataResults]);
+
+  console.log("calculationResults", calculationResults);
 
   if (
-    isFetchingAccounting ||
-    isFetchingDistrict ||
     isFetchingEquipment ||
-    isFetchingRegion
+    isFetchingRegion ||
+    isFetchingBuildings ||
+    isFetchingCapitalBuildings
   ) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -70,9 +106,49 @@ export const Calculator = () => {
   }
 
   const onSubmit = (data: any) => {
-    console.log("districtsByAreas", districtsByAreas);
-    console.log("data", data);
+    console.log("data.otherType", data.otherType);
+    postCalculation({
+      regionIds: labels?.map(({ item }: any) => item),
+      organizationalAndLegalForm: data.organizationalAndLegalForm?.name || "",
+      taxationSystemType: data.taxationSystemType?.name || "",
+      industryId: data.industryId?.id || "f4117186-fcfc-11ed-be56-0242ac120002",
+      areaOnRegions: data?.areaOnRegions || "",
+      buildingCostIdAndAreaPairList: data.typeBuild?.map(
+        ({ type, value }: any) =>
+          ({
+            first: type.id,
+            second: value,
+          } || [])
+      ),
+      otherCapitalBuildingCostIdAndAreaPairList: data.capitalType?.map(
+        ({ type, value }: any) =>
+          ({
+            first: type.id,
+            second: value,
+          } || [])
+      ),
+      equipmentIdAndCountPairList: data.equipmentType?.map(
+        ({ type, count }: any) =>
+          ({
+            first: type.id,
+            second: count,
+          } || [])
+      ),
+      staffCount: data?.staffCount || "",
+      averageSalary: data?.averageSalary || "",
+      otherNeeds: data.otherType?.map(
+        ({ type, value }: any) =>
+          ({
+            first: type,
+            second: value,
+          } || [])
+      ),
+    });
   };
+
+  if (isResult) {
+    return <Results isResult={isResult} handleResultModal={setIsResult} />;
+  }
 
   return (
     <Box className={s.wrapper}>
@@ -130,7 +206,9 @@ export const Calculator = () => {
         <FormProvider {...formData}>
           <CalculatorForm
             equipments={equipments}
-            districts={districts}
+            districts={regions}
+            capitalBuildings={capitalBuildings}
+            buildings={buildings}
             industries={industries}
             subindustryTransform={subindustryTransform}
             legalForm={legalForm}

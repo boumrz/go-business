@@ -10,14 +10,13 @@ export const User = () => {
     return <Navigate to="/admin" />;
   }
 
-  console.log("id", id);
-
   return (
     <Box
       sx={{
         paddingTop: "28px",
         display: "flex",
         flexDirection: "column",
+        paddingBottom: "64px",
         paddingLeft: "64px",
         paddingRight: "64px",
       }}
@@ -28,33 +27,120 @@ export const User = () => {
       <Box>
         <Typography
           variant="h4"
-          sx={{ paddingTop: "36px", fontSize: "18px", fontWeight: "600" }}
+          sx={{
+            paddingTop: "36px",
+            fontSize: "24px",
+            fontWeight: "500",
+            lineHeight: "44px",
+            paddingBottom: "40px",
+          }}
         >
           Пользователь {id}
         </Typography>
         <Box>
-          <Typography sx={{ paddingBottom: "24px" }}>Компания</Typography>
+          <Typography
+            sx={{
+              paddingBottom: "24px",
+              fontWeight: "500",
+              fontSize: "18px",
+              lineHeight: "28px",
+            }}
+          >
+            Компания
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+              marginBottom: "48px",
+            }}
+          >
+            <Typography
+              sx={{ fontSize: "16px", fontWeight: "400", lineHeight: "24px" }}
+            >
+              ИНН
+            </Typography>
+            <Typography
+              sx={{ fontSize: "16px", fontWeight: "400", lineHeight: "24px" }}
+            >
+              Компания
+            </Typography>
+            <Typography
+              sx={{ fontSize: "16px", fontWeight: "400", lineHeight: "24px" }}
+            >
+              Регион
+            </Typography>
+            <Typography
+              sx={{ fontSize: "16px", fontWeight: "400", lineHeight: "24px" }}
+            >
+              Сайт
+            </Typography>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            marginBottom: "48px",
+          }}
+        >
+          <Typography
+            sx={{
+              paddingBottom: "24px",
+              fontWeight: "500",
+              fontSize: "18px",
+              lineHeight: "28px",
+            }}
+          >
+            Представитель
+          </Typography>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <Typography>ИНН</Typography>
-            <Typography>Компания</Typography>
-            <Typography>Регион</Typography>
-            <Typography>Сайт</Typography>
+            <Typography
+              sx={{ fontSize: "16px", fontWeight: "400", lineHeight: "24px" }}
+            >
+              Иван Иванов
+            </Typography>
+            <Typography
+              sx={{ fontSize: "16px", fontWeight: "400", lineHeight: "24px" }}
+            >
+              Должность
+            </Typography>
+            <Typography
+              sx={{ fontSize: "16px", fontWeight: "400", lineHeight: "24px" }}
+            >
+              email
+            </Typography>
+            <Typography
+              sx={{ fontSize: "16px", fontWeight: "400", lineHeight: "24px" }}
+            >
+              Активность
+            </Typography>
           </Box>
         </Box>
         <Box>
-          <Typography sx={{ paddingBottom: "24px" }}>Представитель</Typography>
+          <Typography
+            sx={{
+              paddingBottom: "24px",
+              fontWeight: "500",
+              fontSize: "18px",
+              lineHeight: "28px",
+            }}
+          >
+            Расчеты
+          </Typography>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <Typography>Иван Иванов</Typography>
-            <Typography>Должность</Typography>
-            <Typography>email</Typography>
-            <Typography>Активность</Typography>
-          </Box>
-        </Box>
-        <Box>
-          <Typography sx={{ paddingBottom: "24px" }}>Расчеты</Typography>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <Typography>№1</Typography>
-            <Typography>№2</Typography>
+            <Typography
+              sx={{ fontSize: "16px", fontWeight: "400", lineHeight: "24px" }}
+            >
+              №1
+            </Typography>
+            <Typography
+              sx={{ fontSize: "16px", fontWeight: "400", lineHeight: "24px" }}
+            >
+              №2
+            </Typography>
           </Box>
         </Box>
       </Box>

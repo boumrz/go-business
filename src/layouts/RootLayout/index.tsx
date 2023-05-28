@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from "react";
 import { Header } from "./Header";
 import { Main } from "./Main";
-import { STORAGE } from "@/services";
+import { STORAGE, useGetUserQuery } from "@/services";
 import { useAuthContext } from "@/contexts";
 import s from "./styles.module.css";
 
@@ -11,7 +11,10 @@ interface RootLayoutProps {
 
 export const RootLayout = (props: RootLayoutProps) => {
   const { children } = props;
-  const { handleToken } = useAuthContext();
+  const { handleToken, token: authToken } = useAuthContext();
+  const { data: user } = useGetUserQuery(null, {
+    skip: !authToken,
+  });
   const token = STORAGE.getToken();
 
   useEffect(() => {

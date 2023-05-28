@@ -1,0 +1,11 @@
+.svgActive {
+  path {
+    fill: #3a6cab !important;
+  }
+}
+
+.svgDisable {
+  path {
+    fill: #5f6368 !important;
+  }
+}

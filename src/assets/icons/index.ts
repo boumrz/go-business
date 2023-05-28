@@ -1,3 +1,9 @@
 export { default as LogoIcon } from "./logo.svg";
 export { default as LayerIcon } from "./layer.svg";
 export { default as MarkerMapIcon } from "./markerMap.svg";
+export { default as UserIcon } from "./user.svg";
+export { default as InfoIcon } from "./info.svg";
+export { default as UsersIcon } from "./users.svg";
+export { default as DataIcon } from "./data.svg";
+export { default as StatisticsIcon } from "./statistics.svg";
+export { default as CountingIcon } from "./counting.svg";

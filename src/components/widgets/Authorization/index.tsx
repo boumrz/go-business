@@ -38,7 +38,8 @@ export const Authorization = () => {
     setIsRegistration(false);
   };
 
-  const handleNextStep = () => {
+  const handleNextStep = (event: any) => {
+    event.preventDefault();
     setActiveStep(activeStep + 1);
   };
 
@@ -51,6 +52,7 @@ export const Authorization = () => {
           activeStep={activeStep}
           handleLogIn={handleLogIn}
           handleNextStep={handleNextStep}
+          handleReturnLogin={setIsRegistration}
         />
       )}
     </div>

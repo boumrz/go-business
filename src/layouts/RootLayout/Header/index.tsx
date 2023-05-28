@@ -4,8 +4,9 @@ import { Box, AppBar, Toolbar, Modal, Typography } from "@mui/material";
 import { ManageAccounts, Home } from "@mui/icons-material";
 import { useMainContext, useAuthContext } from "@/contexts";
 // @ts-ignore
-import { LogoIcon } from "@/assets/icons";
+import { LogoIcon, UserIcon } from "@/assets/icons";
 import { Authorization } from "@/components";
+import { useGetUserQuery } from "@/services";
 import s from "./styles.module.css";
 
 export const Header = () => {
@@ -15,13 +16,16 @@ export const Header = () => {
 
   const [noAuth, setNoAuth] = useState(true);
 
+  const { data: user } = useGetUserQuery(null, {
+    skip: !token,
+  });
+
   useEffect(() => {
     if (token) {
       setNoAuth(false);
     }
   }, [token]);
 
-  console.log("noAuth", noAuth);
   const handleLogin = (event: any) => {
     event.stopPropagation();
     handleIsOpenAuthModal();
@@ -50,23 +54,27 @@ export const Header = () => {
           <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
             <LogoIcon />
             {noAuth ? (
-              <button
-                className={s.button}
-                onClick={handleLogin}
-                color="primary"
-              >
-                Вход
+              <button className={s.button} onClick={handleLogin}>
+                Вход/Регистрация
               </button>
             ) : (
               <Box sx={{ display: "flex", gap: "20px", alignItems: "center" }}>
-                <Typography sx={{ color: "#6750a4" }} variant="body2">
-                  Пользователь
+                <Typography
+                  sx={{
+                    color: "#3A6CAB",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px",
+                  }}
+                  variant="body2"
+                >
+                  <UserIcon /> {user?.firstName ?? "Пользователь"}
                 </Typography>
                 <Link to="/calculator">
-                  <Home />
+                  <Home sx={{ fill: "#3A6CAB" }} />
                 </Link>
                 <Link to="/admin">
-                  <ManageAccounts />
+                  <ManageAccounts sx={{ fill: "#3A6CAB" }} />
                 </Link>
               </Box>
             )}

@@ -4,19 +4,22 @@ import { PersonalData, Final } from "@/components";
 import { usePostRegisterUserMutation } from "@/services";
 import cn from "clsx";
 import s from "./styles.module.css";
+import { useEffect } from "react";
 
 interface RegistrationProps {
   activeStep: number;
   handleLogIn: (event: any) => void;
-  handleNextStep: () => void;
+  handleNextStep: (event: any) => void;
+  handleReturnLogin: any;
 }
 
 export const Registration = ({
   activeStep,
   handleLogIn,
   handleNextStep,
+  handleReturnLogin,
 }: RegistrationProps) => {
-  const [postRegister, _responseRegister] = usePostRegisterUserMutation();
+  const [postRegister, responseRegister] = usePostRegisterUserMutation();
 
   const formData = useForm({
     mode: "onSubmit",
@@ -28,6 +31,12 @@ export const Registration = ({
     console.log("onSubmitRegistration", formData);
     postRegister(formData);
   };
+
+  useEffect(() => {
+    if (responseRegister.isSuccess) {
+      handleReturnLogin(false);
+    }
+  }, [responseRegister.isSuccess]);
 
   return (
     <>
@@ -45,7 +54,7 @@ export const Registration = ({
       <FormProvider {...formData}>
         <form
           className={cn(s.form, s.registration)}
-          onSubmit={handleSubmit(onRegister)}
+          // onSubmit={handleSubmit(onRegister)}
         >
           {activeStep === 1 && <PersonalData />}
           {activeStep === 2 && <Final />}
@@ -70,7 +79,7 @@ export const Registration = ({
               <button
                 className={s.button}
                 type="submit"
-                onClick={handleNextStep}
+                onClick={handleSubmit(onRegister)}
               >
                 Завершить
               </button>

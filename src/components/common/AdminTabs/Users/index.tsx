@@ -42,7 +42,6 @@ export const Users = ({ users }: any) => {
 
   const handleMore = (_event: any, user: any) => {
     navigate("/user/123");
-    console.log("user", user);
   };
 
   return (
@@ -52,7 +51,7 @@ export const Users = ({ users }: any) => {
           <TableRow>
             <StyledTableCell align="left">ИНН</StyledTableCell>
             <StyledTableCell align="left">
-              Адрес электронной почти
+              Адрес электронной почты
             </StyledTableCell>
             <StyledTableCell align="left">Действия</StyledTableCell>
           </TableRow>

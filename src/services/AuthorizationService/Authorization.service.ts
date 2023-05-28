@@ -34,8 +34,17 @@ export const AuthorizationService = Api.enhanceEndpoints({
         },
       }),
     }),
+    getUser: builder.query<any, void | null>({
+      query: () => ({
+        url: "/api/v1/whoami",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { usePostLoginUserMutation, usePostRegisterUserMutation } =
-  AuthorizationService;
+export const {
+  usePostLoginUserMutation,
+  usePostRegisterUserMutation,
+  useGetUserQuery,
+} = AuthorizationService;

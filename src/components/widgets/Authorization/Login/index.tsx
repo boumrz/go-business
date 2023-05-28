@@ -7,7 +7,7 @@ import {
 } from "react-hook-form";
 import { Typography, TextField } from "@mui/material";
 import { usePostLoginUserMutation, STORAGE } from "@/services";
-import { useAuthContext } from "@/contexts";
+import { useAuthContext, useMainContext } from "@/contexts";
 import s from "./styles.module.css";
 
 const ariaLabel = { "aria-label": "description" };
@@ -17,10 +17,11 @@ interface LoginProps {
 }
 
 export const Login = ({ handleLogUp }: LoginProps) => {
-  const { handleToken } = useAuthContext();
+  const { token, handleToken } = useAuthContext();
+  const { handleIsCloseAuthModal } = useMainContext();
   const [postLogin, { data: login }] = usePostLoginUserMutation();
   const formData = useForm({
-    mode: "onSubmit",
+    mode: "onChange",
   });
   const { handleSubmit: handleSubmitForm1, control } = formData;
   const { errors } = useFormState({ control });
@@ -31,6 +32,12 @@ export const Login = ({ handleLogUp }: LoginProps) => {
       handleToken();
     }
   }, [login]);
+
+  useEffect(() => {
+    if (token) {
+      handleIsCloseAuthModal();
+    }
+  }, [token]);
 
   const onLogin = (formData: any) => {
     postLogin({

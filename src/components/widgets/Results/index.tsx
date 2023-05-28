@@ -1,190 +1,365 @@
-import { Typography, Box, Button, Grid } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Button,
+  Grid,
+  Modal,
+  CardContent,
+  Card,
+} from "@mui/material";
 // @ts-ignore
-import { LayerIcon } from "@/assets/icons";
+import { LayerIcon, InfoIcon } from "@/assets/icons";
+import { useMainContext } from "@/contexts";
 import s from "./styles.module.css";
 
-export const Results = () => {
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  borderRadius: "16px",
+  boxShadow: "0px 0px 8px 0px rgba(34, 60, 80, 0.2)",
+  width: 824,
+  overflow: "auto",
+  height: "85%",
+  bgcolor: "background.paper",
+  border: "none",
+};
+
+export const Results = ({ isResult, handleResultModal }: any) => {
+  const { calculationResults } = useMainContext();
+
+  const handleGeneratePDF = () => {
+    console.log("generatePDF");
+  };
+
   return (
-    <Box className={s.wrapper}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: { xs: "center", lg: "flex-start" },
-        }}
-        className={s.header}
-      >
+    <Modal
+      open={isResult}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      onClose={() => handleResultModal(false)}
+    >
+      <Box sx={style}>
         <Box
           sx={{
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            maxWidth: { xs: "450px", lg: "546px" },
-            gap: "16px",
+            boxShadow: {
+              xs: "none",
+              sm: "0px 0px 8px 0px rgba(34, 60, 80, 0.2)",
+            },
+            margin: "auto",
           }}
+          className={s.results}
         >
-          <LayerIcon className={s.layerIcon} />
-          <Typography
+          <header className={s.count}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: {
+                  xs: "column",
+                  sm: "row",
+                },
+                gap: { xs: "16px" },
+                marginBottom: { xs: "16px", sm: "32px" },
+                justifyContent: {
+                  xs: "flex-start",
+                  sm: "space-between",
+                },
+                alignItems: {
+                  xs: "flex-start",
+                  sm: "center",
+                },
+              }}
+            >
+              <Typography className={s.title} variant="h3">
+                Общий объем инвестиций составит
+              </Typography>
+            </Box>
+            <Typography className={s.title} variant="h2">
+              {calculationResults?.totalCostMinOfAll || "0"}&nbsp;–&nbsp;
+              {calculationResults?.totalCostMaxOfAll || "0"}
+            </Typography>
+          </header>
+          <Box alignItems="center">
+            <Box
+              sx={{
+                paddingTop: "32px",
+                paddingBottom: "28px",
+                width: { xs: "320px" },
+              }}
+            >
+              <Typography sx={{ color: "#3C4043" }} variant="body1">
+                Структура затрат
+              </Typography>
+            </Box>
+            <Grid
+              container
+              rowSpacing={2}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+              marginBottom={5}
+            >
+              <Grid item xs={6} paddingBottom={1}>
+                <Typography
+                  sx={{ fontSize: 16, fontWeight: 500 }}
+                  variant="body1"
+                >
+                  Капитальные вложения
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1">
+                  {calculationResults?.capitalInvestmentsTotalMinCost}
+                  &nbsp;-&nbsp;
+                  {calculationResults?.capitalInvestmentsTotalMaxCost}
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography className={s.secondary} variant="body1">
+                  - Строительство зданий
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1">
+                  {calculationResults?.capitalInvestmentsTotalBuildingCost ||
+                    ""}
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography className={s.secondary} variant="body1">
+                  - Прочие объекты капитального строительства
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1">
+                  {calculationResults?.capitalInvestmentsCapitalTotalBuildingCost ||
+                    ""}
+                </Typography>
+              </Grid>
+            </Grid>
+
+            <Grid
+              container
+              rowSpacing={2}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+              marginBottom={5}
+            >
+              <Grid item xs={6} paddingBottom={1}>
+                <Typography
+                  sx={{ fontSize: 16, fontWeight: 500 }}
+                  variant="body1"
+                >
+                  Затраты на открытие производства
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1">
+                  {calculationResults?.costsOfOpeningProductionTotalCost}
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography className={s.secondary} variant="body1">
+                  - Приобретение оборудования
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1">
+                  {calculationResults?.costsOfOpeningProductionEquipmentPurchasePriceTotalEquipmentCost ||
+                    ""}
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography className={s.secondary} variant="body1">
+                  - Найм персонала
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1">
+                  {calculationResults?.costsOfOpeningProductionHiringStaffTotalStaffCost ||
+                    ""}
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography className={s.secondary} variant="body1">
+                  - Покупка патента
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1">
+                  {calculationResults?.costsOfOpeningProductionPurchasePatentPatentCost ||
+                    ""}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Box>
+          <Card
             sx={{
-              fontSize: { xs: "24px !important", sm: "36px !important" },
+              minWidth: 275,
+              backgroundColor: "#EEF3FA",
+              padding: "12px",
+              marginBottom: "72px",
             }}
-            className={s.title}
-            variant="h2"
           >
-            Инвестиционный калькулятор города Москвы
-          </Typography>
-          <Typography className={s.title} variant="body1">
-            Объем инвестиций в один клик
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            width: { md: "470px", lg: "605px" },
-            height: { md: "428px", lg: "428px" },
-          }}
-        >
-          <div className={s.imgWrapper} />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          width: { xs: "320px", sm: "400px", md: "800px", lg: "900px" },
-          boxShadow: {
-            xs: "none",
-            sm: "0px 0px 8px 0px rgba(34, 60, 80, 0.2)",
-          },
-          margin: "auto",
-        }}
-        className={s.results}
-      >
-        <header className={s.count}>
+            <CardContent>
+              <Typography
+                sx={{
+                  fontSize: 20,
+                  fontWeight: 500,
+                  color: "#202124",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "64px",
+                  marginBottom: "28px",
+                }}
+                color="text.secondary"
+                gutterBottom
+              >
+                Последующие расходы, которые понесёт организация <br /> после
+                начала работы (стоимость указана за 1 месяц) <InfoIcon />
+              </Typography>
+              <Grid
+                container
+                rowSpacing={2}
+                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                marginBottom={5}
+              >
+                <Grid item xs={6} paddingBottom={1}>
+                  <Typography
+                    sx={{ fontSize: 16, fontWeight: 500 }}
+                    variant="body1"
+                  >
+                    Оплата труда
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body1">104'980'000 руб.</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={s.secondary} variant="body1">
+                    - Заработная плата
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body1">
+                    {calculationResults?.totalSalaryPayment || ""}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={s.secondary} variant="body1">
+                    - Налоги
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body1">2'500'000 руб.</Typography>
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                rowSpacing={2}
+                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                marginBottom={5}
+              >
+                <Grid item xs={6} paddingBottom={1}>
+                  <Typography
+                    sx={{ fontSize: 16, fontWeight: 500 }}
+                    variant="body1"
+                  >
+                    Прочие налоги
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body1">104'980'000 руб.</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={s.secondary} variant="body1">
+                    - На землю
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body1">2'500'000 руб.</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={s.secondary} variant="body1">
+                    - На имущество
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body1">2'500'000 руб.</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={s.secondary} variant="body1">
+                    - Транспортный
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body1">2'500'000 руб.</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={s.secondary} variant="body1">
+                    - Прочие
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body1">2'500'000 руб.</Typography>
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                rowSpacing={2}
+                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                marginBottom={5}
+              >
+                <Grid item xs={6} paddingBottom={1}>
+                  <Typography
+                    sx={{ fontSize: 16, fontWeight: 500 }}
+                    variant="body1"
+                  >
+                    Исходные расходы
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body1">104'980'000 руб.</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={s.secondary} variant="body1">
+                    - Ведение бухгалтерского учёта
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body1">
+                    {calculationResults?.accountingCost || ""}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+
           <Box
             sx={{
               display: "flex",
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-              gap: { xs: "16px" },
-              marginBottom: { xs: "16px", sm: "32px" },
-              justifyContent: {
-                xs: "flex-start",
-                sm: "space-between",
-              },
-              alignItems: {
-                xs: "flex-start",
-                sm: "center",
-              },
+              justifyContent: "space-between",
+              gap: "20px;",
             }}
           >
-            <Typography className={s.title} variant="h3">
-              Параметры бизнеса
-            </Typography>
-            <Button variant="contained" type="button">
-              Новый расчет
+            <Button
+              sx={{ backgroundColor: "#D31B2C" }}
+              variant="contained"
+              type="button"
+              onClick={handleGeneratePDF}
+            >
+              Получить детализированный расчет
+            </Button>
+            <Button
+              sx={{ backgroundColor: "#D31B2C" }}
+              variant="contained"
+              onClick={() => handleResultModal(false)}
+              type="button"
+            >
+              Закрыть
             </Button>
           </Box>
-          <Typography className={s.title} variant="h2">
-            120 000 000 – 137 000 000 руб.
-          </Typography>
-        </header>
-        <Box alignItems="center">
-          <Box
-            sx={{
-              paddingTop: "32px",
-              paddingBottom: "28px",
-              width: { xs: "320px" },
-            }}
-          >
-            <Typography className={s.secondary} variant="body1">
-              Структура затрат
-            </Typography>
-          </Box>
-          <Grid
-            container
-            rowSpacing={2}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            marginBottom={5}
-          >
-            <Grid item xs={6} paddingBottom={1}>
-              <Typography variant="body1">Капитальные вложения</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">104'980'000 руб.</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography className={s.secondary} variant="body1">
-                - Приобретение земельных участков
-              </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">2'500'000 руб.</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography className={s.secondary} variant="body1">
-                - Строительство зданий
-              </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">2'500'000 руб.</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography className={s.secondary} variant="body1">
-                - Прочие объекты капитального строительства
-              </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">2'500'000 руб.</Typography>
-            </Grid>
-          </Grid>
-
-          <Grid
-            container
-            rowSpacing={2}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            marginBottom={5}
-          >
-            <Grid item xs={6} paddingBottom={1}>
-              <Typography variant="body1">
-                Затраты на открытие производства
-              </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">104'980'000 руб.</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography className={s.secondary} variant="body1">
-                - Приобретение оборудования
-              </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">2'500'000 руб.</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography className={s.secondary} variant="body1">
-                - Найм персонала
-              </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">2'500'000 руб.</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography className={s.secondary} variant="body1">
-                - Покупка патента
-              </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">2'500'000 руб.</Typography>
-            </Grid>
-          </Grid>
-        </Box>
-
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <Button fullWidth variant="contained" type="button">
-            Получить детализированный расчет
-          </Button>
         </Box>
       </Box>
-    </Box>
+    </Modal>
   );
 };
